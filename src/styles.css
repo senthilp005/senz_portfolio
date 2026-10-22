@@ -606,3 +606,13 @@ body{perspective:1200px}
  .hero-title-art span{position:relative;z-index:8}
  .hero-real-portrait{z-index:4!important}
 }
+
+
+/* Slightly reduce portrait while preserving the current layered name effect */
+@media(min-width:1200px){
+ .hero-real-portrait{height:116%!important;transform:translateX(-50%) scale(1.04)!important}
+ .hero-person{height:clamp(490px,58vh,610px)!important}
+}
+@media(min-width:1600px){
+ .hero-real-portrait{height:118%!important}
+}
