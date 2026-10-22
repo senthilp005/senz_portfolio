@@ -585,3 +585,16 @@ body{perspective:1200px}
  .hero-person{height:clamp(540px,62vh,660px)!important}
  .hero-real-portrait{height:120%!important}
 }
+
+
+/* Slightly enlarge portrait and overlap the giant name like the reference */
+@media(min-width:1200px){
+ .hero-person{height:clamp(520px,62vh,650px)!important;transform:translateY(-38px)!important;overflow:visible!important}
+ .hero-real-portrait{height:124%!important;width:auto!important;max-width:none!important;left:50%!important;bottom:0!important;transform:translateX(-50%) scale(1.1)!important;z-index:4!important}
+ .hero-title-art{z-index:2!important}
+ .hero-handwriting{z-index:5!important}
+}
+@media(min-width:1600px){
+ .hero-person{height:clamp(550px,64vh,680px)!important}
+ .hero-real-portrait{height:126%!important}
+}
