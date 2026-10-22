@@ -25,7 +25,69 @@ const skills = [
   ["Data & Tools",["MySQL","Firebase","Git / GitHub","TensorFlow.js"]]
 ];
 
-function App(){
+
+
+function CursorTrail(){
+  useEffect(()=>{
+    const finePointer=window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+    if(!finePointer.matches || reducedMotion.matches) return;
+    const layer=document.createElement("div");
+    layer.className="cursor-trail-layer";
+    layer.setAttribute("aria-hidden","true");
+    const count=7;
+    const dots=Array.from({length:count},(_,i)=>{
+      const dot=document.createElement("span");
+      dot.className="cursor-trail-dot";
+      dot.style.setProperty("--trail-index",i);
+      layer.appendChild(dot);
+      return {el:dot,x:-100,y:-100};
+    });
+    document.body.appendChild(layer);
+    let targetX=-100,targetY=-100,frame=0,visible=false;
+    const onMove=(event)=>{
+      if(event.pointerType && event.pointerType!=="mouse") return;
+      targetX=event.clientX;targetY=event.clientY;visible=true;
+      layer.classList.add("is-active");
+      if(!frame) frame=requestAnimationFrame(tick);
+    };
+    const tick=()=>{
+      frame=0;
+      dots.forEach((dot,i)=>{
+        const lag=i===0?1:.23-(i*.022);
+        dot.x+=(targetX-dot.x)*lag;
+        dot.y+=(targetY-dot.y)*lag;
+        dot.el.style.transform=`translate3d(${dot.x}px,${dot.y}px,0) translate(-50%,-50%)`;
+      });
+      if(visible && dots.some((dot,i)=>i>0 && (Math.abs(dot.x-targetX)>.7 || Math.abs(dot.y-targetY)>.7))) frame=requestAnimationFrame(tick);
+    };
+    const onLeave=()=>{visible=false;layer.classList.remove("is-active");};
+    const onEnter=()=>{visible=true;layer.classList.add("is-active");};
+    const onSettingsChange=()=>{
+      if(!finePointer.matches || reducedMotion.matches) cleanup();
+    };
+    const cleanup=()=>{
+      if(frame) cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove",onMove);
+      window.removeEventListener("pointerout",onOut);
+      document.removeEventListener("pointerover",onEnter);
+      document.removeEventListener("pointerleave",onLeave);
+      finePointer.removeEventListener?.("change",onSettingsChange);
+      reducedMotion.removeEventListener?.("change",onSettingsChange);
+      layer.remove();
+    };
+    const onOut=(event)=>{if(!event.relatedTarget) onLeave();};
+    window.addEventListener("pointermove",onMove,{passive:true});
+    window.addEventListener("pointerout",onOut,{passive:true});
+    document.addEventListener("pointerover",onEnter,{passive:true});
+    document.addEventListener("pointerleave",onLeave,{passive:true});
+    finePointer.addEventListener?.("change",onSettingsChange);
+    reducedMotion.addEventListener?.("change",onSettingsChange);
+    return cleanup;
+  },[]);
+  return null;
+}
+\nfunction App(){
   const [filter,setFilter]=useState("All");
   const [menu,setMenu]=useState(false);
   const [cmd,setCmd]=useState("");
@@ -40,7 +102,7 @@ function App(){
   const filters=["All",...new Set(projects.map(p=>p.category))];
   const shown=useMemo(()=>filter==="All"?projects:projects.filter(p=>p.category===filter),[filter]);
   const run=(e)=>{e.preventDefault();const c=cmd.trim().toLowerCase();const answers={help:"Commands: about · skills · projects · contact · clear",about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",contact:"Use the contact links below to connect."};setOutput(c==="clear"?"":answers[c]||`Command not found: ${c}. Type help.`);setCmd("");};
-  return <div className="shell"><div className="glow glow1"/><div className="glow glow2"/>
+  return <><CursorTrail/><div className="shell"><div className="glow glow1"/><div className="glow glow2"/>
     <header className="nav"><a className="brand" href="#home"><span className="brand-mark">S<span>.</span></span><span>P. SENTHIL VELAN<small> / DEVELOPER</small></span></a><button className="mobile" onClick={()=>setMenu(!menu)} aria-label="Toggle menu">{menu?<X/>:<Menu/>}</button><nav className={menu?"links open":"links"}>{[["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]].map(([t,h])=><a key={t} href={h} onClick={()=>setMenu(false)}>{t}</a>)}<a className="nav-cta" href="#contact">Let's talk <ArrowUpRight size={15}/></a></nav></header>
     <main>
       <section className="hero wrap hero-poster" id="home">
