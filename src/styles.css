@@ -726,3 +726,26 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
   .hero-poster .btn{font-size:8px;letter-spacing:.03em}
   .hero-footer{left:39%}
 }
+
+
+/* SUBTLE RED CURSOR TRAIL — desktop fine pointers only */
+.cursor-trail-layer{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;
+  opacity:0;transition:opacity .18s ease;
+}
+.cursor-trail-layer.is-active{opacity:1}
+.cursor-trail-dot{
+  position:absolute;left:0;top:0;width:clamp(5px, .55vw, 8px);height:clamp(5px, .55vw, 8px);
+  border-radius:50%;background:#ff2638;opacity:calc(1 - (var(--trail-index) * .115));
+  box-shadow:0 0 10px #ff182b70,0 0 22px #ff182b35;will-change:transform;
+}
+.cursor-trail-dot:first-child{
+  width:7px;height:7px;background:#fff;opacity:.95;
+  box-shadow:0 0 8px #ff334b,0 0 18px #ff182b;
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .cursor-trail-layer{display:block}
+}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
+  .cursor-trail-layer{display:none!important}
+}
