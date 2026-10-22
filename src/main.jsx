@@ -29,91 +29,72 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
-    const finePointer=window.matchMedia("(hover: hover) and (pointer: fine)");
     const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-    if(!finePointer.matches || reducedMotion.matches) return;
+    if(reducedMotion.matches) return;
 
     const canvas=document.createElement("canvas");
     canvas.className="portfolio-comet-cursor";
     canvas.setAttribute("aria-hidden","true");
     Object.assign(canvas.style,{
-      position:"fixed",
-      inset:"0",
-      width:"100%",
-      height:"100%",
-      pointerEvents:"none",
-      zIndex:"2147483647",
-      display:"block"
+      position:"fixed",inset:"0",width:"100%",height:"100%",
+      pointerEvents:"none",zIndex:"2147483647",display:"block"
     });
     document.documentElement.appendChild(canvas);
     const ctx=canvas.getContext("2d",{alpha:true});
     if(!ctx){canvas.remove();return;}
 
-    let width=0,height=0,raf=0,lastTime=0;
+    let width=0,height=0,raf=0;
     const points=[];
-    const maxAge=260;
+    const maxAge=300;
+    const isTouch=()=>window.matchMedia("(pointer: coarse)").matches;
     const resize=()=>{
       const dpr=Math.min(window.devicePixelRatio||1,2);
-      width=window.innerWidth;
-      height=window.innerHeight;
-      canvas.width=Math.round(width*dpr);
-      canvas.height=Math.round(height*dpr);
+      width=window.innerWidth;height=window.innerHeight;
+      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
       ctx.setTransform(dpr,0,0,dpr,0,0);
     };
     const move=(e)=>{
-      if(e.pointerType && e.pointerType!=="mouse") return;
+      if(e.pointerType==="mouse" && isTouch()) return;
+      if(e.pointerType!=="mouse" && e.pointerType!=="pen" && e.pointerType!=="touch") return;
       points.push({x:e.clientX,y:e.clientY,t:performance.now()});
-      if(points.length>18) points.splice(0,points.length-18);
+      if(points.length>22) points.splice(0,points.length-22);
       if(!raf) raf=requestAnimationFrame(draw);
     };
     const draw=(now)=>{
-      raf=0;
-      ctx.clearRect(0,0,width,height);
+      raf=0;ctx.clearRect(0,0,width,height);
       while(points.length && now-points[0].t>maxAge) points.shift();
       if(points.length>1){
-        ctx.lineCap="round";
-        ctx.lineJoin="round";
+        ctx.lineCap="round";ctx.lineJoin="round";
         for(let i=1;i<points.length;i++){
           const a=points[i-1],b=points[i];
-          const age=Math.max(0,now-b.t);
-          const alpha=Math.max(0,1-age/maxAge);
+          const age=Math.max(0,now-b.t),alpha=Math.max(0,1-age/maxAge);
           if(alpha<=0) continue;
-          ctx.beginPath();
-          ctx.moveTo(a.x,a.y);
-          ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.78)+")";
-          ctx.lineWidth=Math.max(.7,4.2*(i/points.length)*alpha);
-          ctx.shadowColor="#ff2638";
-          ctx.shadowBlur=7*alpha;
-          ctx.stroke();
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.8)+")";
+          ctx.lineWidth=Math.max(.8,4.5*(i/points.length)*alpha);
+          ctx.shadowColor="#ff2638";ctx.shadowBlur=8*alpha;ctx.stroke();
         }
-        const head=points[points.length-1];
-        const alpha=Math.max(0,1-(now-head.t)/maxAge);
+        const head=points[points.length-1],alpha=Math.max(0,1-(now-head.t)/maxAge);
         if(alpha>0){
-          ctx.beginPath();
-          ctx.arc(head.x,head.y,2.4,0,Math.PI*2);
+          ctx.beginPath();ctx.arc(head.x,head.y,2.6,0,Math.PI*2);
           ctx.fillStyle="rgba(255,255,255,"+alpha+")";
-          ctx.shadowColor="#ff2638";
-          ctx.shadowBlur=11;
-          ctx.fill();
+          ctx.shadowColor="#ff2638";ctx.shadowBlur=12;ctx.fill();
         }
         ctx.shadowBlur=0;
       }
-      if(points.length>1 || (points.length===1 && now-points[0].t<maxAge)){
-        raf=requestAnimationFrame(draw);
-      }else{
-        points.length=0;
-      }
-      lastTime=now;
+      if(points.length>1 || (points.length===1 && now-points[0].t<maxAge)) raf=requestAnimationFrame(draw);
+      else points.length=0;
     };
     const clear=()=>{points.length=0;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,width,height);};
     resize();
     window.addEventListener("resize",resize,{passive:true});
     window.addEventListener("pointermove",move,{passive:true,capture:true});
+    window.addEventListener("pointerdown",move,{passive:true,capture:true});
     window.addEventListener("blur",clear);
     return ()=>{
       window.removeEventListener("resize",resize);
       window.removeEventListener("pointermove",move,true);
+      window.removeEventListener("pointerdown",move,true);
       window.removeEventListener("blur",clear);
       if(raf)cancelAnimationFrame(raf);
       canvas.remove();
