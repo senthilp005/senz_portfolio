@@ -555,3 +555,11 @@ body{perspective:1200px}
  .hero-real-portrait{max-width:100%!important;height:100%!important;transform:scale(1)!important;animation:portraitSettleMobile .9s ease both,portraitAura 4s ease-in-out .9s infinite alternate!important}
 }
 @keyframes portraitSettleMobile{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+
+/* FINAL vertical alignment: lift portrait slightly within the orbit */
+@media(min-width:1200px){
+ .hero-person{transform:translateY(-24px)!important}
+ .hero-real-portrait{object-position:center bottom!important}
+ .hero-handwriting{bottom:23%!important}
+}
