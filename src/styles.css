@@ -616,3 +616,18 @@ body{perspective:1200px}
 @media(min-width:1600px){
  .hero-real-portrait{height:118%!important}
 }
+
+
+/* Fine-tune portrait and handwritten slogan placement */
+@media(min-width:1200px){
+ .hero-real-portrait{height:110%!important;transform:translateX(-50%) scale(1.02)!important}
+ .hero-person{height:clamp(470px,56vh,590px)!important}
+ .hero-handwriting{right:-2%!important;bottom:28%!important;font-size:clamp(.9rem,1.25vw,1.12rem)!important;line-height:1.12!important;max-width:115px;text-align:left;transform:rotate(-8deg)}
+}
+@media(min-width:1600px){
+ .hero-real-portrait{height:112%!important}
+ .hero-handwriting{right:0!important;bottom:27%!important;font-size:1.18rem!important}
+}
+@media(max-width:1199px){
+ .hero-handwriting{right:0!important;bottom:24%!important;font-size:clamp(.85rem,2vw,1.1rem)!important;line-height:1.12!important}
+}
