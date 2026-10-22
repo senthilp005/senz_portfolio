@@ -631,3 +631,12 @@ body{perspective:1200px}
 @media(max-width:1199px){
  .hero-handwriting{right:0!important;bottom:24%!important;font-size:clamp(.85rem,2vw,1.1rem)!important;line-height:1.12!important}
 }
+
+
+/* Layering fix: portrait head stays in front of the title, while text remains readable */
+@media(min-width:1200px){
+ .hero-title-art{z-index:2!important}
+ .hero-real-portrait{z-index:6!important}
+ .hero-person{z-index:5!important;overflow:visible!important}
+ .hero-handwriting{z-index:7!important}
+}
