@@ -30,7 +30,6 @@ const skills = [
 function CursorTrail(){
   useEffect(()=>{
     if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     const canvas=document.createElement("canvas");
     canvas.setAttribute("aria-hidden","true");
     canvas.className="portfolio-comet-cursor";
@@ -41,10 +40,9 @@ function CursorTrail(){
     document.documentElement.appendChild(canvas);
     const ctx=canvas.getContext("2d");
     if(!ctx){canvas.remove();return;}
-
     let width=0,height=0,raf=0;
     const points=[];
-    const active=new Set();
+    const activeTouchPointers=new Set();
     const maxAge=360;
     const resize=()=>{
       const dpr=Math.min(window.devicePixelRatio||1,2);
@@ -58,23 +56,21 @@ function CursorTrail(){
       if(!raf) raf=requestAnimationFrame(draw);
     };
     const down=e=>{
-      if(e.pointerType==="touch" || e.pointerType==="pen" || e.pointerType==="mouse"){
-        active.add(e.pointerId);
-        push(e.clientX,e.clientY);
-      }
+      if(e.pointerType==="touch" || e.pointerType==="pen") activeTouchPointers.add(e.pointerId);
+      if(e.pointerType==="mouse" || e.pointerType==="touch" || e.pointerType==="pen") push(e.clientX,e.clientY);
     };
     const move=e=>{
-      if(active.has(e.pointerId)) push(e.clientX,e.clientY);
+      // Mouse trails follow normal cursor movement; touch/pen trails follow active gestures.
+      if(e.pointerType==="mouse" || activeTouchPointers.has(e.pointerId)) push(e.clientX,e.clientY);
     };
-    const up=e=>active.delete(e.pointerId);
+    const up=e=>activeTouchPointers.delete(e.pointerId);
     const draw=now=>{
-      raf=0;
-      ctx.clearRect(0,0,width,height);
+      raf=0;ctx.clearRect(0,0,width,height);
       while(points.length && now-points[0].t>maxAge) points.shift();
       for(let i=1;i<points.length;i++){
         const a=points[i-1],b=points[i];
         const alpha=Math.max(0,1-(now-b.t)/maxAge);
-        if(!alpha) continue;
+        if(alpha<=0) continue;
         ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
         ctx.lineCap="round";ctx.lineJoin="round";
         ctx.strokeStyle="rgba(255,38,56,"+(alpha*.9)+")";
@@ -93,22 +89,13 @@ function CursorTrail(){
       if(points.length) raf=requestAnimationFrame(draw);
     };
     const clear=()=>{
-      points.length=0;active.clear();
-      if(raf) cancelAnimationFrame(raf);
+      points.length=0;activeTouchPointers.clear();
+      if(raf)cancelAnimationFrame(raf);
       raf=0;ctx.clearRect(0,0,width,height);
     };
+    const touchStart=e=>{for(const t of e.changedTouches)push(t.clientX,t.clientY);};
+    const touchMove=e=>{for(const t of e.changedTouches)push(t.clientX,t.clientY);};
     resize();
-    // Pointer events work for mouse, pen, and touch; touchstart/move are fallbacks for mobile browsers.
-    const touchStart=e=>{
-      for(const t of e.changedTouches){active.add("touch-"+t.identifier);push(t.clientX,t.clientY);}
-    };
-    const touchMove=e=>{
-      for(const t of e.changedTouches){
-        const id="touch-"+t.identifier;
-        if(active.has(id)) push(t.clientX,t.clientY);
-      }
-    };
-    const touchEnd=e=>{for(const t of e.changedTouches) active.delete("touch-"+t.identifier);};
     window.addEventListener("resize",resize,{passive:true});
     window.addEventListener("pointerdown",down,{passive:true,capture:true});
     window.addEventListener("pointermove",move,{passive:true,capture:true});
@@ -116,8 +103,6 @@ function CursorTrail(){
     window.addEventListener("pointercancel",up,{passive:true,capture:true});
     window.addEventListener("touchstart",touchStart,{passive:true,capture:true});
     window.addEventListener("touchmove",touchMove,{passive:true,capture:true});
-    window.addEventListener("touchend",touchEnd,{passive:true,capture:true});
-    window.addEventListener("touchcancel",touchEnd,{passive:true,capture:true});
     window.addEventListener("blur",clear);
     return ()=>{
       window.removeEventListener("resize",resize);
@@ -127,17 +112,14 @@ function CursorTrail(){
       window.removeEventListener("pointercancel",up,true);
       window.removeEventListener("touchstart",touchStart,true);
       window.removeEventListener("touchmove",touchMove,true);
-      window.removeEventListener("touchend",touchEnd,true);
-      window.removeEventListener("touchcancel",touchEnd,true);
       window.removeEventListener("blur",clear);
-      if(raf) cancelAnimationFrame(raf);
+      if(raf)cancelAnimationFrame(raf);
       canvas.remove();
     };
   },[]);
   return null;
 }
 
- 
 function PortfolioVFX(){
   useEffect(()=>{
     if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
