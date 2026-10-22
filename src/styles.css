@@ -821,3 +821,137 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
   .portfolio-vfx-canvas{display:none!important}
   .hero-person-glow,.hero-title-art .hero-title-red,.hero-poster .hero-copy h1 em,.project .visual:after{animation:none!important}
 }
+
+
+/* PROJECT CARD VFX — high-energy red edge, scan sweep, particles and touch feedback */
+#projects .project{
+  isolation:isolate;
+  position:relative;
+  border:1px solid #ff26384a!important;
+  background-color:#0b090a;
+  box-shadow:0 0 0 1px #ff26380a,0 10px 30px #0008;
+  transition:transform .32s cubic-bezier(.16,1,.3,1),box-shadow .32s ease,border-color .32s ease!important;
+}
+#projects .project:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  border:1px solid transparent;
+  background:linear-gradient(125deg,#ff263880,transparent 24%,transparent 72%,#ff263860) border-box;
+  mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  opacity:.45;
+  transition:opacity .25s ease;
+}
+#projects .project:after{
+  content:"";
+  position:absolute;
+  top:-70%;
+  left:-80%;
+  width:55%;
+  height:240%;
+  z-index:2;
+  pointer-events:none;
+  transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,#ff26381c 35%,#ff536544 50%,#ff26381c 65%,transparent);
+  animation:projectEnergySweep 5.8s ease-in-out infinite;
+}
+#projects .project:nth-child(3n+2):after{animation-delay:1.8s}
+#projects .project:nth-child(3n):after{animation-delay:3.4s}
+#projects .project:hover,#projects .project:focus-within{
+  transform:translateY(-8px) scale(1.012)!important;
+  border-color:#ff334b!important;
+  box-shadow:0 0 0 1px #ff26385c,0 0 24px #ff26382e,0 18px 48px #000a!important;
+}
+#projects .project:hover:before,#projects .project:focus-within:before{opacity:1}
+#projects .project .visual{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+#projects .project .visual:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,#ff263829,transparent 68%);
+  opacity:.75;
+  transition:opacity .3s ease,transform .3s ease;
+}
+#projects .project:hover .visual:before{opacity:1;transform:scale(1.15)}
+#projects .project .visual b,#projects .project .visual small{position:relative;z-index:1}
+#projects .project .project-top,#projects .project .project-body{position:relative;z-index:4}
+@keyframes projectEnergySweep{
+  0%,20%{left:-80%;opacity:0}
+  32%{opacity:.9}
+  58%,100%{left:145%;opacity:0}
+}
+/* Touch devices get a brief active flash instead of hover-only feedback */
+@media(hover:none){
+  #projects .project:active{
+    transform:scale(.985)!important;
+    border-color:#ff334b!important;
+    box-shadow:0 0 26px #ff263845!important;
+  }
+  #projects .project:active:before{opacity:1}
+  #projects .project:after{animation-duration:8s;opacity:.55}
+}
+/* Protect the hero portrait/head and keep title + intro in separate mobile rows */
+@media(max-width:680px){
+  .hero-poster .hero-title-art{
+    position:relative!important;
+    z-index:5!important;
+    margin-bottom:26px!important;
+  }
+  .hero-poster .hero-core{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:0!important;
+  }
+  .hero-poster .hero-person{
+    order:0!important;
+    position:relative!important;
+    z-index:1!important;
+    width:100%!important;
+    height:clamp(240px,70vw,315px)!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0 0 22px!important;
+    overflow:hidden!important;
+    transform:none!important;
+  }
+  .hero-poster .hero-real-portrait{
+    position:relative!important;
+    left:auto!important;
+    bottom:auto!important;
+    display:block!important;
+    width:auto!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    transform:none!important;
+    z-index:1!important;
+  }
+  .hero-poster .hero-copy{
+    order:1!important;
+    position:relative!important;
+    z-index:2!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  .hero-poster .hero-handwriting{z-index:2!important}
+}
+@media(max-width:360px){
+  .hero-poster .hero-title-art{margin-bottom:20px!important}
+  .hero-poster .hero-person{height:230px!important;margin-bottom:18px!important}
+  #projects .project:hover{transform:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #projects .project:after{animation:none!important}
+}
