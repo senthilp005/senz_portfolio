@@ -29,49 +29,94 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
-    const style=document.createElement("style");
-    style.textContent=`
-      .portfolio-cursor-trail{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;pointer-events:none!important;overflow:hidden!important;display:block!important;visibility:visible!important}
-      .portfolio-cursor-dot{position:absolute!important;left:0!important;top:0!important;border-radius:50%!important;pointer-events:none!important;will-change:transform!important}
-    `;
-    document.head.appendChild(style);
-    const layer=document.createElement("div");
-    layer.className="portfolio-cursor-trail";
-    layer.setAttribute("aria-hidden","true");
-    const dots=Array.from({length:7},(_,i)=>{
-      const dot=document.createElement("span");
-      dot.className="portfolio-cursor-dot";
-      const size=Math.max(3,9-i*.6);
-      dot.style.width=size+"px";
-      dot.style.height=size+"px";
-      dot.style.background=i===0?"#ffffff":"#ff2638";
-      dot.style.boxShadow="0 0 "+(i===0?8:5)+"px #ff2638";
-      dot.style.opacity=String(1-i*.085);
-      dot.style.transform="translate3d(-100px,-100px,0)";
-      layer.appendChild(dot);
-      return dot;
+    const finePointer=window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+    if(!finePointer.matches || reducedMotion.matches) return;
+
+    const canvas=document.createElement("canvas");
+    canvas.className="portfolio-comet-cursor";
+    canvas.setAttribute("aria-hidden","true");
+    Object.assign(canvas.style,{
+      position:"fixed",
+      inset:"0",
+      width:"100%",
+      height:"100%",
+      pointerEvents:"none",
+      zIndex:"2147483647",
+      display:"block"
     });
-    // Keep the trail as a viewport-level overlay, independent of section layout/scrolling.
-    document.documentElement.appendChild(layer);
-    let positions=Array.from({length:dots.length},()=>({x:-100,y:-100}));
+    document.documentElement.appendChild(canvas);
+    const ctx=canvas.getContext("2d",{alpha:true});
+    if(!ctx){canvas.remove();return;}
+
+    let width=0,height=0,raf=0,lastTime=0;
+    const points=[];
+    const maxAge=260;
+    const resize=()=>{
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      width=window.innerWidth;
+      height=window.innerHeight;
+      canvas.width=Math.round(width*dpr);
+      canvas.height=Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    };
     const move=(e)=>{
       if(e.pointerType && e.pointerType!=="mouse") return;
-      positions[0]={x:e.clientX,y:e.clientY};
-      for(let i=1;i<positions.length;i++){
-        positions[i]={
-          x:positions[i].x+(positions[i-1].x-positions[i].x)*.72,
-          y:positions[i].y+(positions[i-1].y-positions[i].y)*.72
-        };
-      }
-      positions.forEach((p,i)=>{
-        dots[i].style.transform=`translate3d(${p.x}px,${p.y}px,0) translate(-50%,-50%)`;
-      });
+      points.push({x:e.clientX,y:e.clientY,t:performance.now()});
+      if(points.length>18) points.splice(0,points.length-18);
+      if(!raf) raf=requestAnimationFrame(draw);
     };
+    const draw=(now)=>{
+      raf=0;
+      ctx.clearRect(0,0,width,height);
+      while(points.length && now-points[0].t>maxAge) points.shift();
+      if(points.length>1){
+        ctx.lineCap="round";
+        ctx.lineJoin="round";
+        for(let i=1;i<points.length;i++){
+          const a=points[i-1],b=points[i];
+          const age=Math.max(0,now-b.t);
+          const alpha=Math.max(0,1-age/maxAge);
+          if(alpha<=0) continue;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.78)+")";
+          ctx.lineWidth=Math.max(.7,4.2*(i/points.length)*alpha);
+          ctx.shadowColor="#ff2638";
+          ctx.shadowBlur=7*alpha;
+          ctx.stroke();
+        }
+        const head=points[points.length-1];
+        const alpha=Math.max(0,1-(now-head.t)/maxAge);
+        if(alpha>0){
+          ctx.beginPath();
+          ctx.arc(head.x,head.y,2.4,0,Math.PI*2);
+          ctx.fillStyle="rgba(255,255,255,"+alpha+")";
+          ctx.shadowColor="#ff2638";
+          ctx.shadowBlur=11;
+          ctx.fill();
+        }
+        ctx.shadowBlur=0;
+      }
+      if(points.length>1 || (points.length===1 && now-points[0].t<maxAge)){
+        raf=requestAnimationFrame(draw);
+      }else{
+        points.length=0;
+      }
+      lastTime=now;
+    };
+    const clear=()=>{points.length=0;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,width,height);};
+    resize();
+    window.addEventListener("resize",resize,{passive:true});
     window.addEventListener("pointermove",move,{passive:true,capture:true});
+    window.addEventListener("blur",clear);
     return ()=>{
+      window.removeEventListener("resize",resize);
       window.removeEventListener("pointermove",move,true);
-      layer.remove();
-      style.remove();
+      window.removeEventListener("blur",clear);
+      if(raf)cancelAnimationFrame(raf);
+      canvas.remove();
     };
   },[]);
   return null;
