@@ -29,65 +29,60 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
-    const finePointer=window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-    if(!finePointer.matches || reducedMotion.matches) return;
+    if(window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
     const layer=document.createElement("div");
     layer.className="cursor-trail-layer";
     layer.setAttribute("aria-hidden","true");
-    const count=7;
-    const dots=Array.from({length:count},(_,i)=>{
-      const dot=document.createElement("span");
-      dot.className="cursor-trail-dot";
-      dot.style.setProperty("--trail-index",i);
-      layer.appendChild(dot);
-      return {el:dot,x:-100,y:-100};
+    const dots=Array.from({length:9},(_,i)=>{
+      const el=document.createElement("span");
+      el.className="cursor-trail-dot";
+      el.style.opacity=String(1-i*.095);
+      el.style.width=`${Math.max(4,8-i*.45)}px`;
+      el.style.height=`${Math.max(4,8-i*.45)}px`;
+      layer.appendChild(el);
+      return {el,x:0,y:0};
     });
     document.body.appendChild(layer);
-    let targetX=-100,targetY=-100,frame=0,visible=false;
-    const onMove=(event)=>{
-      if(event.pointerType && event.pointerType!=="mouse") return;
-      targetX=event.clientX;targetY=event.clientY;visible=true;
-      layer.classList.add("is-active");
-      if(!frame) frame=requestAnimationFrame(tick);
+    let x=-100,y=-100,raf=0,active=false;
+    const move=(e)=>{
+      if(e.pointerType && e.pointerType!=="mouse") return;
+      x=e.clientX;y=e.clientY;active=true;layer.classList.add("is-active");
+      if(!raf) raf=requestAnimationFrame(animate);
     };
-    const tick=()=>{
-      frame=0;
+    const animate=()=>{
+      raf=0;
       dots.forEach((dot,i)=>{
-        const lag=i===0?1:.23-(i*.022);
-        dot.x+=(targetX-dot.x)*lag;
-        dot.y+=(targetY-dot.y)*lag;
+        if(i===0){dot.x=x;dot.y=y;}
+        else{
+          const prev=dots[i-1];
+          dot.x+=(prev.x-dot.x)*.38;
+          dot.y+=(prev.y-dot.y)*.38;
+        }
         dot.el.style.transform=`translate3d(${dot.x}px,${dot.y}px,0) translate(-50%,-50%)`;
       });
-      if(visible && dots.some((dot,i)=>i>0 && (Math.abs(dot.x-targetX)>.7 || Math.abs(dot.y-targetY)>.7))) frame=requestAnimationFrame(tick);
+      const tail=dots[dots.length-1];
+      if(active && (Math.abs(tail.x-x)>1 || Math.abs(tail.y-y)>1)) raf=requestAnimationFrame(animate);
     };
-    const onLeave=()=>{visible=false;layer.classList.remove("is-active");};
-    const onEnter=()=>{visible=true;layer.classList.add("is-active");};
-    const onSettingsChange=()=>{
-      if(!finePointer.matches || reducedMotion.matches) cleanup();
-    };
-    const cleanup=()=>{
-      if(frame) cancelAnimationFrame(frame);
-      window.removeEventListener("pointermove",onMove);
-      window.removeEventListener("pointerout",onOut);
-      document.removeEventListener("pointerover",onEnter);
-      document.removeEventListener("pointerleave",onLeave);
-      finePointer.removeEventListener?.("change",onSettingsChange);
-      reducedMotion.removeEventListener?.("change",onSettingsChange);
+    const leave=()=>{active=false;layer.classList.remove("is-active");};
+    const enter=()=>{if(active) layer.classList.add("is-active");};
+    window.addEventListener("pointermove",move,{passive:true});
+    window.addEventListener("blur",leave);
+    document.addEventListener("visibilitychange",()=>{if(document.hidden) leave();});
+    document.documentElement.addEventListener("mouseleave",leave);
+    document.documentElement.addEventListener("mouseenter",enter);
+    return ()=>{
+      if(raf) cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove",move);
+      window.removeEventListener("blur",leave);
+      document.documentElement.removeEventListener("mouseleave",leave);
+      document.documentElement.removeEventListener("mouseenter",enter);
       layer.remove();
     };
-    const onOut=(event)=>{if(!event.relatedTarget) onLeave();};
-    window.addEventListener("pointermove",onMove,{passive:true});
-    window.addEventListener("pointerout",onOut,{passive:true});
-    document.addEventListener("pointerover",onEnter,{passive:true});
-    document.addEventListener("pointerleave",onLeave,{passive:true});
-    finePointer.addEventListener?.("change",onSettingsChange);
-    reducedMotion.addEventListener?.("change",onSettingsChange);
-    return cleanup;
   },[]);
   return null;
 }
-\nfunction App(){
+
+function App(){
   const [filter,setFilter]=useState("All");
   const [menu,setMenu]=useState(false);
   const [cmd,setCmd]=useState("");
