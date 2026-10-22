@@ -32,20 +32,20 @@ function CursorTrail(){
     const style=document.createElement("style");
     style.textContent=`
       .portfolio-cursor-trail{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;pointer-events:none!important;overflow:hidden!important;display:block!important;visibility:visible!important}
-      .portfolio-cursor-dot{position:absolute!important;left:0!important;top:0!important;border-radius:50%!important;pointer-events:none!important;will-change:transform!important;transition:transform 90ms linear!important}
+      .portfolio-cursor-dot{position:absolute!important;left:0!important;top:0!important;border-radius:50%!important;pointer-events:none!important;will-change:transform!important}
     `;
     document.head.appendChild(style);
     const layer=document.createElement("div");
     layer.className="portfolio-cursor-trail";
     layer.setAttribute("aria-hidden","true");
-    const dots=Array.from({length:10},(_,i)=>{
+    const dots=Array.from({length:7},(_,i)=>{
       const dot=document.createElement("span");
       dot.className="portfolio-cursor-dot";
       const size=Math.max(3,9-i*.6);
       dot.style.width=size+"px";
       dot.style.height=size+"px";
       dot.style.background=i===0?"#ffffff":"#ff2638";
-      dot.style.boxShadow="0 0 "+(i===0?12:8)+"px #ff2638, 0 0 22px #ff182b";
+      dot.style.boxShadow="0 0 "+(i===0?8:5)+"px #ff2638";
       dot.style.opacity=String(1-i*.085);
       dot.style.transform="translate3d(-100px,-100px,0)";
       layer.appendChild(dot);
@@ -58,8 +58,8 @@ function CursorTrail(){
       positions[0]={x:e.clientX,y:e.clientY};
       for(let i=1;i<positions.length;i++){
         positions[i]={
-          x:positions[i].x+(positions[i-1].x-positions[i].x)*.42,
-          y:positions[i].y+(positions[i-1].y-positions[i].y)*.42
+          x:positions[i].x+(positions[i-1].x-positions[i].x)*.72,
+          y:positions[i].y+(positions[i-1].y-positions[i].y)*.72
         };
       }
       positions.forEach((p,i)=>{
