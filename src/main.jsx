@@ -45,20 +45,34 @@ function CursorTrail(){
 
     let width=0,height=0,raf=0;
     const points=[];
-    const maxAge=300;
-    const isTouch=()=>window.matchMedia("(pointer: coarse)").matches;
+    const maxAge=320;
+    const activePointers=new Set();
     const resize=()=>{
       const dpr=Math.min(window.devicePixelRatio||1,2);
       width=window.innerWidth;height=window.innerHeight;
       canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
       ctx.setTransform(dpr,0,0,dpr,0,0);
     };
-    const move=(e)=>{
-      if(e.pointerType==="mouse" && isTouch()) return;
-      if(e.pointerType!=="mouse" && e.pointerType!=="pen" && e.pointerType!=="touch") return;
+    const addPoint=(e)=>{
       points.push({x:e.clientX,y:e.clientY,t:performance.now()});
-      if(points.length>22) points.splice(0,points.length-22);
+      if(points.length>24) points.splice(0,points.length-24);
       if(!raf) raf=requestAnimationFrame(draw);
+    };
+    const onPointerDown=(e)=>{
+      if(e.pointerType==="mouse"){
+        activePointers.add(e.pointerId);
+        addPoint(e);
+      }else if(e.pointerType==="touch" || e.pointerType==="pen"){
+        activePointers.add(e.pointerId);
+        addPoint(e);
+      }
+    };
+    const onPointerMove=(e)=>{
+      if(!activePointers.has(e.pointerId)) return;
+      addPoint(e);
+    };
+    const onPointerUp=(e)=>{
+      activePointers.delete(e.pointerId);
     };
     const draw=(now)=>{
       raf=0;ctx.clearRect(0,0,width,height);
@@ -70,7 +84,7 @@ function CursorTrail(){
           const age=Math.max(0,now-b.t),alpha=Math.max(0,1-age/maxAge);
           if(alpha<=0) continue;
           ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.8)+")";
+          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.82)+")";
           ctx.lineWidth=Math.max(.8,4.5*(i/points.length)*alpha);
           ctx.shadowColor="#ff2638";ctx.shadowBlur=8*alpha;ctx.stroke();
         }
@@ -85,16 +99,24 @@ function CursorTrail(){
       if(points.length>1 || (points.length===1 && now-points[0].t<maxAge)) raf=requestAnimationFrame(draw);
       else points.length=0;
     };
-    const clear=()=>{points.length=0;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,width,height);};
+    const clear=()=>{
+      points.length=0;activePointers.clear();
+      if(raf)cancelAnimationFrame(raf);
+      raf=0;ctx.clearRect(0,0,width,height);
+    };
     resize();
     window.addEventListener("resize",resize,{passive:true});
-    window.addEventListener("pointermove",move,{passive:true,capture:true});
-    window.addEventListener("pointerdown",move,{passive:true,capture:true});
+    window.addEventListener("pointerdown",onPointerDown,{passive:true,capture:true});
+    window.addEventListener("pointermove",onPointerMove,{passive:true,capture:true});
+    window.addEventListener("pointerup",onPointerUp,{passive:true,capture:true});
+    window.addEventListener("pointercancel",onPointerUp,{passive:true,capture:true});
     window.addEventListener("blur",clear);
     return ()=>{
       window.removeEventListener("resize",resize);
-      window.removeEventListener("pointermove",move,true);
-      window.removeEventListener("pointerdown",move,true);
+      window.removeEventListener("pointerdown",onPointerDown,true);
+      window.removeEventListener("pointermove",onPointerMove,true);
+      window.removeEventListener("pointerup",onPointerUp,true);
+      window.removeEventListener("pointercancel",onPointerUp,true);
       window.removeEventListener("blur",clear);
       if(raf)cancelAnimationFrame(raf);
       canvas.remove();
