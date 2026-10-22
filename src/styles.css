@@ -574,3 +574,14 @@ body{perspective:1200px}
  .hero-person{height:clamp(480px,56vh,590px)!important}
  .hero-real-portrait{height:110%!important}
 }
+
+
+/* Portrait bump: larger focal point, with its own clipping area */
+@media(min-width:1200px){
+ .hero-person{height:clamp(500px,60vh,630px)!important;transform:translateY(-8px)!important;overflow:hidden!important}
+ .hero-real-portrait{height:118%!important;width:auto!important;max-width:none!important;left:50%!important;bottom:0!important;transform:translateX(-50%) scale(1.1)!important}
+}
+@media(min-width:1600px){
+ .hero-person{height:clamp(540px,62vh,660px)!important}
+ .hero-real-portrait{height:120%!important}
+}
