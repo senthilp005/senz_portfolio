@@ -598,3 +598,11 @@ body{perspective:1200px}
  .hero-person{height:clamp(550px,64vh,680px)!important}
  .hero-real-portrait{height:126%!important}
 }
+
+
+/* Keep portrait size; raise the giant name above the portrait */
+@media(min-width:1200px){
+ .hero-title-art{position:relative!important;z-index:8!important}
+ .hero-title-art span{position:relative;z-index:8}
+ .hero-real-portrait{z-index:4!important}
+}
