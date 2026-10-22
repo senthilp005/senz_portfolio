@@ -453,3 +453,8 @@ body{perspective:1200px}
  .hero-title-art{font-size:clamp(2.2rem,12.8vw,4.6rem);padding-inline:1%;margin-top:24px}
  .hero-person{height:340px}
 }
+
+/* Use the uploaded transparent portrait asset instead of the placeholder figure */
+.hero-real-portrait{position:relative;z-index:2;display:block;width:min(100%,430px);height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 0 24px #ff182b55);align-self:flex-end}
+@media(max-width:950px){.hero-real-portrait{width:min(100%,360px)}}
+@media(max-width:600px){.hero-real-portrait{width:min(100%,260px)}}
