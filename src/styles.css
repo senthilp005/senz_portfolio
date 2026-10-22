@@ -524,3 +524,17 @@ body{perspective:1200px}
 @keyframes lineReveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 @media(max-width:600px){.hero-person:before{inset:2% -5%}.hero-handwriting{animation:none}}
+
+
+/* PROPORTION FIX: keep the portrait inside the hero composition */
+@media(min-width:1200px){
+ .hero-person{height:clamp(390px,47vh,500px)!important;margin-top:-18px!important;overflow:hidden!important}
+ .hero-real-portrait{width:min(112%,500px)!important;height:100%!important;transform:scale(1.04)!important;transform-origin:center bottom}
+ .hero-handwriting{right:-1%!important;bottom:24%!important;font-size:clamp(1rem,1.6vw,1.35rem)!important}
+ .hero-title-art{position:relative;z-index:1}
+ .hero-core{grid-template-columns:minmax(250px,1fr) minmax(300px,1.05fr)!important;gap:18px!important}
+}
+@media(min-width:1600px){
+ .hero-person{height:500px!important}
+ .hero-real-portrait{width:min(112%,520px)!important}
+}
