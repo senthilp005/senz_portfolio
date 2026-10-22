@@ -1032,3 +1032,35 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
     transform-origin:center bottom!important;
   }
 }
+
+
+/* Intentional cinematic overlap: portrait head cuts in front of the E and L in VELAN */
+@media(min-width:681px){
+  .hero-poster .hero-title-art{
+    position:relative!important;
+    z-index:10!important;
+  }
+  .hero-poster .hero-core{
+    position:relative!important;
+    z-index:11!important;
+  }
+  .hero-poster .hero-person{
+    position:relative!important;
+    z-index:12!important;
+    transform:translateY(8px)!important;
+  }
+  .hero-poster .hero-real-portrait{
+    position:absolute!important;
+    z-index:13!important;
+    left:50%!important;
+    bottom:0!important;
+    height:118%!important;
+    max-height:none!important;
+    width:auto!important;
+    max-width:none!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    transform:translateX(-50%) scale(1.04)!important;
+    transform-origin:center bottom!important;
+  }
+}
