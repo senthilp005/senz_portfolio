@@ -744,3 +744,31 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
   box-shadow:0 0 8px #ff334b,0 0 18px #ff182b;
 }
 .cursor-trail-layer{display:block!important}
+
+
+/* MOBILE HERO SPACING FIX: separate portrait from the name and intro copy */
+@media(max-width:680px){
+  .hero-poster .hero-title-art{
+    margin-bottom:24px!important;
+  }
+  .hero-person{
+    height:clamp(255px,74vw,330px)!important;
+    margin-bottom:18px!important;
+    overflow:hidden!important;
+  }
+  .hero-real-portrait{
+    display:block!important;
+    height:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+  }
+  .hero-poster .hero-copy{
+    margin-top:12px!important;
+    position:relative!important;
+    z-index:2!important;
+  }
+}
+@media(max-width:360px){
+  .hero-person{height:245px!important;margin-bottom:16px!important}
+}
