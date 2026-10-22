@@ -466,3 +466,25 @@ body{perspective:1200px}
 .hero-handwriting{display:none!important}
 @media(max-width:950px){.hero-real-portrait{width:min(135%,460px)!important;height:112%;transform:scale(1.12)}}
 @media(max-width:600px){.hero-real-portrait{width:min(115%,330px)!important;height:100%;transform:scale(1.08)}}
+
+
+/* FINAL HERO SCALE: use available space for the portrait and bring handwritten note back */
+.hero-person{height:clamp(440px,57vh,620px)!important;margin-top:-38px!important}
+.hero-real-portrait{width:min(145%,640px)!important;height:118%!important;transform:scale(1.23)!important;transform-origin:center bottom}
+.hero-handwriting{display:block!important;right:-2%!important;bottom:25%!important;font-size:clamp(1.1rem,2.2vw,1.8rem)!important;z-index:4}
+@media(min-width:1200px){
+ .hero-core{grid-template-columns:minmax(250px,1fr) minmax(350px,1.3fr)!important;gap:28px!important}
+ .hero-person{height:clamp(490px,61vh,680px)!important}
+ .hero-real-portrait{width:min(145%,680px)!important;height:120%!important;transform:scale(1.25)!important}
+}
+@media(max-width:950px){
+ .hero-core{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ .hero-person{height:480px!important;margin-top:-20px!important}
+ .hero-real-portrait{width:min(145%,520px)!important;height:112%!important;transform:scale(1.15)!important}
+ .hero-handwriting{right:-8%!important;font-size:1.2rem!important}
+}
+@media(max-width:600px){
+ .hero-person{height:390px!important;margin:0 -2% 0!important}
+ .hero-real-portrait{width:min(120%,350px)!important;height:100%!important;transform:scale(1.08)!important}
+ .hero-handwriting{right:0!important;bottom:20%!important;font-size:1rem!important}
+}
