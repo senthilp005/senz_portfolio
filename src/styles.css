@@ -563,3 +563,14 @@ body{perspective:1200px}
  .hero-real-portrait{object-position:center bottom!important}
  .hero-handwriting{bottom:23%!important}
 }
+
+
+/* Portrait size correction: larger than the contained version, but never oversized */
+@media(min-width:1200px){
+ .hero-person{transform:translateY(-10px)!important;height:clamp(440px,53vh,560px)!important;overflow:hidden!important}
+ .hero-real-portrait{height:108%!important;max-height:none!important;width:auto!important;max-width:100%!important;transform:translateX(-50%) scale(1.08)!important;left:50%!important;bottom:0!important}
+}
+@media(min-width:1600px){
+ .hero-person{height:clamp(480px,56vh,590px)!important}
+ .hero-real-portrait{height:110%!important}
+}
