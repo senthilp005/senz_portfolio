@@ -52,7 +52,7 @@ function CursorTrail(){
       return dot;
     });
     // Keep the trail as a viewport-level overlay, independent of section layout/scrolling.
-    document.body.appendChild(layer);
+    document.documentElement.appendChild(layer);
     let positions=Array.from({length:dots.length},()=>({x:-100,y:-100}));
     const move=(e)=>{
       if(e.pointerType && e.pointerType!=="mouse") return;
@@ -67,9 +67,9 @@ function CursorTrail(){
         dots[i].style.transform=`translate3d(${p.x}px,${p.y}px,0) translate(-50%,-50%)`;
       });
     };
-    document.addEventListener("pointermove",move,{passive:true,capture:true});
+    window.addEventListener("pointermove",move,{passive:true,capture:true});
     return ()=>{
-      document.removeEventListener("pointermove",move,true);
+      window.removeEventListener("pointermove",move,true);
       layer.remove();
       style.remove();
     };
