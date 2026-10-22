@@ -29,52 +29,48 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
+    // Only activate for an actual mouse; touch and pen input are ignored.
     const layer=document.createElement("div");
-    layer.className="cursor-trail-layer";
     layer.setAttribute("aria-hidden","true");
-    const dots=Array.from({length:9},(_,i)=>{
+    layer.style.cssText="position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;pointer-events:none!important;overflow:hidden!important;display:block!important;opacity:1!important;visibility:visible!important;";
+    const dots=Array.from({length:12},(_,i)=>{
       const el=document.createElement("span");
-      el.className="cursor-trail-dot";
-      el.style.opacity=String(1-i*.095);
-      el.style.width=`${Math.max(4,8-i*.45)}px`;
-      el.style.height=`${Math.max(4,8-i*.45)}px`;
+      const size=Math.max(3,8-i*.42);
+      el.style.cssText=`position:absolute!important;left:0!important;top:0!important;width:${size}px!important;height:${size}px!important;border-radius:50%!important;pointer-events:none!important;background:${i===0?"#fff":"#ff2638"}!important;box-shadow:0 0 ${i===0?10:8}px #ff2638,0 0 20px #ff182b80!important;opacity:${Math.max(.12,1-i*.075)}!important;will-change:transform!important;`;
       layer.appendChild(el);
-      return {el,x:0,y:0};
+      return {el,x:-100,y:-100};
     });
     document.body.appendChild(layer);
-    let x=-100,y=-100,raf=0,active=false;
-    const move=(e)=>{
-      if(e.pointerType && e.pointerType!=="mouse") return;
-      x=e.clientX;y=e.clientY;active=true;layer.classList.add("is-active");
-      if(!raf) raf=requestAnimationFrame(animate);
-    };
+    let targetX=-100,targetY=-100,raf=0,visible=false;
     const animate=()=>{
       raf=0;
       dots.forEach((dot,i)=>{
-        if(i===0){dot.x=x;dot.y=y;}
+        if(i===0){dot.x=targetX;dot.y=targetY;}
         else{
           const prev=dots[i-1];
-          dot.x+=(prev.x-dot.x)*.38;
-          dot.y+=(prev.y-dot.y)*.38;
+          dot.x+=(prev.x-dot.x)*.32;
+          dot.y+=(prev.y-dot.y)*.32;
         }
         dot.el.style.transform=`translate3d(${dot.x}px,${dot.y}px,0) translate(-50%,-50%)`;
       });
       const tail=dots[dots.length-1];
-      if(active && (Math.abs(tail.x-x)>1 || Math.abs(tail.y-y)>1)) raf=requestAnimationFrame(animate);
+      if(visible&&(Math.abs(tail.x-targetX)>.6||Math.abs(tail.y-targetY)>.6)) raf=requestAnimationFrame(animate);
     };
-    const leave=()=>{active=false;layer.classList.remove("is-active");};
-    const enter=()=>{if(active) layer.classList.add("is-active");};
+    const move=(e)=>{
+      if(e.pointerType && e.pointerType!=="mouse") return;
+      targetX=e.clientX;targetY=e.clientY;visible=true;
+      if(!raf) raf=requestAnimationFrame(animate);
+    };
+    const hide=()=>{visible=false;dots.forEach(d=>d.el.style.opacity="0");};
+    const show=()=>{dots.forEach((d,i)=>d.el.style.opacity=String(Math.max(.12,1-i*.075)));};
     window.addEventListener("pointermove",move,{passive:true});
-    window.addEventListener("blur",leave);
-    document.addEventListener("visibilitychange",()=>{if(document.hidden) leave();});
-    document.documentElement.addEventListener("mouseleave",leave);
-    document.documentElement.addEventListener("mouseenter",enter);
+    window.addEventListener("pointerout",(e)=>{if(!e.relatedTarget)hide();},{passive:true});
+    window.addEventListener("pointerover",show,{passive:true});
+    window.addEventListener("blur",hide);
     return ()=>{
       if(raf) cancelAnimationFrame(raf);
       window.removeEventListener("pointermove",move);
-      window.removeEventListener("blur",leave);
-      document.documentElement.removeEventListener("mouseleave",leave);
-      document.documentElement.removeEventListener("mouseenter",enter);
+      window.removeEventListener("blur",hide);
       layer.remove();
     };
   },[]);
