@@ -995,3 +995,27 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
   .hero-poster .hero-title-art{margin-bottom:30px!important}
   .hero-poster .hero-person{height:245px!important;margin-bottom:24px!important}
 }
+
+
+/* Keep the portrait overlapping the headline as a poster, but never let it cover the letters */
+.hero-poster .hero-title-art{
+  position:relative!important;
+  z-index:20!important;
+}
+.hero-poster .hero-core{
+  position:relative!important;
+  z-index:2!important;
+}
+.hero-poster .hero-person{
+  position:relative!important;
+  z-index:1!important;
+}
+.hero-poster .hero-real-portrait{
+  z-index:1!important;
+}
+@media(max-width:680px){
+  /* Mobile remains stacked: headline first, then portrait, then intro */
+  .hero-poster .hero-title-art{z-index:20!important}
+  .hero-poster .hero-person{z-index:1!important}
+  .hero-poster .hero-real-portrait{z-index:1!important}
+}
