@@ -57,7 +57,7 @@ function App(){
             <div className="hero-orbit orbit-one"></div><div className="hero-orbit orbit-two"></div><div className="hero-sparks">✦<span>✛</span>·<b>✦</b></div>
             <div className="hero-person-glow"></div><img className="hero-real-portrait" src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind"/><div className="hero-handwriting">Build<br/>Learn<br/>Iterate<br/>Grow...</div>
           </div>
-          <aside className="hero-stats"><div><span className="stat-icon">▱</span><p><b>11+</b><small>PROJECTS DONE</small></p></div><div><span className="stat-icon">◇</span><p><b>4+</b><small>INTERNSHIPS DONE</small></p></div><div><span className="stat-icon">〈/〉</span><p><b>MULTI-DOMAIN</b><small>SKILLS</small></p></div><div><span className="stat-icon">♧</span><p><b>TRICHY</b><small>INDIA</small></p></div></aside>
+          
         </div>
         <a className="hero-scroll" href="#about"><span>▯</span> SCROLL<br/> TO EXPLORE ↓</a><div className="hero-footer"><span>01 &nbsp; / &nbsp; PORTFOLIO</span><i></i><small>AVAILABLE FOR<br/> INTERNSHIPS &nbsp; | &nbsp; OPPORTUNITIES</small></div>
       </section>
