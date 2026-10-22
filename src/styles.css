@@ -538,3 +538,20 @@ body{perspective:1200px}
  .hero-person{height:500px!important}
  .hero-real-portrait{width:min(112%,520px)!important}
 }
+
+
+/* CLEAN COMPOSITION OVERRIDE: portrait stays within its own center panel */
+@media(min-width:1200px){
+ .hero-poster{overflow:hidden}
+ .hero-title-art{z-index:3!important;position:relative!important}
+ .hero-core{position:relative;z-index:2;grid-template-columns:minmax(280px,1fr) minmax(300px,1fr)!important;align-items:center!important;gap:28px!important}
+ .hero-person{position:relative!important;height:clamp(390px,47vh,480px)!important;min-height:390px;max-height:480px;margin:0!important;overflow:hidden!important;isolation:isolate}
+ .hero-real-portrait{position:absolute!important;left:50%!important;bottom:0!important;width:auto!important;max-width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:translateX(-50%) scale(1)!important;animation:portraitSettle .9s cubic-bezier(.16,1,.3,1) both,portraitAura 4s ease-in-out .9s infinite alternate!important}
+ .hero-handwriting{right:0!important;bottom:23%!important;font-size:clamp(.95rem,1.35vw,1.2rem)!important}
+}
+@keyframes portraitSettle{from{opacity:0;transform:translate(-50%,18px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@media(max-width:1199px){
+ .hero-person{overflow:hidden!important}
+ .hero-real-portrait{max-width:100%!important;height:100%!important;transform:scale(1)!important;animation:portraitSettleMobile .9s ease both,portraitAura 4s ease-in-out .9s infinite alternate!important}
+}
+@keyframes portraitSettleMobile{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
