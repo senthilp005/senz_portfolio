@@ -772,3 +772,52 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
 @media(max-width:360px){
   .hero-person{height:245px!important;margin-bottom:16px!important}
 }
+
+
+/* EXTREME VFX PACK — lightweight canvas particles, aura, scroll reveals and glitch accents */
+.portfolio-vfx-canvas{position:fixed!important;inset:0!important;pointer-events:none!important;z-index:4!important;opacity:.78}
+.shell{isolation:isolate}
+.shell>.glow{z-index:0}
+.nav,main{position:relative;z-index:1}
+.hero-person{isolation:isolate}
+.hero-person-glow{animation:heroVfxPulse 2.4s ease-in-out infinite alternate!important;filter:blur(4px)}
+.hero-real-portrait{filter:drop-shadow(0 0 13px #ff1b3850);transition:filter .35s ease}
+.hero-title-art .hero-title-red,.hero-poster .hero-copy h1 em{
+  text-shadow:0 0 18px #ff18302b;
+  animation:redGlitchPulse 5s steps(1,end) infinite;
+}
+.hero-title-art:hover .hero-title-red,.hero-poster .hero-copy h1:hover em{
+  text-shadow:-2px 0 #00eaff,2px 0 #ff1830,0 0 24px #ff1830;
+  animation:glitchJolt .22s steps(2,end) 2;
+}
+.hero-poster:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,#ff263806 4px);
+  opacity:.42;mix-blend-mode:screen;
+}
+.hero-topline,.hero-title-art,.hero-core,.hero-scroll,.hero-footer{position:relative;z-index:1}
+.section-label>span{box-shadow:0 0 12px #ff2638}
+.project .visual{overflow:hidden}
+.project .visual:after{
+  content:"";position:absolute;top:-120%;left:-40%;width:35%;height:340%;
+  background:linear-gradient(90deg,transparent,#ff26382c,transparent);
+  transform:rotate(22deg);animation:laserSweep 6s ease-in-out infinite;pointer-events:none;
+}
+.project:nth-child(2n) .visual:after{animation-delay:2.4s}
+.project:hover{box-shadow:0 0 0 1px #ff263855,0 14px 45px #ff183025!important}
+.reveal{transition:opacity .48s ease,transform .48s cubic-bezier(.16,1,.3,1)!important}
+@keyframes heroVfxPulse{from{opacity:.55;transform:scale(.96)}to{opacity:1;transform:scale(1.08)}}
+@keyframes redGlitchPulse{0%,92%,100%{transform:translateX(0)}93%{transform:translateX(-1px)}95%{transform:translateX(1px)}97%{transform:translateX(0)}}
+@keyframes glitchJolt{0%{transform:translate(0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,0)}100%{transform:translate(0)}}
+@keyframes laserSweep{0%,35%{left:-45%;opacity:0}48%{opacity:1}72%,100%{left:125%;opacity:0}}
+@media(max-width:680px){
+  .portfolio-vfx-canvas{opacity:.5}
+  .hero-poster:after{opacity:.22}
+  .hero-title-art .hero-title-red,.hero-poster .hero-copy h1 em{animation:none}
+  .project .visual:after{animation-duration:9s}
+  .hero-real-portrait{filter:drop-shadow(0 0 10px #ff1b3848)}
+}
+@media(prefers-reduced-motion:reduce){
+  .portfolio-vfx-canvas{display:none!important}
+  .hero-person-glow,.hero-title-art .hero-title-red,.hero-poster .hero-copy h1 em,.project .visual:after{animation:none!important}
+}
