@@ -672,3 +672,57 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
  .project,.skill-card,.experience-card,.reveal{transition:none!important;animation:none!important;filter:none!important;transform:none!important}
  .reveal{opacity:1!important}
 }
+
+
+/* RESPONSIVE HERO FIX — keep the poster readable across phones and tablets */
+.hero-poster{width:100%;max-width:100%;min-width:0}
+.hero-poster .hero-title-art{max-width:100%;min-width:0}
+.hero-core{min-width:0}
+.hero-copy,.hero-person{min-width:0}
+.hero-poster .hero-copy h1{white-space:normal;overflow-wrap:anywhere}
+.hero-poster .hero-current span{white-space:normal}
+.hero-person{min-width:0}
+.hero-real-portrait{max-width:100%}
+.hero-handwriting{max-width:30%;overflow-wrap:anywhere}
+.hero-footer{min-width:0}
+@media(max-width:950px){
+  .hero-poster{min-height:0;height:auto;max-height:none;padding:34px 0 88px!important}
+  .hero-poster .hero-title-art{font-size:clamp(3.1rem,10.5vw,6.6rem);white-space:nowrap;letter-spacing:-.06em}
+  .hero-core{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:12px;padding-inline:5%;align-items:center}
+  .hero-poster .hero-copy{width:100%;max-width:none}
+  .hero-poster .hero-copy h1{font-size:clamp(1.5rem,3.5vw,2.4rem)}
+  .hero-poster .lead{font-size:clamp(.82rem,1.5vw,.98rem);line-height:1.65}
+  .hero-person{height:clamp(330px,48vw,460px)!important;margin:0!important;overflow:hidden!important}
+  .hero-real-portrait{height:100%!important;width:auto!important;max-width:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;left:auto!important;position:relative!important}
+  .hero-handwriting{right:0!important;bottom:22%!important;font-size:clamp(.8rem,1.8vw,1.05rem)!important}
+  .hero-footer{left:30%;right:5%;gap:10px}
+}
+@media(max-width:680px){
+  .hero-poster{padding:26px 0 84px!important}
+  .hero-poster .hero-topline{padding-inline:6%;font-size:8px;letter-spacing:.09em;gap:7px}
+  .hero-poster .hero-topline i{width:20px;flex:0 0 20px}
+  .hero-poster .hero-location{display:none}
+  .hero-poster .hero-title-art{display:flex;flex-direction:column;gap:0;white-space:normal;font-size:clamp(3.4rem,15.8vw,6rem);line-height:.78;letter-spacing:-.055em;margin:25px auto 12px;padding:0 8px;transform:none}
+  .hero-poster .hero-title-art span{display:block;max-width:100%;text-align:center}
+  .hero-core{display:flex!important;flex-direction:column;align-items:stretch;gap:0;padding-inline:7%}
+  .hero-person{order:0;width:100%;height:clamp(280px,82vw,370px)!important;margin:0!important;overflow:hidden!important}
+  .hero-real-portrait{height:100%!important;width:auto!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;animation:portraitSettleMobile .9s ease both!important}
+  .hero-handwriting{right:1%!important;bottom:18%!important;font-size:clamp(.8rem,3.5vw,1rem)!important;max-width:26%;line-height:1.1!important}
+  .hero-poster .hero-copy{order:1;margin:8px 0 0!important;padding:0!important}
+  .hero-hello{font-size:16px}
+  .hero-poster .hero-copy h1{font-size:clamp(1.55rem,7.5vw,2.1rem);white-space:normal;line-height:1.05}
+  .hero-poster .lead{font-size:.9rem;line-height:1.7;margin:14px 0 19px;max-width:100%}
+  .hero-poster .actions{display:flex;gap:9px}
+  .hero-poster .btn{flex:1 1 145px;justify-content:center;padding:12px 9px;font-size:9px;white-space:normal}
+  .hero-current{font-size:8px;line-height:1.8;margin-top:18px}
+  .hero-poster .hero-current span{display:inline-block;line-height:1.8}
+  .hero-scroll{left:7%;bottom:14px;font-size:7px;line-height:1.5}
+  .hero-footer{left:36%;right:5%;bottom:15px;gap:7px;font-size:7px;letter-spacing:.04em}
+  .hero-footer small{font-size:6px;line-height:1.5}
+}
+@media(max-width:360px){
+  .hero-poster .hero-title-art{font-size:clamp(2.9rem,15vw,3.4rem)}
+  .hero-person{height:270px!important}
+  .hero-poster .btn{font-size:8px;letter-spacing:.03em}
+  .hero-footer{left:39%}
+}
