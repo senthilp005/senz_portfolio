@@ -743,9 +743,4 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
   width:7px;height:7px;background:#fff;opacity:.95;
   box-shadow:0 0 8px #ff334b,0 0 18px #ff182b;
 }
-@media(any-hover:hover) and (any-pointer:fine){
-  .cursor-trail-layer{display:block}
-}
-@media not all and (any-hover:hover) and (any-pointer:fine){
-  .cursor-trail-layer{display:none!important}
-}
+.cursor-trail-layer{display:block!important}
