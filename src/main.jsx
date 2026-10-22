@@ -29,96 +29,108 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
-    const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-    if(reducedMotion.matches) return;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const canvas=document.createElement("canvas");
-    canvas.className="portfolio-comet-cursor";
     canvas.setAttribute("aria-hidden","true");
+    canvas.className="portfolio-comet-cursor";
     Object.assign(canvas.style,{
-      position:"fixed",inset:"0",width:"100%",height:"100%",
+      position:"fixed",left:"0",top:"0",width:"100vw",height:"100vh",
       pointerEvents:"none",zIndex:"2147483647",display:"block"
     });
     document.documentElement.appendChild(canvas);
-    const ctx=canvas.getContext("2d",{alpha:true});
+    const ctx=canvas.getContext("2d");
     if(!ctx){canvas.remove();return;}
 
     let width=0,height=0,raf=0;
     const points=[];
-    const maxAge=320;
-    const activePointers=new Set();
+    const active=new Set();
+    const maxAge=360;
     const resize=()=>{
       const dpr=Math.min(window.devicePixelRatio||1,2);
       width=window.innerWidth;height=window.innerHeight;
       canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
       ctx.setTransform(dpr,0,0,dpr,0,0);
     };
-    const addPoint=(e)=>{
-      points.push({x:e.clientX,y:e.clientY,t:performance.now()});
-      if(points.length>24) points.splice(0,points.length-24);
+    const push=(x,y)=>{
+      points.push({x,y,t:performance.now()});
+      if(points.length>28) points.splice(0,points.length-28);
       if(!raf) raf=requestAnimationFrame(draw);
     };
-    const onPointerDown=(e)=>{
-      if(e.pointerType==="mouse"){
-        activePointers.add(e.pointerId);
-        addPoint(e);
-      }else if(e.pointerType==="touch" || e.pointerType==="pen"){
-        activePointers.add(e.pointerId);
-        addPoint(e);
+    const down=e=>{
+      if(e.pointerType==="touch" || e.pointerType==="pen" || e.pointerType==="mouse"){
+        active.add(e.pointerId);
+        push(e.clientX,e.clientY);
       }
     };
-    const onPointerMove=(e)=>{
-      if(!activePointers.has(e.pointerId)) return;
-      addPoint(e);
+    const move=e=>{
+      if(active.has(e.pointerId)) push(e.clientX,e.clientY);
     };
-    const onPointerUp=(e)=>{
-      activePointers.delete(e.pointerId);
-    };
-    const draw=(now)=>{
-      raf=0;ctx.clearRect(0,0,width,height);
+    const up=e=>active.delete(e.pointerId);
+    const draw=now=>{
+      raf=0;
+      ctx.clearRect(0,0,width,height);
       while(points.length && now-points[0].t>maxAge) points.shift();
-      if(points.length>1){
+      for(let i=1;i<points.length;i++){
+        const a=points[i-1],b=points[i];
+        const alpha=Math.max(0,1-(now-b.t)/maxAge);
+        if(!alpha) continue;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
         ctx.lineCap="round";ctx.lineJoin="round";
-        for(let i=1;i<points.length;i++){
-          const a=points[i-1],b=points[i];
-          const age=Math.max(0,now-b.t),alpha=Math.max(0,1-age/maxAge);
-          if(alpha<=0) continue;
-          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle="rgba(255,38,56,"+(alpha*.82)+")";
-          ctx.lineWidth=Math.max(.8,4.5*(i/points.length)*alpha);
-          ctx.shadowColor="#ff2638";ctx.shadowBlur=8*alpha;ctx.stroke();
-        }
-        const head=points[points.length-1],alpha=Math.max(0,1-(now-head.t)/maxAge);
+        ctx.strokeStyle="rgba(255,38,56,"+(alpha*.9)+")";
+        ctx.lineWidth=Math.max(.8,4.8*(i/points.length)*alpha);
+        ctx.shadowColor="#ff2638";ctx.shadowBlur=9*alpha;ctx.stroke();
+      }
+      if(points.length){
+        const p=points[points.length-1],alpha=Math.max(0,1-(now-p.t)/maxAge);
         if(alpha>0){
-          ctx.beginPath();ctx.arc(head.x,head.y,2.6,0,Math.PI*2);
+          ctx.beginPath();ctx.arc(p.x,p.y,2.8,0,Math.PI*2);
           ctx.fillStyle="rgba(255,255,255,"+alpha+")";
           ctx.shadowColor="#ff2638";ctx.shadowBlur=12;ctx.fill();
         }
-        ctx.shadowBlur=0;
       }
-      if(points.length>1 || (points.length===1 && now-points[0].t<maxAge)) raf=requestAnimationFrame(draw);
-      else points.length=0;
+      ctx.shadowBlur=0;
+      if(points.length) raf=requestAnimationFrame(draw);
     };
     const clear=()=>{
-      points.length=0;activePointers.clear();
-      if(raf)cancelAnimationFrame(raf);
+      points.length=0;active.clear();
+      if(raf) cancelAnimationFrame(raf);
       raf=0;ctx.clearRect(0,0,width,height);
     };
     resize();
+    // Pointer events work for mouse, pen, and touch; touchstart/move are fallbacks for mobile browsers.
+    const touchStart=e=>{
+      for(const t of e.changedTouches){active.add("touch-"+t.identifier);push(t.clientX,t.clientY);}
+    };
+    const touchMove=e=>{
+      for(const t of e.changedTouches){
+        const id="touch-"+t.identifier;
+        if(active.has(id)) push(t.clientX,t.clientY);
+      }
+    };
+    const touchEnd=e=>{for(const t of e.changedTouches) active.delete("touch-"+t.identifier);};
     window.addEventListener("resize",resize,{passive:true});
-    window.addEventListener("pointerdown",onPointerDown,{passive:true,capture:true});
-    window.addEventListener("pointermove",onPointerMove,{passive:true,capture:true});
-    window.addEventListener("pointerup",onPointerUp,{passive:true,capture:true});
-    window.addEventListener("pointercancel",onPointerUp,{passive:true,capture:true});
+    window.addEventListener("pointerdown",down,{passive:true,capture:true});
+    window.addEventListener("pointermove",move,{passive:true,capture:true});
+    window.addEventListener("pointerup",up,{passive:true,capture:true});
+    window.addEventListener("pointercancel",up,{passive:true,capture:true});
+    window.addEventListener("touchstart",touchStart,{passive:true,capture:true});
+    window.addEventListener("touchmove",touchMove,{passive:true,capture:true});
+    window.addEventListener("touchend",touchEnd,{passive:true,capture:true});
+    window.addEventListener("touchcancel",touchEnd,{passive:true,capture:true});
     window.addEventListener("blur",clear);
     return ()=>{
       window.removeEventListener("resize",resize);
-      window.removeEventListener("pointerdown",onPointerDown,true);
-      window.removeEventListener("pointermove",onPointerMove,true);
-      window.removeEventListener("pointerup",onPointerUp,true);
-      window.removeEventListener("pointercancel",onPointerUp,true);
+      window.removeEventListener("pointerdown",down,true);
+      window.removeEventListener("pointermove",move,true);
+      window.removeEventListener("pointerup",up,true);
+      window.removeEventListener("pointercancel",up,true);
+      window.removeEventListener("touchstart",touchStart,true);
+      window.removeEventListener("touchmove",touchMove,true);
+      window.removeEventListener("touchend",touchEnd,true);
+      window.removeEventListener("touchcancel",touchEnd,true);
       window.removeEventListener("blur",clear);
-      if(raf)cancelAnimationFrame(raf);
+      if(raf) cancelAnimationFrame(raf);
       canvas.remove();
     };
   },[]);
