@@ -29,7 +29,6 @@ const skills = [
 
 function CursorTrail(){
   useEffect(()=>{
-    if(!window.matchMedia("(any-hover: hover) and (any-pointer: fine)").matches) return;
     const layer=document.createElement("div");
     layer.className="cursor-trail-layer";
     layer.setAttribute("aria-hidden","true");
