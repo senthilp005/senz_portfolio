@@ -233,7 +233,7 @@ function App(){
   const filters=["All",...new Set(projects.map(p=>p.category))];
   const shown=useMemo(()=>filter==="All"?projects:projects.filter(p=>p.category===filter),[filter]);
   const run=(e)=>{e.preventDefault();const c=cmd.trim().toLowerCase();const answers={help:"Commands: about · skills · projects · contact · clear",about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",contact:"Use the contact links below to connect."};setOutput(c==="clear"?"":answers[c]||`Command not found: ${c}. Type help.`);setCmd("");};
-  return <><PortfolioVFX/><CursorTrail/><div className="shell"><div className="glow glow1"/><div className="glow glow2"/>
+  return <><PageTransitionVFX/><PortfolioVFX/><CursorTrail/><div className="shell"><div className="glow glow1"/><div className="glow glow2"/>
     <header className="nav"><a className="brand" href="#home"><span className="brand-mark">S<span>.</span></span><span>P. SENTHIL VELAN<small> / DEVELOPER</small></span></a><button className="mobile" onClick={()=>setMenu(!menu)} aria-label="Toggle menu">{menu?<X/>:<Menu/>}</button><nav className={menu?"links open":"links"}>{[["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]].map(([t,h])=><a key={t} href={h} onClick={()=>setMenu(false)}>{t}</a>)}<a className="nav-cta" href="#contact">Let's talk <ArrowUpRight size={15}/></a></nav></header>
     <main>
       <section className="hero wrap hero-poster" id="home">
