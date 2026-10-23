@@ -186,6 +186,38 @@ function PortfolioVFX(){
   return null;
 }
 
+
+function PageTransitionVFX(){
+  useEffect(()=>{
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const overlay=document.createElement("div");
+    overlay.className="cinematic-page-transition";
+    overlay.setAttribute("aria-hidden","true");
+    overlay.innerHTML='<span class="transition-panel transition-panel-left"></span><span class="transition-panel transition-panel-right"></span><span class="transition-caption">FIELD NOTES <i> / </i> PORTFOLIO</span>';
+    document.body.appendChild(overlay);
+    const sections=[...document.querySelectorAll("main > section")];
+    let active="",busy=false,timer=0;
+    const trigger=(section)=>{
+      const id=section.id||section.className.split(" ")[0]||"section";
+      if(!active){active=id;return;}
+      if(id===active||busy)return;
+      active=id;busy=true;
+      overlay.classList.remove("is-transitioning");
+      void overlay.offsetWidth;
+      overlay.classList.add("is-transitioning");
+      window.clearTimeout(timer);
+      timer=window.setTimeout(()=>{overlay.classList.remove("is-transitioning");busy=false;},760);
+    };
+    const observer=new IntersectionObserver(entries=>{
+      const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+      if(visible[0])trigger(visible[0].target);
+    },{threshold:[.25,.45,.65],rootMargin:"-12% 0px -12% 0px"});
+    sections.forEach(section=>observer.observe(section));
+    return ()=>{observer.disconnect();window.clearTimeout(timer);overlay.remove();};
+  },[]);
+  return null;
+}
+
 function App(){
   const [filter,setFilter]=useState("All");
   const [menu,setMenu]=useState(false);
