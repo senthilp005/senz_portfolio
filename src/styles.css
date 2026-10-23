@@ -1157,3 +1157,62 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
   main>.section .skill-card,
   main>.section .experience-card{transition:none!important;filter:none!important;transform:none!important;opacity:1!important}
 }
+
+
+/* VIDEO-INSPIRED PAGE TRANSITIONS: cinematic 3D tilt + perspective reveal */
+@media(prefers-reduced-motion:no-preference){
+  main>.section.reveal{
+    opacity:0!important;
+    transform:perspective(1400px) rotateX(7deg) translateY(54px) scale(.965)!important;
+    transform-origin:50% 0%!important;
+    filter:blur(5px);
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    transition:
+      opacity .7s ease,
+      transform .95s cubic-bezier(.16,1,.3,1),
+      filter .8s ease!important;
+    will-change:transform,opacity;
+  }
+  main>.section.reveal.is-visible{
+    opacity:1!important;
+    transform:perspective(1400px) rotateX(0deg) translateY(0) scale(1)!important;
+    filter:blur(0);
+  }
+  main>.section.reveal:after{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;height:3px;
+    z-index:20;pointer-events:none;
+    opacity:0;
+    background:linear-gradient(90deg,transparent,#ff2638,#fff,#ff2638,transparent);
+    box-shadow:0 0 18px #ff2638a0;
+    transform:scaleX(.15);
+    transform-origin:center;
+  }
+  main>.section.reveal.is-visible:after{
+    animation:sectionTransitionScan .9s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes sectionTransitionScan{
+    0%{opacity:0;transform:scaleX(.15)}
+    25%{opacity:1}
+    100%{opacity:0;transform:scaleX(1)}
+  }
+}
+@media(max-width:680px) and (prefers-reduced-motion:no-preference){
+  main>.section.reveal{
+    transform:perspective(900px) rotateX(3deg) translateY(28px) scale(.985)!important;
+    filter:blur(2px);
+    transition:opacity .48s ease,transform .62s cubic-bezier(.16,1,.3,1),filter .5s ease!important;
+  }
+  main>.section.reveal.is-visible{
+    transform:perspective(900px) rotateX(0) translateY(0) scale(1)!important;
+    filter:blur(0);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  main>.section.reveal,main>.section.reveal.is-visible{
+    opacity:1!important;transform:none!important;filter:none!important;transition:none!important
+  }
+  main>.section.reveal:after{display:none!important}
+}
