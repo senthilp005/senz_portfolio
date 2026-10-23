@@ -225,7 +225,7 @@ function PageTransitionVFX(){
           const next=pending;pending=null;
           trigger(next.section,next.index);
         }
-      },840);
+      },1540);
     };
     const update=()=>{
       raf=0;
