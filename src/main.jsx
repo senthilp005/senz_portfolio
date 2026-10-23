@@ -193,37 +193,39 @@ function PageTransitionVFX(){
     const overlay=document.createElement("div");
     overlay.className="cinematic-page-transition";
     overlay.setAttribute("aria-hidden","true");
-    overlay.innerHTML='<div class="transition-curtain"><span class="transition-scan"></span></div><div class="transition-caption"><small>SCENE / 01</small><strong>FIELD NOTES</strong><i>PORTFOLIO</i></div>';
+    overlay.innerHTML='<div class="transition-curtain"><span class="transition-scan"></span><div class="transition-heading"><small>SCENE / 01</small><strong>FIELD NOTES</strong></div></div><img class="transition-portrait" src="/senthil-profile.png" alt="">';
     document.body.appendChild(overlay);
-    const curtain=overlay.querySelector(".transition-curtain");
-    const caption=overlay.querySelector(".transition-caption");
+    const caption=overlay.querySelector(".transition-heading");
     const sections=[...document.querySelectorAll("main > section")];
-    const labelFor=(section,index)=>{
-      const label=section.querySelector(".section-label");
-      if(label){
-        const clean=label.textContent.replace(/^\s*\d+\s*\/\s*/,"").split(/\s{2,}/)[0].trim();
-        if(clean) return clean.toUpperCase().slice(0,34);
-      }
-      if(section.id) return section.id.replace(/-/g," ").toUpperCase();
-      const heading=section.querySelector("h1,h2,h3");
-      return heading?.textContent?.trim().replace(/\s+/g," ").toUpperCase().slice(0,34)||("SECTION "+String(index+1).padStart(2,"0"));
+    const headingFor=(section,index)=>{
+      const heading=section.querySelector(".hero-title-art,h1,h2,h3");
+      const text=heading?.innerText?.replace(/\s+/g," ").trim();
+      if(text) return text.toUpperCase().slice(0,48);
+      const label=section.querySelector(".section-label")?.textContent?.replace(/^\s*\d+\s*\/\s*/,"").trim();
+      return label?.toUpperCase().slice(0,48)||("SECTION "+String(index+1).padStart(2,"0"));
     };
-    let active=null,busy=false,raf=0,timer=0,lastScroll=window.scrollY;
+    let active=null,busy=false,raf=0,timer=0,pending=null;
     const trigger=(section,index)=>{
       if(!section) return;
       if(active===null){active=section;return;}
-      if(section===active||busy)return;
+      if(section===active)return;
+      if(busy){pending={section,index};return;}
       active=section;
       busy=true;
-      const label=labelFor(section,index);
       caption.querySelector("small").textContent="SCENE / "+String(index+1).padStart(2,"0");
-      caption.querySelector("strong").textContent=label;
-      caption.querySelector("i").textContent="P. SENTHIL VELAN";
+      caption.querySelector("strong").textContent=headingFor(section,index);
       overlay.classList.remove("is-transitioning");
       void overlay.offsetWidth;
       overlay.classList.add("is-transitioning");
       window.clearTimeout(timer);
-      timer=window.setTimeout(()=>{overlay.classList.remove("is-transitioning");busy=false;},820);
+      timer=window.setTimeout(()=>{
+        overlay.classList.remove("is-transitioning");
+        busy=false;
+        if(pending){
+          const next=pending;pending=null;
+          trigger(next.section,next.index);
+        }
+      },840);
     };
     const update=()=>{
       raf=0;
@@ -231,18 +233,14 @@ function PageTransitionVFX(){
       let best=null,bestDistance=Infinity,bestIndex=0;
       sections.forEach((section,index)=>{
         const rect=section.getBoundingClientRect();
-        if(rect.bottom<window.innerHeight*.18||rect.top>window.innerHeight*.84)return;
+        if(rect.bottom<window.innerHeight*.12||rect.top>window.innerHeight*.88)return;
         const center=Math.min(Math.max(aim,rect.top),rect.bottom);
         const distance=Math.abs(center-aim);
         if(distance<bestDistance){best=section;bestDistance=distance;bestIndex=index;}
       });
       if(best)trigger(best,bestIndex);
-      lastScroll=window.scrollY;
     };
-    const onScroll=()=>{
-      if(!raf)raf=requestAnimationFrame(update);
-    };
-    // Start silently on the opening scene; play only when scrolling changes sections.
+    const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update);};
     update();
     window.addEventListener("scroll",onScroll,{passive:true});
     window.addEventListener("resize",onScroll,{passive:true});
