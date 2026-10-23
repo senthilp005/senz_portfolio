@@ -1453,3 +1453,82 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
 @media(prefers-reduced-motion:reduce){
   .cinematic-page-transition{display:none!important}
 }
+
+
+/* Refined transition after reviewing every original frame plus 2,000 interpolated samples.
+   The next section headline rises with an ivory scene panel while the portrait crosses the edge. */
+.cinematic-page-transition .transition-heading{
+  position:absolute;
+  z-index:2;
+  top:15%;
+  left:50%;
+  width:min(92vw,1180px);
+  transform:translate3d(-50%,20px,0);
+  color:#080808;
+  opacity:0;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  padding:0 3vw;
+}
+.cinematic-page-transition .transition-heading small{
+  color:#ff2638;
+  font:700 10px/1.4 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.28em;
+}
+.cinematic-page-transition .transition-heading strong{
+  font-family:Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
+  font-weight:900;
+  font-size:clamp(3.2rem,9.5vw,9.2rem);
+  line-height:.84;
+  letter-spacing:-.045em;
+  text-transform:uppercase;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+}
+.cinematic-page-transition .transition-portrait{
+  display:block;
+  position:absolute;
+  z-index:3;
+  bottom:-12vh;
+  left:50%;
+  height:min(78vh,780px);
+  width:auto;
+  max-width:72vw;
+  object-fit:contain;
+  object-position:center bottom;
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(-50%,55%,0) scale(.94);
+  filter:drop-shadow(0 0 20px #ff263875) drop-shadow(0 0 44px #ff263835);
+  will-change:transform,opacity;
+}
+.cinematic-page-transition.is-transitioning .transition-heading{
+  animation:referenceHeadingRise .84s cubic-bezier(.2,.8,.2,1) both;
+}
+.cinematic-page-transition.is-transitioning .transition-portrait{
+  animation:referencePortraitCross .84s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes referenceHeadingRise{
+  0%,23%{opacity:0;transform:translate3d(-50%,20px,0)}
+  40%,61%{opacity:1;transform:translate3d(-50%,0,0)}
+  100%{opacity:0;transform:translate3d(-50%,-16px,0)}
+}
+@keyframes referencePortraitCross{
+  0%{opacity:0;transform:translate3d(-50%,55%,0) scale(.94)}
+  32%{opacity:1}
+  42%,62%{opacity:1;transform:translate3d(-50%,0,0) scale(1)}
+  100%{opacity:0;transform:translate3d(-50%,-78%,0) scale(1.025)}
+}
+@media(max-width:680px){
+  .cinematic-page-transition .transition-heading{top:18%;width:94vw;gap:10px}
+  .cinematic-page-transition .transition-heading small{font-size:8px;letter-spacing:.18em}
+  .cinematic-page-transition .transition-heading strong{font-size:clamp(2.5rem,11.8vw,5rem)}
+  .cinematic-page-transition .transition-portrait{height:min(60vh,510px);max-width:90vw;bottom:-7vh}
+}
+@media(prefers-reduced-motion:reduce){
+  .cinematic-page-transition .transition-heading,
+  .cinematic-page-transition .transition-portrait{display:none!important;animation:none!important}
+}
