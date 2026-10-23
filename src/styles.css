@@ -1532,3 +1532,36 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
   .cinematic-page-transition .transition-heading,
   .cinematic-page-transition .transition-portrait{display:none!important;animation:none!important}
 }
+
+
+/* SLOWER CINEMATIC TRANSITION — ease the white curtain instead of flashing */
+.cinematic-page-transition.is-transitioning .transition-curtain{
+  animation-duration:1.54s!important;
+  animation-timing-function:cubic-bezier(.65,0,.25,1)!important;
+}
+.cinematic-page-transition.is-transitioning .transition-heading{
+  animation-duration:1.54s!important;
+  animation-timing-function:cubic-bezier(.2,.75,.25,1)!important;
+}
+.cinematic-page-transition.is-transitioning .transition-portrait{
+  animation-duration:1.54s!important;
+  animation-timing-function:cubic-bezier(.2,.75,.25,1)!important;
+}
+.cinematic-page-transition .transition-curtain:after{
+  height:2px!important;
+  box-shadow:0 0 7px #ff2638a0,0 0 14px #ff263852!important;
+}
+.cinematic-page-transition .transition-scan{
+  background:linear-gradient(90deg,transparent,#ff2638d9,#fff9,#ff2638d9,transparent)!important;
+  box-shadow:0 0 9px #ff2638a8!important;
+}
+@media(max-width:680px){
+  .cinematic-page-transition.is-transitioning .transition-curtain,
+  .cinematic-page-transition.is-transitioning .transition-heading,
+  .cinematic-page-transition.is-transitioning .transition-portrait{
+    animation-duration:1.25s!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .cinematic-page-transition{display:none!important}
+}
