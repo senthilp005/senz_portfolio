@@ -193,27 +193,66 @@ function PageTransitionVFX(){
     const overlay=document.createElement("div");
     overlay.className="cinematic-page-transition";
     overlay.setAttribute("aria-hidden","true");
-    overlay.innerHTML='<span class="transition-panel transition-panel-left"></span><span class="transition-panel transition-panel-right"></span><span class="transition-caption">FIELD NOTES <i> / </i> PORTFOLIO</span>';
+    overlay.innerHTML='<div class="transition-curtain"><span class="transition-scan"></span></div><div class="transition-caption"><small>SCENE / 01</small><strong>FIELD NOTES</strong><i>PORTFOLIO</i></div>';
     document.body.appendChild(overlay);
+    const curtain=overlay.querySelector(".transition-curtain");
+    const caption=overlay.querySelector(".transition-caption");
     const sections=[...document.querySelectorAll("main > section")];
-    let active="",busy=false,timer=0;
-    const trigger=(section)=>{
-      const id=section.id||section.className.split(" ")[0]||"section";
-      if(!active){active=id;return;}
-      if(id===active||busy)return;
-      active=id;busy=true;
+    const labelFor=(section,index)=>{
+      const label=section.querySelector(".section-label");
+      if(label){
+        const clean=label.textContent.replace(/^\s*\d+\s*\/\s*/,"").split(/\s{2,}/)[0].trim();
+        if(clean) return clean.toUpperCase().slice(0,34);
+      }
+      if(section.id) return section.id.replace(/-/g," ").toUpperCase();
+      const heading=section.querySelector("h1,h2,h3");
+      return heading?.textContent?.trim().replace(/\s+/g," ").toUpperCase().slice(0,34)||("SECTION "+String(index+1).padStart(2,"0"));
+    };
+    let active=null,busy=false,raf=0,timer=0,lastScroll=window.scrollY;
+    const trigger=(section,index)=>{
+      if(!section) return;
+      if(active===null){active=section;return;}
+      if(section===active||busy)return;
+      active=section;
+      busy=true;
+      const label=labelFor(section,index);
+      caption.querySelector("small").textContent="SCENE / "+String(index+1).padStart(2,"0");
+      caption.querySelector("strong").textContent=label;
+      caption.querySelector("i").textContent="P. SENTHIL VELAN";
       overlay.classList.remove("is-transitioning");
       void overlay.offsetWidth;
       overlay.classList.add("is-transitioning");
       window.clearTimeout(timer);
-      timer=window.setTimeout(()=>{overlay.classList.remove("is-transitioning");busy=false;},760);
+      timer=window.setTimeout(()=>{overlay.classList.remove("is-transitioning");busy=false;},820);
     };
-    const observer=new IntersectionObserver(entries=>{
-      const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
-      if(visible[0])trigger(visible[0].target);
-    },{threshold:[.25,.45,.65],rootMargin:"-12% 0px -12% 0px"});
-    sections.forEach(section=>observer.observe(section));
-    return ()=>{observer.disconnect();window.clearTimeout(timer);overlay.remove();};
+    const update=()=>{
+      raf=0;
+      const aim=window.innerHeight*.52;
+      let best=null,bestDistance=Infinity,bestIndex=0;
+      sections.forEach((section,index)=>{
+        const rect=section.getBoundingClientRect();
+        if(rect.bottom<window.innerHeight*.18||rect.top>window.innerHeight*.84)return;
+        const center=Math.min(Math.max(aim,rect.top),rect.bottom);
+        const distance=Math.abs(center-aim);
+        if(distance<bestDistance){best=section;bestDistance=distance;bestIndex=index;}
+      });
+      if(best)trigger(best,bestIndex);
+      lastScroll=window.scrollY;
+    };
+    const onScroll=()=>{
+      if(!raf)raf=requestAnimationFrame(update);
+    };
+    // Start silently on the opening scene; play only when scrolling changes sections.
+    update();
+    window.addEventListener("scroll",onScroll,{passive:true});
+    window.addEventListener("resize",onScroll,{passive:true});
+    return ()=>{
+      window.removeEventListener("scroll",onScroll);
+      window.removeEventListener("resize",onScroll);
+      if(raf)cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      overlay.remove();
+    };
   },[]);
   return null;
 }
