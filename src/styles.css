@@ -1216,3 +1216,64 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
   }
   main>.section.reveal:after{display:none!important}
 }
+
+
+/* Reliable section transition override — explicit class states, no nested media queries */
+@media (prefers-reduced-motion: no-preference) {
+  main > section.section.reveal,
+  main > section.hero.reveal {
+    opacity: 0 !important;
+    transform: perspective(1100px) rotateX(5deg) translate3d(0,42px,0) scale(.975) !important;
+    transform-origin: center top !important;
+    filter: blur(3px);
+    transition: opacity .65s ease, transform .8s cubic-bezier(.2,.8,.2,1), filter .65s ease !important;
+    will-change: opacity, transform, filter;
+  }
+  main > section.section.reveal.is-visible,
+  main > section.hero.reveal.is-visible {
+    opacity: 1 !important;
+    transform: perspective(1100px) rotateX(0) translate3d(0,0,0) scale(1) !important;
+    filter: blur(0);
+  }
+  main > section.section.reveal::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 0;
+    height: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transform: scaleX(.15);
+    background: linear-gradient(90deg,transparent,#ff2638,#fff,#ff2638,transparent);
+    box-shadow: 0 0 16px #ff2638a0;
+  }
+  main > section.section.reveal.is-visible::after {
+    animation: reliableRedScan .8s ease-out both;
+  }
+  @keyframes reliableRedScan {
+    0% { opacity: 0; transform: scaleX(.15); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: scaleX(1); }
+  }
+}
+@media (max-width:680px) and (prefers-reduced-motion: no-preference) {
+  main > section.section.reveal,
+  main > section.hero.reveal {
+    transform: perspective(850px) rotateX(2deg) translate3d(0,22px,0) scale(.99) !important;
+    filter: blur(1.5px);
+    transition: opacity .45s ease, transform .55s cubic-bezier(.2,.8,.2,1), filter .45s ease !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  main > section.section.reveal,
+  main > section.section.reveal.is-visible,
+  main > section.hero.reveal,
+  main > section.hero.reveal.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  main > section.section.reveal::after { display: none !important; }
+}
