@@ -1277,3 +1277,15 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
   }
   main > section.section.reveal::after { display: none !important; }
 }
+
+
+/* Improve contrast: make the muted “LEARNING BY” headline white */
+.experience-section .mixed-intro h1,
+.experience-section .mixed-intro h2,
+.experience-section .section-title,
+.experience-section .experience-heading,
+.experience-section .learning-title,
+.experience-section .mixed-intro .muted,
+.experience-section .mixed-intro .title-muted{
+  color:#f5f3ef!important;
+}
