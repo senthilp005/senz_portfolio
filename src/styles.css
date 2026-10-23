@@ -1289,3 +1289,61 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
 .experience-section .mixed-intro .title-muted{
   color:#f5f3ef!important;
 }
+
+
+/* VIDEO-STYLE FULL-VIEWPORT WIPE BETWEEN SECTIONS */
+.cinematic-page-transition{
+  position:fixed!important;inset:0!important;z-index:2147483000!important;
+  pointer-events:none!important;overflow:hidden!important;visibility:hidden;
+}
+.cinematic-page-transition.is-transitioning{visibility:visible}
+.cinematic-page-transition .transition-panel{
+  position:absolute;top:0;bottom:0;width:52%;
+  background:#f5f1e9;transform:scaleX(0);
+  will-change:transform;
+}
+.cinematic-page-transition .transition-panel-left{
+  left:0;transform-origin:left center;border-right:3px solid #ff2638;
+}
+.cinematic-page-transition .transition-panel-right{
+  right:0;transform-origin:right center;border-left:3px solid #ff2638;
+}
+.cinematic-page-transition .transition-caption{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translateY(12px);
+  color:#111;font:700 11px/1.4 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.24em;white-space:nowrap;opacity:0;
+}
+.cinematic-page-transition .transition-caption i{color:#ff2638;font-style:normal}
+.cinematic-page-transition.is-transitioning .transition-panel-left{
+  animation:cinematicWipeLeft .72s cubic-bezier(.77,0,.18,1) both;
+}
+.cinematic-page-transition.is-transitioning .transition-panel-right{
+  animation:cinematicWipeRight .72s cubic-bezier(.77,0,.18,1) both;
+}
+.cinematic-page-transition.is-transitioning .transition-caption{
+  animation:cinematicCaption .72s ease both;
+}
+@keyframes cinematicWipeLeft{
+  0%{transform:scaleX(0)}
+  38%{transform:scaleX(1)}
+  62%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+@keyframes cinematicWipeRight{
+  0%{transform:scaleX(0)}
+  38%{transform:scaleX(1)}
+  62%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+@keyframes cinematicCaption{
+  0%,20%{opacity:0;transform:translate(-50%,-50%) translateY(12px)}
+  38%,62%{opacity:1;transform:translate(-50%,-50%) translateY(0)}
+  100%{opacity:0;transform:translate(-50%,-50%) translateY(-8px)}
+}
+@media(max-width:680px){
+  .cinematic-page-transition .transition-panel{width:54%}
+  .cinematic-page-transition .transition-caption{font-size:9px;letter-spacing:.14em}
+}
+@media(prefers-reduced-motion:reduce){
+  .cinematic-page-transition{display:none!important}
+}
