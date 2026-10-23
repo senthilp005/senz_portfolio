@@ -1064,3 +1064,96 @@ a:focus-visible,button:focus-visible{outline:2px solid #ff334b;outline-offset:4p
     transform-origin:center bottom!important;
   }
 }
+
+
+/* CINEMATIC SECTION TRANSITIONS — smooth reveal as each section enters view */
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media(prefers-reduced-motion:no-preference){
+  main>.section{
+    position:relative;
+    isolation:isolate;
+  }
+  main>.section:before{
+    content:"";
+    position:absolute;
+    top:0;left:6.3%;right:6.3%;height:1px;
+    pointer-events:none;
+    background:linear-gradient(90deg,transparent,#ff2638a6 22%,#ff26382b 50%,#ff2638a6 78%,transparent);
+    transform:scaleX(.25);
+    transform-origin:center;
+    opacity:0;
+    transition:transform .85s cubic-bezier(.16,1,.3,1),opacity .6s ease;
+  }
+  main>.section.is-visible:before{
+    transform:scaleX(1);
+    opacity:.85;
+  }
+  main>.section .section-label,
+  main>.section .ticker,
+  main>.section .mixed-intro{
+    transition:opacity .65s ease,transform .8s cubic-bezier(.16,1,.3,1),filter .7s ease;
+  }
+  main>.section:not(.is-visible) .section-label,
+  main>.section:not(.is-visible) .ticker,
+  main>.section:not(.is-visible) .mixed-intro{
+    opacity:0;
+    transform:translateY(22px);
+    filter:blur(3px);
+  }
+  main>.section.is-visible .section-label,
+  main>.section.is-visible .ticker,
+  main>.section.is-visible .mixed-intro{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+  }
+  main>.section .project,
+  main>.section .skill-card,
+  main>.section .experience-card{
+    transition:opacity .55s ease,transform .75s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .3s ease!important;
+  }
+  main>.section:not(.is-visible) .project,
+  main>.section:not(.is-visible) .skill-card,
+  main>.section:not(.is-visible) .experience-card{
+    opacity:0;
+    transform:translateY(28px) scale(.985);
+  }
+  main>.section.is-visible .project,
+  main>.section.is-visible .skill-card,
+  main>.section.is-visible .experience-card{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+  main>.section.is-visible .project:nth-child(2),
+  main>.section.is-visible .skill-card:nth-child(2),
+  main>.section.is-visible .experience-card:nth-child(2){transition-delay:70ms!important}
+  main>.section.is-visible .project:nth-child(3),
+  main>.section.is-visible .skill-card:nth-child(3),
+  main>.section.is-visible .experience-card:nth-child(3){transition-delay:130ms!important}
+  main>.section.is-visible .project:nth-child(4),
+  main>.section.is-visible .skill-card:nth-child(4){transition-delay:190ms!important}
+}
+@media(max-width:680px){
+  html{scroll-padding-top:70px}
+  @media(prefers-reduced-motion:no-preference){
+    main>.section .section-label,
+    main>.section .ticker,
+    main>.section .mixed-intro{transition-duration:.48s}
+    main>.section .project,
+    main>.section .skill-card,
+    main>.section .experience-card{transition-duration:.5s!important}
+    main>.section:not(.is-visible) .project,
+    main>.section:not(.is-visible) .skill-card,
+    main>.section:not(.is-visible) .experience-card{transform:translateY(16px) scale(.99)}
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  main>.section:before{display:none}
+  main>.section .section-label,
+  main>.section .ticker,
+  main>.section .mixed-intro,
+  main>.section .project,
+  main>.section .skill-card,
+  main>.section .experience-card{transition:none!important;filter:none!important;transform:none!important;opacity:1!important}
+}
