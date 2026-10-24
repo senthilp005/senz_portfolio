@@ -212,46 +212,41 @@ function Experience() {
 
 /* ---------- projects (light) ---------- */
 function Projects() {
-  const [active, setActive] = useState(0);
-  const n = projects.length;
-  const p = projects[active];
-  const prev = projects[(active - 1 + n) % n];
-  const next = projects[(active + 1) % n];
-  const go = (d) => setActive((a) => (a + d + n) % n);
   return (
-    <Scene id="projects" theme="light" index={3}>
+    <Scene id="projects" theme="dark" index={3} className="projects-scene">
       <Label n="03">Selected work <span>01—11</span></Label>
-      <div className="split-head rv" style={{ "--k": 0.05 }}>
+      <div className="split-head projects-heading rv" style={{ "--k": 0.05 }}>
         <h2 className="display h2">Things I've been <span className="red">working on.</span></h2>
         <p>A collection of experiments, prototypes, and ideas. Some are in progress — that's where the interesting stuff happens.</p>
       </div>
-      <div className="proj-stage rv" style={{ "--k": 0.25 }}>
-        <button className="side" onClick={() => go(-1)} aria-label={`Previous project: ${prev.title}`}>
-          <small>{prev.n}</small><b>{prev.symbol}</b><span>{prev.title}</span>
-        </button>
-        <div className="phone">
-          <div className="screen" key={p.n} style={{ "--tone": toneColor[p.tone] }}>
-            <div className="screen-top"><small>PROJECT / {p.n}</small><span>● {p.status}</span></div>
-            <div className="screen-art"><b>{p.symbol}</b><small>{p.category.toUpperCase()}</small></div>
-            <h3>{p.title}</h3>
-            <p>{p.desc}</p>
-            <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
-            <a className="screen-link" href={p.url} target="_blank" rel="noreferrer">View repository <ArrowUpRight size={15} /></a>
-          </div>
-        </div>
-        <button className="side" onClick={() => go(1)} aria-label={`Next project: ${next.title}`}>
-          <small>{next.n}</small><b>{next.symbol}</b><span>{next.title}</span>
-        </button>
+      <div className="project-grid">
+        {projects.map((p, i) => (
+          <article className="project-card rv" key={p.n} style={{ "--tone": toneColor[p.tone], "--k": 0.12 + (i % 3) * 0.08 }}>
+            <div className="project-card-head">
+              <small>PROJECT / {p.n}</small>
+              <span aria-hidden="true">{p.symbol}</span>
+            </div>
+            <div className="project-card-art" aria-hidden="true">
+              <i className="project-orbit orbit-a" />
+              <i className="project-orbit orbit-b" />
+              <b>{p.symbol}</b>
+              <small>{p.category.toUpperCase()}</small>
+            </div>
+            <div className="project-card-body">
+              <div className="project-card-status"><span />{p.status}</div>
+              <h3>{p.title}</h3>
+              <p>{p.desc}</p>
+              <div className="project-card-tags">
+                {p.tags.map((tag) => <span key={tag}>{tag}</span>)}
+              </div>
+              <a className="project-card-link" href={p.url} target="_blank" rel="noreferrer">
+                Explore project repositories <ArrowUpRight size={16} />
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
-      <div className="proj-nav rv" style={{ "--k": 0.4 }}>
-        <button className="circle" onClick={() => go(-1)} aria-label="Previous project"><ChevronLeft size={18} /></button>
-        <div className="proj-dots">
-          {projects.map((q, i) => (
-            <button key={q.n} className={i === active ? "on" : ""} onClick={() => setActive(i)} aria-label={q.title}>{q.n}</button>
-          ))}
-        </div>
-        <button className="circle" onClick={() => go(1)} aria-label="Next project"><ChevronRight size={18} /></button>
-      </div>
+      <div className="projects-endline"><span>11 PROJECTS</span><i /><span>MORE EXPERIMENTS COMING</span></div>
     </Scene>
   );
 }
