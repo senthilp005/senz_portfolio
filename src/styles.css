@@ -2120,3 +2120,118 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 
 /* END OF PORTFOLIO STYLES — deploy refresh marker */
+
+
+/* ============================================================
+   CONTACT FINISH — restrained energy VFX + light epilogue card
+   ============================================================ */
+.contact-scene .disc-red {
+  background: radial-gradient(circle at 38% 30%, #ff4b57 0%, #ed2634 43%, #d71929 72%, #b00d1c 100%);
+  box-shadow:
+    0 0 22px 3px rgba(228, 32, 44, .18),
+    0 0 48px 8px rgba(228, 32, 44, .10),
+    inset 0 0 34px rgba(95, 0, 8, .16);
+  animation: none;
+}
+.contact-scene .disc-red::before {
+  inset: -8%;
+  border: 1px dashed rgba(255, 255, 255, .28);
+  animation: contactRingSpin 42s linear infinite;
+}
+.contact-scene .disc-red::after {
+  inset: -2%;
+  border: 1px solid rgba(255, 255, 255, .22);
+  animation: none;
+  transform: none;
+}
+.contact-scene .contact-vfx-orbit {
+  inset: -13%;
+  border-width: 1px;
+  border-color: rgba(228, 32, 44, .28);
+  box-shadow: none;
+  filter: none;
+  animation-duration: 36s;
+}
+.contact-scene .contact-vfx-orbit--outer {
+  border-style: dashed;
+  border-color: rgba(11, 11, 12, .24);
+  transform: rotate(-24deg) scaleY(.72);
+}
+.contact-scene .contact-vfx-orbit--inner {
+  inset: -5%;
+  border-color: rgba(255, 255, 255, .28);
+  border-left-color: transparent;
+  border-right-color: rgba(255,255,255,.48);
+  transform: rotate(32deg) scaleY(.82);
+  animation-duration: 29s;
+}
+.contact-scene .contact-vfx-orbit i {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(255,255,255,.65), 0 0 10px rgba(228,32,44,.38);
+}
+.contact-scene .contact-vfx-orbit--inner i {
+  width: 4px;
+  height: 4px;
+  background: #ff6671;
+  box-shadow: 0 0 7px rgba(228,32,44,.6);
+}
+.contact-scene .contact-disc img {
+  filter: drop-shadow(0 16px 20px rgba(0, 0, 0, .22));
+}
+
+/* Swap the heavy black panel for a quiet paper end-card that belongs
+   to the light Contact section. */
+.contact-scene .endcard-line {
+  min-height: 104px;
+  padding: 20px 24px 20px 27px;
+  border: 1px solid rgba(11,11,12,.13);
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at 82% 50%, rgba(228,32,44,.075), transparent 48%),
+    linear-gradient(110deg, #ffffff 0%, #f8f6f3 100%);
+  box-shadow: 0 14px 34px -28px rgba(11,11,12,.3);
+}
+.contact-scene .endcard-line::before {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #e4202c, rgba(228,32,44,.42) 38%, transparent 76%);
+  box-shadow: none;
+}
+.contact-scene .endcard-copy small {
+  color: #72747d;
+  letter-spacing: .18em;
+}
+.contact-scene .endcard-copy h3 {
+  color: #0b0b0c !important;
+  font-size: clamp(30px, 3.6vw, 46px);
+  letter-spacing: -.01em;
+}
+.contact-scene .back-to-start {
+  color: #17171b;
+  border-color: rgba(11,11,12,.22);
+  background: rgba(255,255,255,.72);
+  box-shadow: none;
+}
+.contact-scene .back-to-start svg { color: #e4202c; }
+.contact-scene .back-to-start:hover {
+  color: #0b0b0c;
+  border-color: #e4202c;
+  background: rgba(228,32,44,.055);
+  box-shadow: 0 8px 20px -14px rgba(228,32,44,.38);
+}
+
+/* Keep movement subtle and switch it off when requested by the OS. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .disc-red,
+  .contact-scene .disc-red::before,
+  .contact-scene .disc-red::after,
+  .contact-scene .contact-vfx-orbit,
+  .contact-scene .contact-vfx-orbit i {
+    animation: none !important;
+  }
+}
