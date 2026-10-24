@@ -328,7 +328,7 @@ function Skills() {
 /* ---------- certifications (light) ---------- */
 function Certificates() {
   return (
-    <Scene id="certificates" theme="dark" index={5} className="certifications-scene">
+    <Scene id="certificates" theme="light" index={5} className="certifications-scene">
       <Label n="05">Licenses &amp; certifications <span>01—10</span></Label>
       <div className="split-head certifications-heading rv" style={{ "--k": 0.04 }}>
         <h2 className="display h2">Proof of <span className="red">progress.</span></h2>
@@ -383,7 +383,7 @@ function Terminal_() {
   };
   const quick = (c) => { setCmd(c); setOutput(c === "clear" ? "" : answers[c]); };
   return (
-    <Scene id="terminal" theme="light" index={6}>
+    <Scene id="terminal" theme="dark" index={6}>
       <Label n="06">A little interaction</Label>
       <h2 className="display h2 rv" style={{ "--k": 0.05 }}>Take the terminal <span className="red">for a spin.</span></h2>
       <div className="term rv" style={{ "--k": 0.2 }}>
@@ -412,7 +412,7 @@ function Terminal_() {
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="dark" index={7}>
+    <Scene id="contact" theme="light" index={7}>
       <Label n="07">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
