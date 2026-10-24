@@ -2416,3 +2416,64 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     height: 100%;
   }
 }
+
+/* Contact scene composition matched to the supplied red-orbit reference */
+.contact-scene .scene-inner {
+  max-width: 1600px;
+  gap: clamp(18px, 2.4vh, 26px);
+}
+.contact-scene .contact-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
+  gap: clamp(30px, 4vw, 70px);
+}
+.contact-scene .contact-h {
+  max-width: 760px;
+  font-size: clamp(64px, 8.2vw, 124px);
+  line-height: .84;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+}
+.contact-scene .contact-grid .muted {
+  max-width: 510px;
+  font-size: clamp(16px, 1.3vw, 21px);
+  line-height: 1.45;
+}
+.contact-scene .contact-disc {
+  width: min(62vh, 560px);
+  max-width: 560px;
+  justify-self: center;
+}
+.contact-scene .contact-vfx-orbit--outer { inset: -20%; }
+.contact-scene .contact-vfx-orbit--inner { inset: -12%; }
+.contact-scene .contact-vfx-orbit--energy { inset: -29%; }
+.contact-scene .endcard-line {
+  min-height: 118px;
+  margin-top: 0;
+  padding: 22px 30px;
+}
+.contact-scene .endcard-copy h3 {
+  font-size: clamp(36px, 4.2vw, 54px);
+}
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene .scene-inner {
+    padding-top: 100px;
+    padding-bottom: 22px;
+    gap: clamp(16px, 2vh, 24px);
+  }
+  .contact-scene .contact-disc { width: min(62vh, 560px); }
+}
+@media (max-width: 1099px) {
+  .contact-scene .contact-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr);
+    gap: 24px;
+  }
+  .contact-scene .contact-disc { width: min(48vw, 420px); }
+  .contact-scene .contact-h { font-size: clamp(54px, 7vw, 86px); }
+}
+@media (max-width: 899px) {
+  .contact-scene .contact-grid { grid-template-columns: 1fr; }
+  .contact-scene .contact-disc { width: min(72vw, 380px); }
+  .contact-scene .contact-h { font-size: clamp(48px, 12vw, 76px); }
+  .contact-scene .endcard-line { padding: 20px 18px 18px 22px; }
+}
+
