@@ -1036,3 +1036,89 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     gap: 18px;
   }
 }
+
+
+/* Contact scene: animated energy VFX around the central red disc. */
+.contact-disc { isolation: isolate; }
+.disc-red {
+  z-index: 0;
+  background: radial-gradient(circle at 36% 28%, #ff5862 0%, #f12633 38%, var(--red) 63%, #a90e19 100%);
+  box-shadow: 0 0 36px rgba(228, 32, 44, .27), 0 0 90px 12px rgba(228, 32, 44, .24), inset 0 0 38px rgba(120, 0, 10, .2);
+  animation: contactDiscBreath 4.8s ease-in-out infinite;
+}
+.disc-red::before {
+  content: "";
+  position: absolute;
+  inset: -7%;
+  border: 1px dashed rgba(255, 255, 255, .44);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: contactRingSpin 24s linear infinite;
+}
+.disc-red::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(255, 255, 255, .65);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: contactDiscRipple 3.2s ease-out infinite;
+}
+.contact-vfx-orbit {
+  position: absolute;
+  inset: -13%;
+  border: 1px solid rgba(228, 32, 44, .65);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: contactRingSpin 19s linear infinite;
+}
+.contact-vfx-orbit--outer {
+  transform: rotate(-24deg) scaleY(.72);
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, .28);
+}
+.contact-vfx-orbit--inner {
+  inset: -4%;
+  transform: rotate(32deg) scaleY(.82);
+  border-color: rgba(255, 82, 96, .7);
+  border-left-color: transparent;
+  border-right-color: rgba(255, 255, 255, .36);
+  animation-duration: 13s;
+  animation-direction: reverse;
+}
+.contact-vfx-orbit i {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px #fff, 0 0 20px var(--red), 0 0 30px rgba(255, 38, 56, .9);
+}
+.contact-vfx-orbit--inner i {
+  width: 5px;
+  height: 5px;
+  top: auto;
+  bottom: 9%;
+  background: #ff5966;
+  box-shadow: 0 0 10px #ff5966, 0 0 22px var(--red);
+}
+.contact-disc img {
+  z-index: 3;
+  filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .32));
+}
+@keyframes contactRingSpin { to { rotate: 360deg; } }
+@keyframes contactDiscRipple {
+  0% { opacity: .75; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
+@keyframes contactDiscBreath {
+  0%, 100% { box-shadow: 0 0 36px rgba(228, 32, 44, .27), 0 0 90px 12px rgba(228, 32, 44, .24), inset 0 0 38px rgba(120, 0, 10, .2); }
+  50% { box-shadow: 0 0 54px rgba(228, 32, 44, .42), 0 0 120px 20px rgba(228, 32, 44, .34), inset 0 0 46px rgba(120, 0, 10, .25); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .disc-red, .disc-red::before, .disc-red::after,
+  .contact-vfx-orbit, .contact-vfx-orbit i { animation: none !important; }
+}
