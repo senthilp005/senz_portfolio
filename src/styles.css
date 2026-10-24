@@ -16,15 +16,15 @@
   --body: Manrope, system-ui, -apple-system, sans-serif;
   --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
   font-family: var(--body);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -51,8 +51,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   justify-content: space-between;
   gap: 16px;
   padding: 14px 16px;
-  color: var(--ink);
-  background: rgba(244, 242, 238, 0.86);
+  color: #fff;
+  background: rgba(11, 11, 12, 0.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -69,9 +69,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   align-items: flex-start;
   gap: 18px;
   padding: 22px;
-  background: var(--paper);
-  border: 1px solid rgba(11, 11, 12, 0.14);
-  box-shadow: 0 18px 60px rgba(11, 11, 12, 0.12);
+  background: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
   font: 500 13px var(--mono);
   letter-spacing: 0.12em;
@@ -197,7 +196,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   font: 500 9px var(--mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #646671;
+  color: #a3a5ae;
 }
 /* giant name, centred; the figure sits in front of it like the film poster */
 .hero-title {
@@ -209,7 +208,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   font: 400 min(16vw, 27vh) / 0.86 var(--display);
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--ink);
+  color: var(--paper);
   z-index: 2;
   transform: translate3d(0, calc(var(--cover, 0) * -26vh), 0) scale(calc(1 + var(--cover, 0) * 0.08));
   transform-origin: 50% 0;
@@ -313,7 +312,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   z-index: 4;
 }
 .hero-lead { max-width: 340px; display: grid; gap: 18px; }
-.hero-lead p { font-size: 14px; line-height: 1.6; color: #5d5f68; }
+.hero-lead p { font-size: 14px; line-height: 1.6; color: #cfcdd6; }
 .badges { display: flex; gap: 16px 22px; align-items: center; flex-wrap: wrap; }
 .badge { display: flex; align-items: center; gap: 10px; }
 .badge b {
@@ -330,7 +329,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   transition: transform 0.4s var(--ease);
 }
 .badge:hover b { transform: scale(1.08) rotate(-6deg); }
-.badge small { max-width: 90px; font: 500 10px/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: #5d5f68; }
+.badge small { max-width: 90px; font: 500 10px/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: #cfcdd6; }
 
 /* red marquee band, the film-poster stripe */
 .ticker {
@@ -671,12 +670,12 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 @media (min-width: 1200px) {
   .nav {
     padding: 18px 32px;
-    color: var(--ink);
-    background: rgba(244, 242, 238, 0.86);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    mix-blend-mode: normal;
-    pointer-events: auto;
+    color: #fff;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    mix-blend-mode: difference;
+    pointer-events: none;
   }
   .nav > * { pointer-events: auto; }
   .links {
@@ -797,21 +796,3 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   }
   .scene::after { display: none; }
 }
-
-
-/* ============================================================
-   UNIFIED LIGHT PAPER THEME — all portfolio scenes
-   ============================================================ */
-body { background: var(--paper); color: var(--ink); }
-.scene[data-theme="light"] { background: var(--paper); color: var(--ink); }
-.hero-scene[data-theme="light"] .hero-title { color: var(--ink); }
-.hero-scene[data-theme="light"] .hero-top { color: #646671; }
-.hero-scene[data-theme="light"] .hero-lead p,
-.hero-scene[data-theme="light"] .badge small { color: #5d5f68; }
-.scene[data-theme="light"] .xcard.paper {
-  background: #fff;
-  color: var(--ink);
-  border-color: rgba(11, 11, 12, 0.12);
-  box-shadow: 0 18px 42px -30px rgba(11, 11, 12, 0.28);
-}
-.scene[data-theme="light"] .toolkit-card { background: #fff; }
