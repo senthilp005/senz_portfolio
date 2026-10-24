@@ -143,7 +143,7 @@ function CountUp({ to, pad = 0 }) {
 /* ---------- hero ---------- */
 function Hero() {
   return (
-    <Scene id="home" theme="dark" index={0} className="hero-scene">
+    <Scene id="home" theme="light" index={0} className="hero-scene">
       <div className="hero">
         <div className="hero-top">
           <span>✛ &nbsp;AI & Data Science developer</span>
@@ -212,7 +212,7 @@ function About() {
 /* ---------- experience (dark) ---------- */
 function Experience() {
   return (
-    <Scene id="experience" theme="dark" index={2}>
+    <Scene id="experience" theme="light" index={2}>
       <Label n="02">Field notes — internships & practice</Label>
       <div className="split-head rv" style={{ "--k": 0.05 }}>
         <h2 className="display h2">Learning by <span className="red">making things.</span></h2>
@@ -284,7 +284,7 @@ function Projects() {
 /* ---------- skills (dark) ---------- */
 function Skills() {
   return (
-    <Scene id="skills" theme="dark" index={4}>
+    <Scene id="skills" theme="light" index={4}>
       <Label n="04">Toolkit</Label>
       <div className="skills-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
@@ -351,7 +351,7 @@ function Terminal_() {
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="dark" index={6}>
+    <Scene id="contact" theme="light" index={6}>
       <Label n="06">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
