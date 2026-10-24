@@ -413,7 +413,7 @@ function Contact() {
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
           <small className="status">OPEN TO INTERNSHIPS & COLLABORATIONS</small>
-          <h2 className="display contact-h">Got an idea?<br /><span className="red">Let's make it real.</span></h2>
+          <h2 className="display contact-h">Got an idea?<br /><span className="red">Let's make it<br />real.</span></h2>
           <p className="muted">Have a project, opportunity, or just want to talk tech? I'd love to hear from you.</p>
           <div className="actions">
             <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
