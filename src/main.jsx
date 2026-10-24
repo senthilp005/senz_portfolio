@@ -356,7 +356,7 @@ function Certificates() {
                     Verify <ArrowUpRight size={15} />
                   </a>
                 ) : (
-                  <span className="certification-archive-note">Screenshot in PDF archive</span>
+                  <span className="certification-archive-note">Public verify link not captured</span>
                 )}
               </div>
             </div>
@@ -364,7 +364,7 @@ function Certificates() {
         ))}
       </div>
       <div className="certification-footnote">
-        <span>10 DISTINCT CREDENTIALS</span><i /><span>11 SCREENSHOTS ARCHIVED</span>
+        <span>10 DISTINCT CREDENTIALS</span><i /><span>11 SCREENSHOTS RECEIVED</span>
       </div>
       <p className="certification-duplicate-note">The uploaded screenshot set includes the HackerRank Problem Solving (Basic) certificate twice, so it is listed once here.</p>
     </Scene>
