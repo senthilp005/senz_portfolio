@@ -430,6 +430,7 @@ function Contact() {
           <div className="contact-vfx-orbit contact-vfx-orbit--inner" aria-hidden="true"><i /></div>
           <div className="contact-vfx-orbit contact-vfx-orbit--energy" aria-hidden="true"><i /></div>
           <img src="/senthil-profile.webp" alt="" />
+          <div className="contact-vfx-foreground" aria-hidden="true"><i /></div>
         </div>
       </div>
       <div className="endcard-line rv" style={{ "--k": 0.32 }}>
