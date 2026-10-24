@@ -86,10 +86,16 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
+  margin-bottom: -32px;
   overflow: hidden;
   background: var(--bg);
   color: var(--fg);
+  /* Flowing layouts use the same rounded red curtain as the desktop wipe. */
+  border-radius: calc((1 - var(--enter, 1)) * 40px) calc((1 - var(--enter, 1)) * 40px) 0 0;
+  box-shadow: 0 -30px 80px rgba(0, 0, 0, calc((1 - var(--enter, 1)) * 0.35));
 }
+.scene:last-child { margin-bottom: 0; }
+
 /* red wipe rule along the leading edge */
 .scene::before {
   content: "";
@@ -100,6 +106,18 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   transform-origin: left center;
   transform: scaleX(var(--enter, 1));
   z-index: 6;
+}
+
+/* A restrained red bloom travels with the curtain on flowing layouts too. */
+.scene::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 42%;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(228, 32, 44, 0.55), transparent 70%);
+  opacity: calc(4 * var(--enter, 1) * (1 - var(--enter, 1)));
+  z-index: 5;
 }
 .scene[data-theme="dark"]  { --bg: var(--ink);   --fg: var(--paper); --muted: #a3a5ae; --line: rgba(244, 242, 238, 0.16); --card: #17171b; }
 .scene[data-theme="light"] { --bg: var(--paper); --fg: var(--ink);   --muted: #5d5f68; --line: rgba(11, 11, 12, 0.16);     --card: #ffffff; }
@@ -689,7 +707,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     height: 100vh;
     height: 100svh;
     min-height: 0;
-    /* rounded leading edge while the scene is still sliding in */
+    margin-bottom: 0;
+    /* Preserve the original stacked-desktop curtain exactly. */
     border-radius: calc((1 - var(--enter, 1)) * 40px) calc((1 - var(--enter, 1)) * 40px) 0 0;
     box-shadow: 0 -30px 80px rgba(0, 0, 0, calc((1 - var(--enter, 1)) * 0.6));
   }
@@ -723,17 +742,6 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .tags { display: none; }
 }
 
-/* the red wipe bloom peaks halfway through each wipe */
-  .scene::after {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 42%;
-    pointer-events: none;
-    background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(228, 32, 44, 0.55), transparent 70%);
-    opacity: calc(4 * var(--enter, 1) * (1 - var(--enter, 1)));
-    z-index: 5;
-  }
 }
 
 /* ============================================================
@@ -778,5 +786,13 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     transition: none !important;
     scroll-behavior: auto !important;
   }
-  .scene { position: relative; height: auto; min-height: 100svh; }
+  .scene {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+    margin-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .scene::after { display: none; }
 }
