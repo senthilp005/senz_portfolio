@@ -58,7 +58,7 @@ const links = [["About","#about"],["Experience","#experience"],["Projects","#pro
 function useSceneMotion() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const stacked = window.matchMedia("(min-width: 901px)");
+    const stacked = window.matchMedia("(min-width: 1100px) and (min-height: 720px)");
     const scenes = [...document.querySelectorAll(".scene")];
     const clamp01 = (v) => Math.min(1, Math.max(0, v));
     let raf = 0;
@@ -102,7 +102,7 @@ function Scene({ id, theme, index, className = "", children }) {
 
 function Letters({ text, base = 0 }) {
   return [...text].map((c, i) => (
-    <span className="ch" key={i} style={{ "--i": base + i }}>{c}</span>
+    <span className="ch" key={i} style={{ "--i": base + i }}>{c === " " ? "\u00a0" : c}</span>
   ));
 }
 
@@ -116,27 +116,24 @@ function Label({ n, children }) {
   return <div className="label"><b>{n}</b> / {children}</div>;
 }
 
+/* counts up once on mount; reduced-motion users get the final value */
 function CountUp({ to, pad = 0 }) {
-  const [value, setValue] = useState(0);
+  const [v, setV] = useState(0);
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(to);
-      return;
-    }
-    const start = performance.now() + 250;
-    const duration = 1200;
-    let raf = 0;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setV(to); return; }
+    const start = performance.now() + 500;
+    const dur = 1200;
+    let raf;
     const tick = (now) => {
-      const progress = Math.min(1, Math.max(0, (now - start) / duration));
-      setValue(Math.round(to * (1 - Math.pow(1 - progress, 3))));
-      if (progress < 1) raf = requestAnimationFrame(tick);
+      const t = Math.min(1, Math.max(0, (now - start) / dur));
+      setV(Math.round(to * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [to]);
-  return String(value).padStart(pad, "0");
+  return String(v).padStart(pad, "0");
 }
-
 
 /* ---------- hero ---------- */
 function Hero() {
@@ -147,10 +144,10 @@ function Hero() {
           <span>✛ &nbsp;AI & Data Science developer</span>
           <span>Trichy, India &nbsp;✛</span>
         </div>
-        <div className="hero-disc" aria-hidden="true" />
+        <div className="hero-disc" aria-hidden="true"><div className="disc-orbit"><span /></div></div>
         <h1 className="hero-title" aria-label="P. Senthil Velan">
-          <span className="ht-line" aria-hidden="true"><Letters text="SENTHIL" /></span>
-          <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={7} /></span>
+          <span className="ht-line" aria-hidden="true"><Letters text="P. SENTHIL" /></span>
+          <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={10} /></span>
         </h1>
         <div className="hero-portrait">
           <img src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
@@ -235,41 +232,46 @@ function Experience() {
 
 /* ---------- projects (light) ---------- */
 function Projects() {
+  const [active, setActive] = useState(0);
+  const n = projects.length;
+  const p = projects[active];
+  const prev = projects[(active - 1 + n) % n];
+  const next = projects[(active + 1) % n];
+  const go = (d) => setActive((a) => (a + d + n) % n);
   return (
-    <Scene id="projects" theme="dark" index={3} className="projects-scene">
+    <Scene id="projects" theme="light" index={3}>
       <Label n="03">Selected work <span>01—11</span></Label>
-      <div className="split-head projects-heading rv" style={{ "--k": 0.05 }}>
+      <div className="split-head rv" style={{ "--k": 0.05 }}>
         <h2 className="display h2">Things I've been <span className="red">working on.</span></h2>
         <p>A collection of experiments, prototypes, and ideas. Some are in progress — that's where the interesting stuff happens.</p>
       </div>
-      <div className="project-grid">
-        {projects.map((p, i) => (
-          <article className="project-card rv" key={p.n} style={{ "--tone": toneColor[p.tone], "--k": 0.12 + (i % 3) * 0.08 }}>
-            <div className="project-card-head">
-              <small>PROJECT / {p.n}</small>
-              <span aria-hidden="true">{p.symbol}</span>
-            </div>
-            <div className="project-card-art" aria-hidden="true">
-              <i className="project-orbit orbit-a" />
-              <i className="project-orbit orbit-b" />
-              <b>{p.symbol}</b>
-              <small>{p.category.toUpperCase()}</small>
-            </div>
-            <div className="project-card-body">
-              <div className="project-card-status"><span />{p.status}</div>
-              <h3>{p.title}</h3>
-              <p>{p.desc}</p>
-              <div className="project-card-tags">
-                {p.tags.map((tag) => <span key={tag}>{tag}</span>)}
-              </div>
-              <a className="project-card-link" href={p.url} target="_blank" rel="noreferrer">
-                Explore project repositories <ArrowUpRight size={16} />
-              </a>
-            </div>
-          </article>
-        ))}
+      <div className="proj-stage rv" style={{ "--k": 0.25 }}>
+        <button className="side" onClick={() => go(-1)} aria-label={`Previous project: ${prev.title}`}>
+          <small>{prev.n}</small><b>{prev.symbol}</b><span>{prev.title}</span>
+        </button>
+        <div className="phone">
+          <div className="screen" key={p.n} style={{ "--tone": toneColor[p.tone] }}>
+            <div className="screen-top"><small>PROJECT / {p.n}</small><span>● {p.status}</span></div>
+            <div className="screen-art"><b>{p.symbol}</b><small>{p.category.toUpperCase()}</small></div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+            <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
+            <a className="screen-link" href={p.url} target="_blank" rel="noreferrer">View repository <ArrowUpRight size={15} /></a>
+          </div>
+        </div>
+        <button className="side" onClick={() => go(1)} aria-label={`Next project: ${next.title}`}>
+          <small>{next.n}</small><b>{next.symbol}</b><span>{next.title}</span>
+        </button>
       </div>
-      <div className="projects-endline"><span>11 PROJECTS</span><i /><span>MORE EXPERIMENTS COMING</span></div>
+      <div className="proj-nav rv" style={{ "--k": 0.4 }}>
+        <button className="circle" onClick={() => go(-1)} aria-label="Previous project"><ChevronLeft size={18} /></button>
+        <div className="proj-dots">
+          {projects.map((q, i) => (
+            <button key={q.n} className={i === active ? "on" : ""} onClick={() => setActive(i)} aria-label={q.title}>{q.n}</button>
+          ))}
+        </div>
+        <button className="circle" onClick={() => go(1)} aria-label="Next project"><ChevronRight size={18} /></button>
+      </div>
     </Scene>
   );
 }
@@ -365,7 +367,7 @@ function Contact() {
         <small>Designed to keep evolving · © {new Date().getFullYear()}</small>
         <div className="social">
           <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
-          <a href="https://www.linkedin.com/in/senthil-velan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
+          <a href="https://www.linkedin.com/in/senthilvelan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
           <a href={`mailto:${EMAIL}`} aria-label="Email"><Mail size={17} /></a>
         </div>
       </footer>
