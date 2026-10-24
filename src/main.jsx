@@ -359,6 +359,8 @@ function Contact() {
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
           <div className="disc-red" />
+          <div className="contact-vfx-orbit contact-vfx-orbit--outer" aria-hidden="true"><i /></div>
+          <div className="contact-vfx-orbit contact-vfx-orbit--inner" aria-hidden="true"><i /></div>
           <img src="/senthil-profile.png" alt="" />
         </div>
       </div>
