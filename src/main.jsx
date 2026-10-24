@@ -1,9 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ArrowDownRight, ArrowUpRight, Mail, Menu, X, Code2, BrainCircuit, Layers3, Terminal, Sparkles, Cpu, ChevronRight, Send } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Layers3, Mail, Menu, Send, Terminal, X } from "lucide-react";
+import CursorTrail from "./CursorTrail.jsx";
+import "./styles.css";
+
 const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.7 1.4a12.8 12.8 0 0 0-6.8 0C5.7 1.1 4.5 1.5 4.5 1.5a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 3 8.7c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.7V22"/></svg>;
 const Linkedin = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>;
-import "./styles.css";
+
+const EMAIL = "senthilvelanprabakaran@gmail.com";
 
 const projects = [
   { n:"01", title:"FEDIS-OT", category:"AI & Security", desc:"A privacy-preserving cybersecurity concept combining federated learning with digital-twin-based patch validation for safer collaborative threat detection.", tags:["Federated Learning","Digital Twin","GNN"], symbol:"◈", tone:"violet", status:"In development", url:"https://github.com/senthilvelanprabakaran-alt/CodeAlpha_data-redundancy" },
@@ -18,6 +22,15 @@ const projects = [
   { n:"10", title:"Uzhavan Market", category:"Full Stack", desc:"A market-focused web project designed around connecting users with a simple product and marketplace experience.", tags:["HTML","Web UI","Marketplace"], symbol:"▦", tone:"yellow", status:"Project", url:"https://github.com/senthilvelanprabakaran-alt/Uzhavan-Market-" },
   { n:"11", title:"Flappy Bird", category:"Game Development", desc:"A browser game project inspired by the classic tap-to-fly arcade mechanic, built as a compact interactive experiment.", tags:["HTML","CSS","JavaScript"], symbol:"➤", tone:"pink", status:"Experiment", url:"https://github.com/senthilvelanprabakaran-alt/flappybird" }
 ];
+
+const toneColor = { violet:"#7c5cff", mint:"#1fbf8f", orange:"#ff7a2a", blue:"#3b82f6", pink:"#ec4899", yellow:"#d9a400" };
+
+const experience = [
+  { tone:"paper", stamp:["WEB","DEV"], title:"Aerialroot Infotech", role:"Web Development Intern", desc:"Worked through practical web development tasks and learned how real project requirements shape interfaces and implementation.", date:"JUN — JUL 2025", rot:"-3deg" },
+  { tone:"red", stamp:["CLOUD","LAB"], title:"CodeAlpha", role:"Cloud Computing Intern", desc:"Explored cloud computing concepts and project-based work through a virtual internship programme.", date:"SEP — OCT 2026", rot:"2deg" },
+  { tone:"dark", stamp:["IOT","SYSTEM"], title:"FIREGUARD", role:"IoT System / Lab Project", desc:"Hands-on work around an IoT system, bringing hardware, software, and practical debugging together.", date:"JUN — AUG 2026", rot:"-1deg" }
+];
+
 const skills = [
   ["Languages",["Python","Java","JavaScript","SQL"]],
   ["AI & ML",["Machine Learning","YOLOv8","PyTorch","Generative AI","RAG / LangChain"]],
@@ -25,281 +38,352 @@ const skills = [
   ["Data & Tools",["MySQL","Firebase","Git / GitHub","TensorFlow.js"]]
 ];
 
+const tickerItems = ["Curious by default","Built with intention","Always iterating","Code with purpose"];
+const answers = {
+  help:"Commands: about · skills · projects · contact · clear",
+  about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",
+  skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",
+  projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",
+  contact:"Use the contact links below to connect."
+};
+const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]];
 
-
-function CursorTrail(){
-  useEffect(()=>{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const canvas=document.createElement("canvas");
-    canvas.setAttribute("aria-hidden","true");
-    canvas.className="portfolio-comet-cursor";
-    Object.assign(canvas.style,{
-      position:"fixed",left:"0",top:"0",width:"100vw",height:"100vh",
-      pointerEvents:"none",zIndex:"2147483647",display:"block"
-    });
-    document.documentElement.appendChild(canvas);
-    const ctx=canvas.getContext("2d");
-    if(!ctx){canvas.remove();return;}
-    let width=0,height=0,raf=0;
-    const points=[];
-    const activeTouchPointers=new Set();
-    const maxAge=360;
-    const resize=()=>{
-      const dpr=Math.min(window.devicePixelRatio||1,2);
-      width=window.innerWidth;height=window.innerHeight;
-      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-    };
-    const push=(x,y)=>{
-      points.push({x,y,t:performance.now()});
-      if(points.length>28) points.splice(0,points.length-28);
-      if(!raf) raf=requestAnimationFrame(draw);
-    };
-    const down=e=>{
-      if(e.pointerType==="touch" || e.pointerType==="pen") activeTouchPointers.add(e.pointerId);
-      if(e.pointerType==="mouse" || e.pointerType==="touch" || e.pointerType==="pen") push(e.clientX,e.clientY);
-    };
-    const move=e=>{
-      // Mouse trails follow normal cursor movement; touch/pen trails follow active gestures.
-      if(e.pointerType==="mouse" || activeTouchPointers.has(e.pointerId)) push(e.clientX,e.clientY);
-    };
-    const up=e=>activeTouchPointers.delete(e.pointerId);
-    const draw=now=>{
-      raf=0;ctx.clearRect(0,0,width,height);
-      while(points.length && now-points[0].t>maxAge) points.shift();
-      for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i];
-        const alpha=Math.max(0,1-(now-b.t)/maxAge);
-        if(alpha<=0) continue;
-        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-        ctx.lineCap="round";ctx.lineJoin="round";
-        ctx.strokeStyle="rgba(255,38,56,"+(alpha*.9)+")";
-        ctx.lineWidth=Math.max(.8,4.8*(i/points.length)*alpha);
-        ctx.shadowColor="#ff2638";ctx.shadowBlur=9*alpha;ctx.stroke();
-      }
-      if(points.length){
-        const p=points[points.length-1],alpha=Math.max(0,1-(now-p.t)/maxAge);
-        if(alpha>0){
-          ctx.beginPath();ctx.arc(p.x,p.y,2.8,0,Math.PI*2);
-          ctx.fillStyle="rgba(255,255,255,"+alpha+")";
-          ctx.shadowColor="#ff2638";ctx.shadowBlur=12;ctx.fill();
+/* ---------- motion engine ----------
+   Every .scene is sticky and stacks over the previous one (the red-edged
+   wipe). We publish two numbers per scene as CSS variables:
+   --enter  0 → 1  while the scene slides up over the screen
+   --cover  0 → 1  while the NEXT scene slides over this one
+   Everything else (word reveals, card flips, parallax) is pure CSS on those. */
+function useSceneMotion() {
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stacked = window.matchMedia("(min-width: 901px)");
+    const scenes = [...document.querySelectorAll(".scene")];
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      const live = stacked.matches && !reduce.matches;
+      scenes.forEach((scene, i) => {
+        if (!live) {
+          scene.style.setProperty("--enter", "1");
+          scene.style.setProperty("--cover", "0");
+          return;
         }
-      }
-      ctx.shadowBlur=0;
-      if(points.length) raf=requestAnimationFrame(draw);
-    };
-    const clear=()=>{
-      points.length=0;activeTouchPointers.clear();
-      if(raf)cancelAnimationFrame(raf);
-      raf=0;ctx.clearRect(0,0,width,height);
-    };
-    const touchStart=e=>{for(const t of e.changedTouches)push(t.clientX,t.clientY);};
-    const touchMove=e=>{for(const t of e.changedTouches)push(t.clientX,t.clientY);};
-    resize();
-    window.addEventListener("resize",resize,{passive:true});
-    window.addEventListener("pointerdown",down,{passive:true,capture:true});
-    window.addEventListener("pointermove",move,{passive:true,capture:true});
-    window.addEventListener("pointerup",up,{passive:true,capture:true});
-    window.addEventListener("pointercancel",up,{passive:true,capture:true});
-    window.addEventListener("touchstart",touchStart,{passive:true,capture:true});
-    window.addEventListener("touchmove",touchMove,{passive:true,capture:true});
-    window.addEventListener("blur",clear);
-    return ()=>{
-      window.removeEventListener("resize",resize);
-      window.removeEventListener("pointerdown",down,true);
-      window.removeEventListener("pointermove",move,true);
-      window.removeEventListener("pointerup",up,true);
-      window.removeEventListener("pointercancel",up,true);
-      window.removeEventListener("touchstart",touchStart,true);
-      window.removeEventListener("touchmove",touchMove,true);
-      window.removeEventListener("blur",clear);
-      if(raf)cancelAnimationFrame(raf);
-      canvas.remove();
-    };
-  },[]);
-  return null;
-}
-
-function PortfolioVFX(){
-  useEffect(()=>{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const canvas=document.createElement("canvas");
-    canvas.className="portfolio-vfx-canvas";
-    canvas.setAttribute("aria-hidden","true");
-    Object.assign(canvas.style,{position:"fixed",inset:"0",width:"100%",height:"100%",pointerEvents:"none",zIndex:"4"});
-    document.documentElement.appendChild(canvas);
-    const ctx=canvas.getContext("2d",{alpha:true});
-    if(!ctx){canvas.remove();return;}
-    let w=0,h=0,raf=0,last=0;
-    const touchMode=window.matchMedia("(pointer: coarse)").matches;
-    const count=touchMode?22:42;
-    const particles=Array.from({length:count},()=>({
-      x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
-      r:Math.random()*1.7+.5,vx:(Math.random()-.5)*.22,vy:-(Math.random()*.32+.08),
-      a:Math.random()*.45+.12,phase:Math.random()*Math.PI*2
-    }));
-    const bursts=[];
-    const resize=()=>{
-      const dpr=Math.min(window.devicePixelRatio||1,1.5);
-      w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-    };
-    const burst=(x,y)=>{
-      bursts.push({x,y,t:performance.now(),parts:Array.from({length:touchMode?8:12},(_,i)=>{
-        const angle=i*Math.PI*2/(touchMode?8:12),speed=1.2+Math.random()*2.3;
-        return {x:0,y:0,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:1+Math.random()*1.5};
-      })});
-      if(bursts.length>5) bursts.shift();
-      if(!raf) raf=requestAnimationFrame(draw);
-    };
-    const onDown=e=>{if(e.pointerType==="touch"||e.pointerType==="pen"||e.pointerType==="mouse") burst(e.clientX,e.clientY);};
-    const draw=now=>{
-      raf=0;ctx.clearRect(0,0,w,h);
-      const dt=Math.min(32,now-(last||now));last=now;
-      for(const p of particles){
-        p.x+=p.vx*dt;p.y+=p.vy*dt;
-        if(p.y<-8){p.y=h+8;p.x=Math.random()*w;}
-        if(p.x<-8)p.x=w+8;if(p.x>w+8)p.x=-8;
-        const flicker=.65+.35*Math.sin(now*.002+p.phase);
-        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle="rgba(255,42,62,"+(p.a*flicker)+")";ctx.fill();
-      }
-      for(let bi=bursts.length-1;bi>=0;bi--){
-        const b=bursts[bi],age=now-b.t,alpha=Math.max(0,1-age/430);
-        if(alpha<=0){bursts.splice(bi,1);continue;}
-        for(const p of b.parts){
-          const x=b.x+p.vx*age*.075,y=b.y+p.vy*age*.075;
-          ctx.beginPath();ctx.arc(x,y,p.r*alpha,0,Math.PI*2);
-          ctx.fillStyle="rgba(255,55,72,"+alpha+")";ctx.shadowColor="#ff2638";ctx.shadowBlur=8*alpha;ctx.fill();
-        }
-      }
-      ctx.shadowBlur=0;
-      if(!document.hidden) raf=requestAnimationFrame(draw);
-    };
-    resize();
-    raf=requestAnimationFrame(draw);
-    window.addEventListener("resize",resize,{passive:true});
-    window.addEventListener("pointerdown",onDown,{passive:true});
-    document.addEventListener("visibilitychange",()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}else if(!raf)raf=requestAnimationFrame(draw);});
-    return ()=>{window.removeEventListener("resize",resize);window.removeEventListener("pointerdown",onDown);if(raf)cancelAnimationFrame(raf);canvas.remove();};
-  },[]);
-  return null;
-}
-
-
-function PageTransitionVFX(){
-  useEffect(()=>{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const overlay=document.createElement("div");
-    overlay.className="cinematic-page-transition";
-    overlay.setAttribute("aria-hidden","true");
-    overlay.innerHTML='<div class="transition-curtain"><span class="transition-scan"></span><div class="transition-heading"><small>SCENE / 01</small><strong>FIELD NOTES</strong></div></div><img class="transition-portrait" src="/senthil-profile.png" alt="">';
-    document.body.appendChild(overlay);
-    const caption=overlay.querySelector(".transition-heading");
-    const sections=[...document.querySelectorAll("main > section")];
-    const headingFor=(section,index)=>{
-      const heading=section.querySelector(".hero-title-art,h1,h2,h3");
-      const text=heading?.innerText?.replace(/\s+/g," ").trim();
-      if(text) return text.toUpperCase().slice(0,48);
-      const label=section.querySelector(".section-label")?.textContent?.replace(/^\s*\d+\s*\/\s*/,"").trim();
-      return label?.toUpperCase().slice(0,48)||("SECTION "+String(index+1).padStart(2,"0"));
-    };
-    let active=null,busy=false,raf=0,timer=0,pending=null;
-    const trigger=(section,index)=>{
-      if(!section) return;
-      if(active===null){active=section;return;}
-      if(section===active)return;
-      if(busy){pending={section,index};return;}
-      active=section;
-      busy=true;
-      caption.querySelector("small").textContent="SCENE / "+String(index+1).padStart(2,"0");
-      caption.querySelector("strong").textContent=headingFor(section,index);
-      overlay.classList.remove("is-transitioning");
-      void overlay.offsetWidth;
-      overlay.classList.add("is-transitioning");
-      window.clearTimeout(timer);
-      timer=window.setTimeout(()=>{
-        overlay.classList.remove("is-transitioning");
-        busy=false;
-        if(pending){
-          const next=pending;pending=null;
-          trigger(next.section,next.index);
-        }
-      },1540);
-    };
-    const update=()=>{
-      raf=0;
-      const aim=window.innerHeight*.52;
-      let best=null,bestDistance=Infinity,bestIndex=0;
-      sections.forEach((section,index)=>{
-        const rect=section.getBoundingClientRect();
-        if(rect.bottom<window.innerHeight*.12||rect.top>window.innerHeight*.88)return;
-        const center=Math.min(Math.max(aim,rect.top),rect.bottom);
-        const distance=Math.abs(center-aim);
-        if(distance<bestDistance){best=section;bestDistance=distance;bestIndex=index;}
+        const enter = clamp01((vh - scene.getBoundingClientRect().top) / vh);
+        const next = scenes[i + 1];
+        const cover = next ? clamp01((vh - next.getBoundingClientRect().top) / vh) : 0;
+        scene.style.setProperty("--enter", enter.toFixed(3));
+        scene.style.setProperty("--cover", cover.toFixed(3));
       });
-      if(best)trigger(best,bestIndex);
     };
-    const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update);};
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
-    window.addEventListener("scroll",onScroll,{passive:true});
-    window.addEventListener("resize",onScroll,{passive:true});
-    return ()=>{
-      window.removeEventListener("scroll",onScroll);
-      window.removeEventListener("resize",onScroll);
-      if(raf)cancelAnimationFrame(raf);
-      window.clearTimeout(timer);
-      overlay.remove();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
-  },[]);
-  return null;
+  }, []);
 }
 
-function App(){
-  const [filter,setFilter]=useState("All");
-  const [menu,setMenu]=useState(false);
-  const [cmd,setCmd]=useState("");
-  const [output,setOutput]=useState("Welcome! Type help to explore.");
-  useEffect(()=>{
-    const nodes=document.querySelectorAll("main > .section,.ticker,.section-label,.about-grid,.stats,.project,.skill-card,.skill-row,.terminal,.contact-panel,.experience-card,.mixed-intro");
-    nodes.forEach((node,i)=>{node.classList.add("reveal");node.style.setProperty("--reveal-delay",`${(i%4)*90}ms`)});
-    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:"0px 0px -35px 0px"});
-    nodes.forEach(node=>observer.observe(node));
-    return ()=>observer.disconnect();
-  },[]);
-  const filters=["All",...new Set(projects.map(p=>p.category))];
-  const shown=useMemo(()=>filter==="All"?projects:projects.filter(p=>p.category===filter),[filter]);
-  const run=(e)=>{e.preventDefault();const c=cmd.trim().toLowerCase();const answers={help:"Commands: about · skills · projects · contact · clear",about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",contact:"Use the contact links below to connect."};setOutput(c==="clear"?"":answers[c]||`Command not found: ${c}. Type help.`);setCmd("");};
-  return <><PageTransitionVFX/><PortfolioVFX/><CursorTrail/><div className="shell"><div className="glow glow1"/><div className="glow glow2"/>
-    <header className="nav"><a className="brand" href="#home"><span className="brand-mark">S<span>.</span></span><span>P. SENTHIL VELAN<small> / DEVELOPER</small></span></a><button className="mobile" onClick={()=>setMenu(!menu)} aria-label="Toggle menu">{menu?<X/>:<Menu/>}</button><nav className={menu?"links open":"links"}>{[["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]].map(([t,h])=><a key={t} href={h} onClick={()=>setMenu(false)}>{t}</a>)}<a className="nav-cta" href="#contact">Let's talk <ArrowUpRight size={15}/></a></nav></header>
-    <main>
-      <section className="hero wrap hero-poster" id="home">
-        <div className="hero-topline"><span className="hero-cross">✛</span><span>AI & DATA SCIENCE DEVELOPER</span><i></i><span className="hero-location">✛ &nbsp; TRICHY, INDIA</span></div>
-        <div className="hero-title-art" aria-label="P. Senthil Velan"><span className="hero-title-white">P.</span><span className="hero-title-red">SENTHIL</span><span className="hero-title-white">VELAN</span></div>
-        <div className="hero-core">
-          <div className="hero-copy">
-            <p className="hero-hello">Hey, I'm</p><h1>P. <em>SENTHIL</em> VELAN <span>—</span></h1>
-            <p className="lead">An AI & Data Science developer exploring the space between machine intelligence and human-centered software.</p>
-            <div className="actions"><a className="btn primary" href="#projects">Explore my work <ArrowUpRight size={17}/></a><a className="btn ghost" href="#contact">Get in touch <ArrowUpRight size={16}/></a></div>
-            <div className="hero-current"><b>●</b> CURRENTLY EXPLORING<br/><span>AI &nbsp; | &nbsp; COMPUTER VISION &nbsp; | &nbsp; FULL STACK</span></div>
-          </div>
-          <div className="hero-person" aria-label="Portrait area">
-            <div className="hero-orbit orbit-one"></div><div className="hero-orbit orbit-two"></div><div className="hero-sparks">✦<span>✛</span>·<b>✦</b></div>
-            <div className="hero-person-glow"></div><img className="hero-real-portrait" src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind"/><div className="hero-handwriting">Build<br/>Learn<br/>Iterate<br/>Grow...</div>
-          </div>
-          
+/* ---------- small building blocks ---------- */
+function Scene({ id, theme, index, className = "", children }) {
+  return (
+    <section id={id} className={`scene ${className}`} data-theme={theme} style={{ zIndex: index + 1 }}>
+      <div className="scene-inner">{children}</div>
+    </section>
+  );
+}
+
+function Letters({ text, base = 0 }) {
+  return [...text].map((c, i) => (
+    <span className="ch" key={i} style={{ "--i": base + i }}>{c}</span>
+  ));
+}
+
+function Words({ text, start = 0, step = 0.07, className = "" }) {
+  return text.split(" ").map((w, i) => (
+    <span key={i} className={`w ${className}`} style={{ "--k": (start + i * step).toFixed(2) }}>{w}&nbsp;</span>
+  ));
+}
+
+function Label({ n, children }) {
+  return <div className="label"><b>{n}</b> / {children}</div>;
+}
+
+/* ---------- hero ---------- */
+function Hero() {
+  return (
+    <Scene id="home" theme="dark" index={0} className="hero-scene">
+      <div className="hero">
+        <div className="hero-top">
+          <span>✛ &nbsp;AI & Data Science developer</span>
+          <span>Trichy, India &nbsp;✛</span>
         </div>
-        <a className="hero-scroll" href="#about"><span>▯</span> SCROLL<br/> TO EXPLORE ↓</a><div className="hero-footer"><span>01 &nbsp; / &nbsp; PORTFOLIO</span><i></i><small>AVAILABLE FOR<br/> INTERNSHIPS &nbsp; | &nbsp; OPPORTUNITIES</small></div>
-      </section>
-      <div className="ticker"><div className="ticker-track"><span>CURIOUS BY DEFAULT</span><i>✳</i><span>BUILT WITH INTENTION</span><i>✳</i><span>ALWAYS ITERATING</span><i>✳</i><span>CODE WITH PURPOSE</span><i>✳</i><span>CURIOUS BY DEFAULT</span><i>✳</i><span>BUILT WITH INTENTION</span><i>✳</i><span>ALWAYS ITERATING</span><i>✳</i><span>CODE WITH PURPOSE</span><i>✳</i></div></div>
-      <section className="section wrap" id="about"><div className="section-label">01 / ABOUT <span/></div><div className="about-grid"><h2>Tech is the tool.<br/><em>Impact is the point.</em></h2><div className="about-copy"><p>I'm a final-year B.Tech student specializing in <strong>Artificial Intelligence & Data Science</strong> at CARE College of Engineering, Trichy. I enjoy turning complex ideas into practical prototypes — from computer vision models to web apps and privacy-aware AI systems.</p><p>I'm continually improving my skills across machine learning, full-stack development, and responsible AI. I believe in learning by building, testing, and iterating.</p><a className="textlink" href="#contact">Let's connect <ArrowUpRight size={16}/></a></div></div><div className="stats"><div><b>AI<span>+</span></b><small>Curiosity-led learning</small></div><div><b>01</b><small>Builder mindset</small></div><div><b>∞</b><small>Things left to explore</small></div><div className="stat-note">↳ &nbsp;Small steps.<br/> &nbsp;&nbsp;&nbsp;Real progress.</div></div></section>
-
-      <section className="section wrap experience-section" id="experience"><div className="section-label">02 / FIELD NOTES <span/> <small>INTERNSHIPS & PRACTICE</small></div><div className="mixed-intro"><h2>Learning by<br/><em>making things.</em></h2><p>Different rooms, different problems. Every experience adds another layer to how I build.</p><span className="marker-scribble">KEEP<br/>MAKING ↗</span></div><div className="experience-grid"><article className="experience-card paper-card"><div className="paper-tape"></div><div className="exp-index">FIELD NOTE / 01</div><div className="exp-stamp">WEB<br/>DEV</div><h3>Aerialroot<br/>Infotech</h3><p className="exp-role">Web Development Intern</p><p>Worked through practical web development tasks and learned how real project requirements shape interfaces and implementation.</p><div className="exp-bottom"><span>JUN — JUL 2025</span><b>01 / 03</b></div></article><article className="experience-card red-card"><div className="exp-index">FIELD NOTE / 02</div><div className="exp-stamp">CLOUD<br/>LAB</div><h3>CodeAlpha</h3><p className="exp-role">Cloud Computing Intern</p><p>Explored cloud computing concepts and project-based work through a virtual internship programme.</p><div className="exp-bottom"><span>SEP — OCT 2026</span><b>02 / 03</b></div></article><article className="experience-card photo-card"><div className="exp-index">FIELD NOTE / 03</div><div className="exp-stamp">IOT<br/>SYSTEM</div><h3>FIREGUARD</h3><p className="exp-role">IoT System / Lab Project</p><p>Hands-on work around an IoT system, bringing hardware, software, and practical debugging together.</p><div className="exp-bottom"><span>JUN — AUG 2026</span><b>03 / 03</b></div></article></div><div className="handwritten-note">not just certificates — things learned, things built, things still in progress.</div></section>
-      <section className="section wrap" id="projects"><div className="section-label">02 / SELECTED WORK <span/> <small>01—11</small></div><div className="heading-row"><h2>Things I've been<br/><em>working on.</em></h2><p>A collection of experiments, prototypes, and ideas. Some are in progress — that's where the interesting stuff happens.</p></div><div className="filters">{filters.map(f=><button key={f} className={filter===f?"active":""} onClick={()=>setFilter(f)}>{f}</button>)}</div><div className="project-grid">{shown.map(p=><article className={`project tone-${p.tone}`} key={p.n}><div className="project-top"><small>PROJECT / {p.n}</small><span>{p.symbol}</span></div><div className="visual"><i/><i/><b>{p.symbol}</b><small>{p.category.toUpperCase()}</small></div><div className="project-body"><div className="status">● &nbsp;{p.status}</div><h3>{p.title}</h3><p>{p.desc}</p><div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div><a href={p.url} target="_blank" rel="noreferrer">Explore project repositories <ArrowUpRight size={15}/></a></div></article>)}</div><div className="more">MORE EXPERIMENTS COMING SOON <span>↘</span></div></section>
-      <section className="section wrap" id="skills"><div className="section-label">03 / TOOLKIT <span/></div><div className="heading-row"><h2>Tools of the<br/><em>trade.</em></h2><p>Technologies I use, learn, and reach for when an idea needs to become real.</p></div><div className="skill-layout"><div className="skill-card"><Layers3 size={26}/><small>MY TOOLKIT / 2026</small><h3>Learn it.<br/>Build with it.<br/><em>Make it useful.</em></h3><div>STACK STATUS <b>● EVOLVING</b></div></div><div className="skill-list">{skills.map(([group,items])=><div className="skill-row" key={group}><small>{group}</small><div>{items.map(s=><span key={s}>{s}<ChevronRight size={12}/></span>)}</div></div>)}</div></div></section>
-      <section className="section wrap"><div className="section-label">04 / A LITTLE INTERACTION <span/></div><div className="terminal"><div className="term-head"><span>● ● ●</span><small><Terminal size={13}/> senthil@portfolio — interactive shell</small><i>LOCAL SIMULATION</i></div><div className="term-body"><p className="comment"># Hey there. Take the terminal for a spin.</p><p><b>➜</b> <em>~</em> &nbsp;whoami</p><p className="muted">AI & Data Science student · builder · lifelong learner</p><p><b>➜</b> <em>~</em> &nbsp;echo $MOTTO</p><p className="muted">"Stay curious. Ship useful things."</p><p className="response">{output}</p><form onSubmit={run}><b>➜</b><input value={cmd} onChange={e=>setCmd(e.target.value)} placeholder="try help and press Enter..." aria-label="Terminal command"/><button aria-label="Run command"><Send size={15}/></button></form><div className="cmds">{["help","about","skills","projects","contact","clear"].map(c=><button key={c} onClick={()=>{setCmd(c);if(c==="clear")setOutput("");else setOutput(({help:"Commands: about · skills · projects · contact · clear",about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",contact:"Use the contact links below to connect."})[c])}}>{c}</button>)}</div></div></div></section>
-      <section className="section wrap contact" id="contact"><div className="section-label">05 / YOUR TURN <span/></div><div className="contact-panel"><div className="contact-content"><small>● OPEN TO INTERNSHIPS & COLLABORATIONS</small><h2>Got an idea?<br/><b>Let's make it real.</b></h2><p>Have a project, opportunity, or just want to talk tech? I'd love to hear from you.</p><a className="btn primary" href="mailto:senthilvelanprabakaran@gmail.com?subject=Let's%20connect">Say hello <Mail size={16}/></a><small className="hint">Reach out for internships, collaborations, and AI projects.</small></div><div className="code-art">const future = <b>"build"</b>;<br/>future.<b>ship</b>(); <span>_</span></div></div><footer><a className="brand" href="#home"><span className="brand-mark">S<span>.</span></span><span>P. SENTHIL VELAN<small> / DEVELOPER</small></span></a><small>DESIGNED TO KEEP EVOLVING · © {new Date().getFullYear()}</small><div className="social"><a href="https://github.com/senthilvelanprabakaran-alt" aria-label="GitHub"><Github size={17}/></a><a href="https://www.linkedin.com/in/senthil-velan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17}/></a><a href="mailto:senthilvelanprabakaran@gmail.com" aria-label="Email"><Mail size={17}/></a></div></footer></section>
-    </main>
-  </div></>
+        <div className="hero-disc" aria-hidden="true" />
+        <h1 className="hero-title" aria-label="P. Senthil Velan">
+          <span className="ht-line" aria-hidden="true"><Letters text="SENTHIL" /></span>
+          <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={7} /></span>
+        </h1>
+        <div className="hero-portrait">
+          <img src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
+        </div>
+        <div className="hero-bottom">
+          <div className="hero-lead">
+            <p>An AI & Data Science developer exploring the space between machine intelligence and human-centered software.</p>
+            <div className="actions">
+              <a className="btn primary" href="#projects">Explore my work <ArrowUpRight size={17} /></a>
+              <a className="btn ghost" href="#contact">Get in touch</a>
+            </div>
+          </div>
+          <div className="badges">
+            <div className="badge"><b>11</b><small>projects in the lab</small></div>
+            <div className="badge"><b>03</b><small>field notes</small></div>
+            <div className="badge"><b>∞</b><small>things to explore</small></div>
+          </div>
+        </div>
+        <div className="ticker" aria-hidden="true">
+          <div className="ticker-track">
+            {[0, 1, 2, 3].flatMap((c) => tickerItems.map((t) => (
+              <React.Fragment key={`${c}-${t}`}><span>{t}</span><i>✳</i></React.Fragment>
+            )))}
+          </div>
+        </div>
+      </div>
+    </Scene>
+  );
 }
-createRoot(document.getElementById("root")).render(<React.StrictMode><App/></React.StrictMode>);
+
+/* ---------- about (light) ---------- */
+function About() {
+  return (
+    <Scene id="about" theme="light" index={1}>
+      <Label n="01">About</Label>
+      <div className="about-grid">
+        <h2 className="display about-h">
+          <Words text="Tech is the tool." start={0.1} />
+          <br />
+          <Words text="Impact is the point." start={0.35} className="red" />
+        </h2>
+        <div className="about-copy rv" style={{ "--k": 0.6 }}>
+          <p>I'm a final-year B.Tech student specializing in <strong>Artificial Intelligence & Data Science</strong> at CARE College of Engineering, Trichy. I enjoy turning complex ideas into practical prototypes — from computer vision models to web apps and privacy-aware AI systems.</p>
+          <p>I'm continually improving my skills across machine learning, full-stack development, and responsible AI. I believe in learning by building, testing, and iterating.</p>
+          <a className="textlink" href="#contact">Let's connect <ArrowUpRight size={16} /></a>
+        </div>
+      </div>
+      <div className="mini-stats rv" style={{ "--k": 0.75 }}>
+        <div><b>AI<span>+</span></b><small>Curiosity-led learning</small></div>
+        <div><b>01</b><small>Builder mindset</small></div>
+        <div><b>∞</b><small>Things left to explore</small></div>
+      </div>
+    </Scene>
+  );
+}
+
+/* ---------- experience (dark) ---------- */
+function Experience() {
+  return (
+    <Scene id="experience" theme="dark" index={2}>
+      <Label n="02">Field notes — internships & practice</Label>
+      <div className="split-head rv" style={{ "--k": 0.05 }}>
+        <h2 className="display h2">Learning by <span className="red">making things.</span></h2>
+        <p>Different rooms, different problems. Every experience adds another layer to how I build.</p>
+      </div>
+      <div className="xp-grid">
+        {experience.map((x, i) => (
+          <article key={x.title} className={`xcard ${x.tone}`} style={{ "--k": 0.2 + i * 0.12, "--r": x.rot }}>
+            <div className="stamp">{x.stamp.map((l) => <span key={l}>{l}</span>)}</div>
+            <small className="xnum">FIELD NOTE / 0{i + 1}</small>
+            <h3>{x.title}</h3>
+            <p className="role">{x.role}</p>
+            <p className="desc">{x.desc}</p>
+            <div className="meta"><span>{x.date}</span><b>0{i + 1} / 03</b></div>
+          </article>
+        ))}
+      </div>
+      <p className="note rv" style={{ "--k": 0.6 }}>not just certificates — things learned, things built, things still in progress.</p>
+    </Scene>
+  );
+}
+
+/* ---------- projects (light) ---------- */
+function Projects() {
+  const [active, setActive] = useState(0);
+  const n = projects.length;
+  const p = projects[active];
+  const prev = projects[(active - 1 + n) % n];
+  const next = projects[(active + 1) % n];
+  const go = (d) => setActive((a) => (a + d + n) % n);
+  return (
+    <Scene id="projects" theme="light" index={3}>
+      <Label n="03">Selected work <span>01—11</span></Label>
+      <div className="split-head rv" style={{ "--k": 0.05 }}>
+        <h2 className="display h2">Things I've been <span className="red">working on.</span></h2>
+        <p>A collection of experiments, prototypes, and ideas. Some are in progress — that's where the interesting stuff happens.</p>
+      </div>
+      <div className="proj-stage rv" style={{ "--k": 0.25 }}>
+        <button className="side" onClick={() => go(-1)} aria-label={`Previous project: ${prev.title}`}>
+          <small>{prev.n}</small><b>{prev.symbol}</b><span>{prev.title}</span>
+        </button>
+        <div className="phone">
+          <div className="screen" key={p.n} style={{ "--tone": toneColor[p.tone] }}>
+            <div className="screen-top"><small>PROJECT / {p.n}</small><span>● {p.status}</span></div>
+            <div className="screen-art"><b>{p.symbol}</b><small>{p.category.toUpperCase()}</small></div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+            <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
+            <a className="screen-link" href={p.url} target="_blank" rel="noreferrer">View repository <ArrowUpRight size={15} /></a>
+          </div>
+        </div>
+        <button className="side" onClick={() => go(1)} aria-label={`Next project: ${next.title}`}>
+          <small>{next.n}</small><b>{next.symbol}</b><span>{next.title}</span>
+        </button>
+      </div>
+      <div className="proj-nav rv" style={{ "--k": 0.4 }}>
+        <button className="circle" onClick={() => go(-1)} aria-label="Previous project"><ChevronLeft size={18} /></button>
+        <div className="proj-dots">
+          {projects.map((q, i) => (
+            <button key={q.n} className={i === active ? "on" : ""} onClick={() => setActive(i)} aria-label={q.title}>{q.n}</button>
+          ))}
+        </div>
+        <button className="circle" onClick={() => go(1)} aria-label="Next project"><ChevronRight size={18} /></button>
+      </div>
+    </Scene>
+  );
+}
+
+/* ---------- skills (dark) ---------- */
+function Skills() {
+  return (
+    <Scene id="skills" theme="dark" index={4}>
+      <Label n="04">Toolkit</Label>
+      <div className="skills-grid">
+        <div className="rv" style={{ "--k": 0.05 }}>
+          <h2 className="display h1">Tools of the <span className="red">trade.</span></h2>
+          <p className="muted">Technologies I use, learn, and reach for when an idea needs to become real.</p>
+          <div className="toolkit-card">
+            <Layers3 size={26} />
+            <small>MY TOOLKIT / 2026</small>
+            <h3>Learn it. Build with it. <em>Make it useful.</em></h3>
+            <div>STACK STATUS <b>● EVOLVING</b></div>
+          </div>
+        </div>
+        <div className="skill-list">
+          {skills.map(([group, items], i) => (
+            <div className="skill-row" key={group} style={{ "--k": 0.2 + i * 0.12 }}>
+              <small>{group}</small>
+              <div className="chips">{items.map((s) => <span key={s}>{s}</span>)}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Scene>
+  );
+}
+
+/* ---------- terminal (light) ---------- */
+function Terminal_() {
+  const [cmd, setCmd] = useState("");
+  const [output, setOutput] = useState("Welcome! Type help to explore.");
+  const run = (e) => {
+    e.preventDefault();
+    const c = cmd.trim().toLowerCase();
+    setOutput(c === "clear" ? "" : answers[c] || `Command not found: ${c}. Type help.`);
+    setCmd("");
+  };
+  const quick = (c) => { setCmd(c); setOutput(c === "clear" ? "" : answers[c]); };
+  return (
+    <Scene id="terminal" theme="light" index={5}>
+      <Label n="05">A little interaction</Label>
+      <h2 className="display h2 rv" style={{ "--k": 0.05 }}>Take the terminal <span className="red">for a spin.</span></h2>
+      <div className="term rv" style={{ "--k": 0.2 }}>
+        <div className="term-head"><span>● ● ●</span><small><Terminal size={13} /> senthil@portfolio — interactive shell</small><i>LOCAL SIMULATION</i></div>
+        <div className="term-body">
+          <p className="comment"># Hey there. Take the terminal for a spin.</p>
+          <p><b>➜</b> <em>~</em> &nbsp;whoami</p>
+          <p className="muted">AI & Data Science student · builder · lifelong learner</p>
+          <p><b>➜</b> <em>~</em> &nbsp;echo $MOTTO</p>
+          <p className="muted">"Stay curious. Ship useful things."</p>
+          <p className="response">{output}</p>
+          <form onSubmit={run}>
+            <b>➜</b>
+            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="try help and press Enter..." aria-label="Terminal command" />
+            <button aria-label="Run command"><Send size={15} /></button>
+          </form>
+          <div className="cmds">{["help", "about", "skills", "projects", "contact", "clear"].map((c) => (
+            <button key={c} onClick={() => quick(c)}>{c}</button>
+          ))}</div>
+        </div>
+      </div>
+    </Scene>
+  );
+}
+
+/* ---------- contact + footer (dark) ---------- */
+function Contact() {
+  return (
+    <Scene id="contact" theme="dark" index={6}>
+      <Label n="06">Your turn</Label>
+      <div className="contact-grid">
+        <div className="rv" style={{ "--k": 0.05 }}>
+          <small className="status">OPEN TO INTERNSHIPS & COLLABORATIONS</small>
+          <h2 className="display contact-h">Got an idea?<br /><span className="red">Let's make it real.</span></h2>
+          <p className="muted">Have a project, opportunity, or just want to talk tech? I'd love to hear from you.</p>
+          <div className="actions">
+            <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
+          </div>
+        </div>
+        <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
+          <div className="disc-red" />
+          <img src="/senthil-profile.png" alt="" />
+        </div>
+      </div>
+      <footer className="footer">
+        <span className="brand"><span className="brand-mark">S<i>.</i></span><span>P. Senthil Velan<small>/ Developer</small></span></span>
+        <small>Designed to keep evolving · © {new Date().getFullYear()}</small>
+        <div className="social">
+          <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
+          <a href="https://www.linkedin.com/in/senthil-velan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
+          <a href={`mailto:${EMAIL}`} aria-label="Email"><Mail size={17} /></a>
+        </div>
+      </footer>
+    </Scene>
+  );
+}
+
+/* ---------- app ---------- */
+function App() {
+  useSceneMotion();
+  const [menu, setMenu] = useState(false);
+  return (
+    <>
+      <CursorTrail />
+      <header className="nav">
+        <a className="brand" href="#home">
+          <span className="brand-mark">S<i>.</i></span>
+          <span>P. Senthil Velan<small>/ Developer</small></span>
+        </a>
+        <button className="mobile" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
+        <nav className={menu ? "links open" : "links"}>
+          {links.map(([t, h]) => <a key={t} href={h} onClick={() => setMenu(false)}>{t}</a>)}
+          <a className="nav-cta" href="#contact" onClick={() => setMenu(false)}>Let's talk <ArrowUpRight size={15} /></a>
+        </nav>
+      </header>
+      <main>
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Terminal_ />
+        <Contact />
+      </main>
+    </>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<React.StrictMode><App /></React.StrictMode>);
