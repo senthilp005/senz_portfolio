@@ -369,6 +369,16 @@ function Contact() {
           <img src="/senthil-profile.png" alt="" />
         </div>
       </div>
+      <div className="endcard-line rv" style={{ "--k": 0.32 }}>
+        <div className="endcard-copy">
+          <small>EPILOGUE / 05</small>
+          <h3>TO BE <span className="red">CONTINUED.</span></h3>
+        </div>
+        <a className="back-to-start" href="#home" aria-label="Back to the beginning">
+          <span>Back to the beginning</span>
+          <ArrowUpRight size={17} />
+        </a>
+      </div>
       <footer className="footer">
         <span className="brand"><span className="brand-mark">S<i>.</i></span><span>P. Senthil Velan<small>/ Developer</small></span></span>
         <small>Designed to keep evolving · © {new Date().getFullYear()}</small>

@@ -1630,3 +1630,72 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     transition: none !important;
   }
 }
+
+
+/* Final end-card beat — episode 05: To Be Continued. */
+.endcard-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  width: 100%;
+  padding: 13px 0 17px;
+  border-top: 1px solid rgba(244, 242, 238, .14);
+}
+.endcard-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: clamp(42px, 8vw, 108px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), rgba(228, 32, 44, 0));
+  box-shadow: 0 0 14px rgba(228, 32, 44, .6);
+}
+.endcard-copy { min-width: 0; }
+.endcard-copy small {
+  display: block;
+  margin-bottom: 5px;
+  color: #a3a5ae;
+  font: 500 9px/1.2 var(--mono);
+  letter-spacing: .2em;
+}
+.endcard-copy h3 {
+  font: 400 clamp(24px, 3.8vw, 44px)/.92 var(--display);
+  letter-spacing: .015em;
+  color: var(--paper);
+}
+.back-to-start {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid rgba(244, 242, 238, .3);
+  border-radius: 999px;
+  color: var(--paper);
+  font: 600 10px/1.2 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color .25s ease, background .25s ease, border-color .25s ease, translate .25s var(--ease), box-shadow .25s ease;
+}
+.back-to-start svg { color: var(--red); transition: transform .25s var(--ease); }
+.back-to-start:hover {
+  color: #fff;
+  border-color: var(--red);
+  background: rgba(228, 32, 44, .1);
+  box-shadow: 0 0 24px rgba(228, 32, 44, .12);
+  translate: 0 -2px;
+}
+.back-to-start:hover svg { transform: translate(3px, -3px); }
+@media (max-width: 620px) {
+  .endcard-line { align-items: flex-start; flex-direction: column; gap: 14px; padding: 18px 0; }
+  .endcard-copy h3 { font-size: clamp(28px, 8vw, 40px); }
+  .back-to-start { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-start, .back-to-start svg { transition: none !important; }
+}
