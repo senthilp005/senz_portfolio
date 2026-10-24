@@ -65,16 +65,21 @@ function useSceneMotion() {
     const update = () => {
       raf = 0;
       const vh = window.innerHeight;
-      const live = stacked.matches && !reduce.matches;
+      const useStacked = stacked.matches;
+      const motionAllowed = !reduce.matches;
       scenes.forEach((scene, i) => {
-        if (!live) {
+        if (!motionAllowed) {
           scene.style.setProperty("--enter", "1");
           scene.style.setProperty("--cover", "0");
           return;
         }
+        // Flowing layouts animate a section as its top travels through the viewport.
+        // Stacked desktop uses the same reveal curve plus the existing cover choreography.
         const enter = clamp01((vh - scene.getBoundingClientRect().top) / vh);
         const next = scenes[i + 1];
-        const cover = next ? clamp01((vh - next.getBoundingClientRect().top) / vh) : 0;
+        const cover = useStacked && next
+          ? clamp01((vh - next.getBoundingClientRect().top) / vh)
+          : 0;
         scene.style.setProperty("--enter", enter.toFixed(3));
         scene.style.setProperty("--cover", cover.toFixed(3));
       });
