@@ -425,12 +425,62 @@ function Contact() {
           </div>
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
+          <div className="contact-atmosphere" />
           <div className="disc-red" />
-          <div className="contact-vfx-orbit contact-vfx-orbit--outer" aria-hidden="true"><i /></div>
-          <div className="contact-vfx-orbit contact-vfx-orbit--inner" aria-hidden="true"><i /></div>
-          <div className="contact-vfx-orbit contact-vfx-orbit--energy" aria-hidden="true"><i /></div>
+          <div className="contact-portal-rim" />
+          <svg className="contact-orbit contact-orbit--rear" viewBox="0 0 600 600" focusable="false">
+            <defs>
+              <filter id="contactGlowRear" x="-35%" y="-35%" width="170%" height="170%">
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+              <linearGradient id="contactOrbitRed" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff6570" stopOpacity=".15" />
+                <stop offset="34%" stopColor="#e91e32" stopOpacity=".92" />
+                <stop offset="62%" stopColor="#ffb7b9" stopOpacity=".6" />
+                <stop offset="100%" stopColor="#d70e24" stopOpacity=".15" />
+              </linearGradient>
+            </defs>
+            <g fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <path className="orbit-trace orbit-trace--fine" d="M74 190 C120 57 307 6 444 70 C562 126 603 267 522 384 C447 492 285 545 157 489 C37 437 7 299 74 190Z" />
+              <path className="orbit-trace orbit-trace--red" d="M20 333 C71 203 245 111 401 144 C539 173 598 291 504 386 C405 486 194 495 83 411 C28 369 41 309 112 257" />
+              <path className="orbit-trace orbit-trace--fine" d="M93 150 C187 84 353 88 472 174 C549 230 543 327 454 392 C339 477 153 450 83 355 C37 292 54 206 93 150Z" />
+              <path className="orbit-trace orbit-trace--red orbit-trace--dashed" d="M38 254 C105 116 302 69 455 161 C568 228 563 366 441 429 C323 490 135 451 74 350" />
+              <path className="orbit-trace orbit-trace--thin-white" filter="url(#contactGlowRear)" d="M58 388 C93 269 223 159 372 154 C483 151 550 228 514 307" />
+              <path className="orbit-trace orbit-trace--thin-white" d="M130 99 C242 43 405 90 496 204 C547 267 524 335 467 382" />
+              <path className="orbit-trace orbit-trace--fine" d="M46 300 C130 190 295 146 450 218 C510 246 525 298 489 341" />
+            </g>
+            <g className="contact-orbit-points">
+              <circle cx="94" cy="139" r="3.2" /><circle cx="486" cy="164" r="4.1" />
+              <circle cx="542" cy="341" r="2.5" /><circle cx="113" cy="448" r="3.7" />
+              <circle cx="53" cy="309" r="2.4" /><circle cx="428" cy="85" r="2.8" />
+            </g>
+          </svg>
           <img src="/senthil-profile.webp" alt="" />
-          <div className="contact-vfx-foreground" aria-hidden="true"><i /></div>
+          <svg className="contact-orbit contact-orbit--front" viewBox="0 0 600 600" focusable="false">
+            <defs>
+              <filter id="contactGlowFront" x="-45%" y="-45%" width="190%" height="190%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+              <linearGradient id="contactOrbitHot" x1="0%" y1="0%" x2="100%" y2="20%">
+                <stop offset="0%" stopColor="#fff" stopOpacity="0" /><stop offset="16%" stopColor="#fff" stopOpacity=".92" />
+                <stop offset="52%" stopColor="#fff" stopOpacity="1" /><stop offset="80%" stopColor="#ff6b75" stopOpacity=".94" />
+                <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <g fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <path className="orbit-trace orbit-trace--glow" d="M17 399 C88 328 214 254 352 194 C449 152 516 153 523 183 C531 216 435 264 354 309 C234 375 104 435 55 433 C29 432 17 419 17 399Z" />
+              <path className="orbit-trace orbit-trace--hot" filter="url(#contactGlowFront)" d="M17 399 C88 328 214 254 352 194 C449 152 516 153 523 183 C531 216 435 264 354 309 C234 375 104 435 55 433 C29 432 17 419 17 399Z" />
+              <path className="orbit-trace orbit-trace--glow" d="M72 450 C158 514 323 492 456 405 C511 369 548 332 540 306" />
+              <path className="orbit-trace orbit-trace--hot orbit-trace--moving" d="M72 450 C158 514 323 492 456 405 C511 369 548 332 540 306" />
+              <path className="orbit-trace orbit-trace--white-secondary" d="M76 283 C158 210 272 166 380 144 C455 128 503 146 516 169" />
+              <path className="orbit-trace orbit-trace--red orbit-trace--dashed" d="M53 360 C153 282 302 210 437 190 C499 181 527 205 498 233" />
+            </g>
+            <g className="contact-orbit-points contact-orbit-points--hot">
+              <circle cx="519" cy="183" r="5" /><circle cx="72" cy="450" r="4" /><circle cx="540" cy="306" r="3.4" />
+            </g>
+          </svg>
         </div>
       </div>
       <div className="endcard-line rv" style={{ "--k": 0.32 }}>
