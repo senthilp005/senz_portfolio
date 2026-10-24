@@ -442,7 +442,7 @@ function Contact() {
         </a>
       </div>
       <footer className="footer">
-        <span className="brand"><span className="brand-mark">S<i>.</i></span><span>P. Senthil Velan<small>/ Developer</small></span></span>
+        <span className="brand"><img className="brand-icon" src="/sv-norse.svg" alt="" aria-hidden="true" /><span>P. Senthil Velan<small>/ Developer</small></span></span>
         <small>Designed to keep evolving · © {new Date().getFullYear()}</small>
         <div className="social">
           <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
@@ -480,7 +480,7 @@ function App() {
       <CursorTrail />
       <header className="nav">
         <a className="brand" href="#home">
-          <span className="brand-mark">S<i>.</i></span>
+          <img className="brand-icon" src="/sv-norse.svg" alt="" aria-hidden="true" />
           <span>P. Senthil Velan<small>/ Developer</small></span>
         </a>
         <button className="mobile" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
