@@ -2655,7 +2655,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 .contact-scene .brand-icon,
 .nav .brand-icon {
-  filter: hue-rotate(128deg) saturate(1.5) contrast(1.08);
+  filter: hue-rotate(180deg) saturate(1.5) contrast(1.08);
 }
 
 @media (max-width: 1099px) {
