@@ -149,7 +149,11 @@ function Hero() {
           <span>✛ &nbsp;AI & Data Science developer</span>
           <span>Trichy, India &nbsp;✛</span>
         </div>
-        <div className="hero-disc" aria-hidden="true"><div className="disc-orbit"><span /></div></div>
+        <div className="hero-disc" aria-hidden="true">
+          <div className="disc-orbit disc-orbit--primary"><span /></div>
+          <div className="disc-orbit disc-orbit--secondary"><i /></div>
+          <div className="disc-orbit disc-orbit--tertiary"><b /></div>
+        </div>
         <h1 className="hero-title" aria-label="P. Senthil Velan">
           <span className="ht-line" aria-hidden="true"><Letters text="P. SENTHIL" /></span>
           <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={10} /></span>
