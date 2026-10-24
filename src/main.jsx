@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Layers3, Mail, Menu, Send, Terminal, X } from "lucide-react";
 import CursorTrail from "./CursorTrail.jsx";
 import PortfolioVFX from "./PortfolioVFX.jsx";
+import { Opening, ProjectModal, ProjectGrid } from "./Extras.jsx";
 import "./styles.css";
 
 const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.7 1.4a12.8 12.8 0 0 0-6.8 0C5.7 1.1 4.5 1.5 4.5 1.5a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 3 8.7c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.7V22"/></svg>;
@@ -68,7 +69,10 @@ function useSceneMotion() {
       const live = stacked.matches && !reduce.matches;
       scenes.forEach((scene, i) => {
         if (!live) {
-          scene.style.setProperty("--enter", "1");
+          // flowing layout: each section reveals as it scrolls into view
+          const top = scene.getBoundingClientRect().top;
+          const flowEnter = reduce.matches ? 1 : clamp01((vh - top) / (vh * 0.7));
+          scene.style.setProperty("--enter", flowEnter.toFixed(3));
           scene.style.setProperty("--cover", "0");
           return;
         }
@@ -150,7 +154,7 @@ function Hero() {
           <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={10} /></span>
         </h1>
         <div className="hero-portrait">
-          <img src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
+          <img src="/senthil-profile.webp" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
         </div>
         <div className="hero-bottom">
           <div className="hero-lead">
@@ -231,7 +235,7 @@ function Experience() {
 }
 
 /* ---------- projects (light) ---------- */
-function Projects() {
+function Projects({ onOpen }) {
   const [active, setActive] = useState(0);
   const n = projects.length;
   const p = projects[active];
@@ -256,7 +260,7 @@ function Projects() {
             <h3>{p.title}</h3>
             <p>{p.desc}</p>
             <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
-            <a className="screen-link" href={p.url} target="_blank" rel="noreferrer">View repository <ArrowUpRight size={15} /></a>
+            <button className="screen-link" onClick={() => onOpen(p)}>View details <ArrowUpRight size={15} /></button>
           </div>
         </div>
         <button className="side" onClick={() => go(1)} aria-label={`Next project: ${next.title}`}>
@@ -276,10 +280,24 @@ function Projects() {
   );
 }
 
+/* ---------- all eleven projects as cards (light) ---------- */
+function Works({ onOpen }) {
+  return (
+    <Scene id="works" theme="light" index={4}>
+      <Label n="03">All eleven projects</Label>
+      <div className="split-head rv" style={{ "--k": 0.05 }}>
+        <h2 className="display h2">Every <span className="red">experiment.</span></h2>
+        <p>Each card opens its own details. Tap any project to read more.</p>
+      </div>
+      <ProjectGrid projects={projects} toneColor={toneColor} onOpen={onOpen} />
+    </Scene>
+  );
+}
+
 /* ---------- skills (dark) ---------- */
 function Skills() {
   return (
-    <Scene id="skills" theme="dark" index={4}>
+    <Scene id="skills" theme="dark" index={5}>
       <Label n="04">Toolkit</Label>
       <div className="skills-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
@@ -317,7 +335,7 @@ function Terminal_() {
   };
   const quick = (c) => { setCmd(c); setOutput(c === "clear" ? "" : answers[c]); };
   return (
-    <Scene id="terminal" theme="light" index={5}>
+    <Scene id="terminal" theme="light" index={6}>
       <Label n="05">A little interaction</Label>
       <h2 className="display h2 rv" style={{ "--k": 0.05 }}>Take the terminal <span className="red">for a spin.</span></h2>
       <div className="term rv" style={{ "--k": 0.2 }}>
@@ -346,7 +364,7 @@ function Terminal_() {
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="dark" index={6}>
+    <Scene id="contact" theme="dark" index={7}>
       <Label n="06">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
@@ -359,7 +377,7 @@ function Contact() {
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
           <div className="disc-red" />
-          <img src="/senthil-profile.png" alt="" />
+          <img src="/senthil-profile.webp" alt="" />
         </div>
       </div>
       <footer className="footer">
@@ -379,6 +397,34 @@ function Contact() {
 function App() {
   useSceneMotion();
   const [menu, setMenu] = useState(false);
+  const [openProject, setOpenProject] = useState(null);
+  const closeProject = useCallback(() => setOpenProject(null), []);
+  const [active, setActive] = useState("home");
+  // the opening titles play once per session; reduced-motion users skip them
+  const [introOn, setIntroOn] = useState(() => {
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+      return sessionStorage.getItem("intro-seen") !== "1";
+    } catch { return false; }
+  });
+  const finishIntro = useCallback(() => {
+    try { sessionStorage.setItem("intro-seen", "1"); } catch { /* storage blocked: just play once */ }
+    setIntroOn(false);
+  }, []);
+  useEffect(() => {
+    document.body.style.overflow = introOn ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [introOn]);
+  // highlight the nav link for the section currently in the middle of the screen
+  useEffect(() => {
+    const ids = ["about", "experience", "projects", "skills", "contact"];
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
   return (
     <>
       <PortfolioVFX />
@@ -391,7 +437,7 @@ function App() {
         </a>
         <button className="mobile" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
         <nav className={menu ? "links open" : "links"}>
-          {links.map(([t, h]) => <a key={t} href={h} onClick={() => setMenu(false)}>{t}</a>)}
+          {links.map(([t, h]) => <a key={t} href={h} className={active === h.slice(1) ? "is-active" : undefined} onClick={() => setMenu(false)}>{t}</a>)}
           <a className="nav-cta" href="#contact" onClick={() => setMenu(false)}>Let's talk <ArrowUpRight size={15} /></a>
         </nav>
       </header>
@@ -399,11 +445,14 @@ function App() {
         <Hero />
         <About />
         <Experience />
-        <Projects />
+        <Projects onOpen={setOpenProject} />
+        <Works onOpen={setOpenProject} />
         <Skills />
         <Terminal_ />
         <Contact />
       </main>
+      {introOn && <Opening onDone={finishIntro} />}
+      {openProject && <ProjectModal project={openProject} onClose={closeProject} />}
     </>
   );
 }

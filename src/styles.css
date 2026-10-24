@@ -89,6 +89,21 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   overflow: hidden;
   background: var(--bg);
   color: var(--fg);
+  /* each section slides up over the previous one with a rounded edge */
+  border-radius: calc((1 - var(--enter, 1)) * 32px) calc((1 - var(--enter, 1)) * 32px) 0 0;
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, calc((1 - var(--enter, 1)) * 0.6));
+}
+.scene + .scene { margin-top: -32px; }
+/* red bloom that peaks halfway through each wipe */
+.scene::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 42%;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(228, 32, 44, 0.55), transparent 70%);
+  opacity: calc(4 * var(--enter, 1) * (1 - var(--enter, 1)));
+  z-index: 5;
 }
 /* red wipe rule along the leading edge */
 .scene::before {
@@ -683,6 +698,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
    JS (useSceneMotion) uses the same query.
    ============================================================ */
 @media (min-width: 1100px) and (min-height: 720px) {
+  .scene + .scene { margin-top: 0; }
   .scene {
     position: sticky;
     top: 0;
@@ -770,6 +786,158 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .btn:hover svg, .textlink:hover svg { translate: 3px -3px; }
 
 /* ============================================================
+   Opening titles (plays once per session, skippable)
+   ============================================================ */
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.opening-title { position: relative; z-index: 2; text-align: center; display: grid; gap: 14px; justify-items: center; padding: 0 16px; }
+.opening-series { font: 600 12px var(--mono); letter-spacing: 0.4em; color: var(--red); opacity: 0; animation: openFade 0.8s var(--ease) 1.4s both; }
+.opening-name {
+  font: 400 min(13vw, 24vh) / 0.9 var(--display);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.opening-name span { display: inline-block; animation: openRise 1s var(--ease) both; animation-delay: calc(var(--i) * 45ms + 200ms); }
+.opening-role { font: 500 12px var(--mono); letter-spacing: 0.16em; color: #a3a5ae; opacity: 0; animation: openFade 0.8s var(--ease) 2.2s both; }
+.opening-disc {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(60vh, 60vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--red);
+  transform: translate(-50%, -50%) scale(0);
+  animation: openDisc 1s var(--ease) 2.5s forwards;
+  z-index: 1;
+}
+.opening-portrait {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: min(70vh, 640px);
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: openPortrait 1.2s var(--ease) 2.7s forwards;
+  z-index: 3;
+  pointer-events: none;
+}
+.opening-skip {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 242, 238, 0.4);
+  background: rgba(11, 11, 12, 0.6);
+  color: var(--paper);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@keyframes openRise { from { transform: translateY(105%); } }
+@keyframes openFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes openDisc { to { transform: translate(-50%, -50%) scale(1); } }
+@keyframes openPortrait { from { opacity: 0; transform: translate(-50%, 40%); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ============================================================
+   Project detail popup
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  animation: openFade 0.3s ease both;
+}
+.modal {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 88svh;
+  overflow: auto;
+  background: #17171b;
+  color: var(--paper);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 4px solid var(--red);
+  border-radius: 18px;
+  padding: 28px;
+  display: grid;
+  gap: 14px;
+  animation: modalIn 0.5s var(--ease) both;
+}
+@keyframes modalIn { from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.97); } }
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: inherit;
+  display: grid;
+  place-items: center;
+}
+.modal h3 { font: 400 52px/0.92 var(--display); text-transform: uppercase; padding-right: 48px; }
+.modal-kicker { font: 500 11px var(--mono); letter-spacing: 0.14em; color: #a3a5ae; }
+.modal-status { font: 500 12px var(--mono); color: var(--red); }
+.modal-desc { font-size: 16px; line-height: 1.65; color: #cfcdd6; }
+.modal .tags span { color: #cfcdd6; }
+.modal-link { justify-self: start; margin-top: 6px; }
+
+/* ============================================================
+   All-projects grid
+   ============================================================ */
+.pgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 700px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .pgrid { grid-template-columns: repeat(4, 1fr); } }
+.pcard {
+  --tone: var(--red);
+  text-align: left;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 16px;
+  min-height: 170px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--tone);
+  color: var(--fg);
+  transition: translate 0.4s var(--ease), box-shadow 0.4s, border-color 0.3s;
+}
+.pcard:hover { translate: 0 -6px; box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.45); }
+.pcard-top { display: flex; justify-content: space-between; gap: 8px; font: 500 10px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.pcard-symbol { font: 400 40px/1 var(--display); color: var(--tone); }
+.pcard-title { font: 400 24px/1 var(--display); text-transform: uppercase; }
+.pcard-cat { font: 500 10px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.pcard-more { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--body); padding-top: 8px; }
+
+/* ============================================================
+   Nav highlight + keyboard focus
+   ============================================================ */
+.links > a.is-active { border-bottom: 1.5px solid currentColor; padding-bottom: 4px; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+/* ============================================================
    Reduced motion: no scroll choreography, no looping
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -779,4 +947,5 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     scroll-behavior: auto !important;
   }
   .scene { position: relative; height: auto; min-height: 100svh; }
+  .scene + .scene { margin-top: 0; }
 }
