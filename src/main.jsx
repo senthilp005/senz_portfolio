@@ -58,7 +58,7 @@ const links = [["About","#about"],["Experience","#experience"],["Projects","#pro
 function useSceneMotion() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const stacked = window.matchMedia("(min-width: 901px)");
+    const stacked = window.matchMedia("(min-width: 1100px) and (min-height: 720px)");
     const scenes = [...document.querySelectorAll(".scene")];
     const clamp01 = (v) => Math.min(1, Math.max(0, v));
     let raf = 0;
@@ -102,7 +102,7 @@ function Scene({ id, theme, index, className = "", children }) {
 
 function Letters({ text, base = 0 }) {
   return [...text].map((c, i) => (
-    <span className="ch" key={i} style={{ "--i": base + i }}>{c}</span>
+    <span className="ch" key={i} style={{ "--i": base + i }}>{c === " " ? "\u00a0" : c}</span>
   ));
 }
 
@@ -144,10 +144,10 @@ function Hero() {
           <span>✛ &nbsp;AI & Data Science developer</span>
           <span>Trichy, India &nbsp;✛</span>
         </div>
-        <div className="hero-disc" aria-hidden="true" />
+        <div className="hero-disc" aria-hidden="true"><div className="disc-orbit"><span /></div></div>
         <h1 className="hero-title" aria-label="P. Senthil Velan">
-          <span className="ht-line" aria-hidden="true"><Letters text="SENTHIL" /></span>
-          <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={7} /></span>
+          <span className="ht-line" aria-hidden="true"><Letters text="P. SENTHIL" /></span>
+          <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={10} /></span>
         </h1>
         <div className="hero-portrait">
           <img src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
