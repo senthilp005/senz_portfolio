@@ -2895,3 +2895,39 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 @media (prefers-reduced-motion: reduce) {
   .contact-scene .contact-vfx-foreground { animation: none !important; }
 }
+
+
+/* Contact VFX refinement: full elliptical orbit, not twin straight-looking stripes. */
+.contact-scene .contact-vfx-foreground {
+  left: -24% !important;
+  right: -24% !important;
+  top: 12% !important;
+  height: 76% !important;
+  border: 1.5px solid rgba(255, 255, 255, .76) !important;
+  border-top: 2px solid rgba(255, 255, 255, .98) !important;
+  border-bottom: 1.5px solid rgba(255, 255, 255, .88) !important;
+  border-radius: 50% !important;
+  transform: rotate(-28deg) scaleY(.58) !important;
+  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 8px rgba(255,30,45,.95)) !important;
+}
+.contact-scene .contact-vfx-foreground::before {
+  left: 4% !important;
+  right: 4% !important;
+  top: 50% !important;
+  height: 1.5px !important;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.96) 12%, #fff 50%, rgba(255,255,255,.96) 88%, transparent) !important;
+  box-shadow: 0 0 7px rgba(255,255,255,.92), 0 0 16px rgba(242,13,25,.85) !important;
+}
+.contact-scene .contact-vfx-foreground i {
+  right: 12% !important;
+  top: 17% !important;
+}
+@media (max-width: 899px) {
+  .contact-scene .contact-vfx-foreground {
+    left: -18% !important;
+    right: -18% !important;
+    top: 18% !important;
+    height: 66% !important;
+    transform: rotate(-28deg) scaleY(.58) !important;
+  }
+}
