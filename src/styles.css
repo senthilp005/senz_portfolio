@@ -1000,3 +1000,39 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   }
   .scene::after { display: none; }
 }
+
+
+/* ============================================================
+   PROJECTS — let the full 11-card grid flow on desktop.
+   Other cinematic scenes remain sticky; this one needs room
+   for its heading, descriptions, tags, links, and all card rows.
+   ============================================================ */
+@media (min-width: 1100px) and (min-height: 720px) {
+  .projects-scene {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow: visible !important;
+    margin-bottom: -32px;
+  }
+  .projects-scene .scene-inner {
+    height: auto !important;
+    min-height: 100svh !important;
+    max-width: 1280px;
+    padding: 112px 32px 56px !important;
+    display: flex !important;
+    flex-direction: column;
+    gap: 22px;
+    transform: none !important;
+  }
+  .projects-scene .projects-heading {
+    flex: 0 0 auto;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+  }
+  .projects-scene .project-grid {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
