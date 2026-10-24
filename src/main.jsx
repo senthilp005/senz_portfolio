@@ -116,6 +116,25 @@ function Label({ n, children }) {
   return <div className="label"><b>{n}</b> / {children}</div>;
 }
 
+/* counts up once on mount; reduced-motion users get the final value */
+function CountUp({ to, pad = 0 }) {
+  const [v, setV] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setV(to); return; }
+    const start = performance.now() + 500;
+    const dur = 1200;
+    let raf;
+    const tick = (now) => {
+      const t = Math.min(1, Math.max(0, (now - start) / dur));
+      setV(Math.round(to * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to]);
+  return String(v).padStart(pad, "0");
+}
+
 /* ---------- hero ---------- */
 function Hero() {
   return (
@@ -142,8 +161,8 @@ function Hero() {
             </div>
           </div>
           <div className="badges">
-            <div className="badge"><b>11</b><small>projects in the lab</small></div>
-            <div className="badge"><b>03</b><small>field notes</small></div>
+            <div className="badge"><b><CountUp to={11} pad={2} /></b><small>projects in the lab</small></div>
+            <div className="badge"><b><CountUp to={3} pad={2} /></b><small>field notes</small></div>
             <div className="badge"><b>∞</b><small>things to explore</small></div>
           </div>
         </div>
@@ -348,7 +367,7 @@ function Contact() {
         <small>Designed to keep evolving · © {new Date().getFullYear()}</small>
         <div className="social">
           <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
-          <a href="https://www.linkedin.com/in/senthil-velan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
+          <a href="https://www.linkedin.com/in/senthilvelan-prabakaran-486051382/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
           <a href={`mailto:${EMAIL}`} aria-label="Email"><Mail size={17} /></a>
         </div>
       </footer>

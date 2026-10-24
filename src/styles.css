@@ -593,6 +593,28 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   z-index: 5;
 }
 
+/* ---------- liveliness: hover reactions ----------
+   Uses the individual `translate` property so hover never fights the
+   transform-based scroll and reveal animations. */
+.hero-title .ch { transition: color 0.3s, translate 0.45s var(--ease); cursor: default; }
+.hero-title .ch:hover { color: var(--red); translate: 0 -8px; }
+.xcard { transition: translate 0.5s var(--ease), box-shadow 0.5s; }
+.xcard:hover { translate: 0 -8px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
+.chips span { transition: background 0.3s, color 0.3s, border-color 0.3s, translate 0.3s var(--ease); }
+.chips span:hover { background: var(--red); border-color: var(--red); color: #fff; translate: 0 -3px; }
+.proj-dots button { transition: transform 0.3s var(--ease), background 0.3s; }
+.proj-dots button:hover { transform: scale(1.12); }
+.badge b { transition: transform 0.4s var(--ease); }
+.badge:hover b { transform: scale(1.08) rotate(-6deg); }
+.mini-stats > div b { transition: color 0.3s; }
+.mini-stats > div:hover b { color: var(--red); }
+.btn svg, .textlink svg { transition: translate 0.3s var(--ease); }
+.btn:hover svg, .textlink:hover svg { translate: 3px -3px; }
+.screen-link { transition: background 0.3s, color 0.3s; }
+.screen-link:hover { background: var(--red); color: #fff; }
+.social a { transition: border-color 0.3s, color 0.3s, translate 0.3s var(--ease); }
+.social a:hover { translate: 0 -3px; }
+
 /* ---------- reduced motion: no scroll choreography, no looping ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
