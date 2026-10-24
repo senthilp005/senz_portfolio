@@ -40,12 +40,23 @@ const skills = [
   ["Data & Tools",["MySQL","Firebase","Git / GitHub","TensorFlow.js"]]
 ];
 
-const certifications = [
-  "IBM SkillsBuild (AI, RAG)",
-  "HackerRank (Python, Java)",
-  "Coursera (YOLOv8)",
-  "Infosys Springboard (AI, Cyber Security)",
-  "Udemy (Machine Learning)"
+// Every entry opens its page in the certificate files under public/certificates/.
+// Screenshot pages 1-11 and IBM pages 5-6 are the verified uploads.
+const CERT_SHOTS = "/certificates/certificates-screenshots.pdf";
+const CERT_IBM = "/certificates/ibm-certificates.pdf";
+const certificates = [
+  { title:"Data Analysis with Python", issuer:"IBM · cognitiveclass.ai", kind:"Course", date:"29 Jul 2026", file:CERT_SHOTS, page:7 },
+  { title:"Data Analytics Job Simulation", issuer:"Deloitte · Forage", kind:"Job simulation", date:"29 Jul 2026", file:CERT_SHOTS, page:4 },
+  { title:"Operations Industrial Engineer Job Simulation", issuer:"Siemens · Forage", kind:"Job simulation", date:"29 Jul 2026", file:CERT_SHOTS, page:5 },
+  { title:"MongoDB Basics for Students", issuer:"MongoDB · Credly", kind:"Badge", date:"29 Jul 2026", file:CERT_SHOTS, page:6 },
+  { title:"Machine Learning for NLP", issuer:"AWS Academy · Credly", kind:"Badge", date:"29 Jul 2026", file:CERT_SHOTS, page:8 },
+  { title:"AI Tools Workshop", issuer:"be10x · CertX", kind:"Workshop", date:"26 Oct 2025", file:CERT_SHOTS, page:10 },
+  { title:"Python (Basic)", issuer:"HackerRank", kind:"Skill test", date:"15 Jul 2026", file:CERT_SHOTS, page:9 },
+  { title:"Problem Solving (Basic)", issuer:"HackerRank", kind:"Skill test", date:"19 Jul 2026", file:CERT_SHOTS, page:2 },
+  { title:"Java (Basic)", issuer:"HackerRank", kind:"Skill test", date:"05 Aug 2026", file:CERT_SHOTS, page:3 },
+  { title:"SQL (Basic)", issuer:"HackerRank", kind:"Skill test", date:"23 Sep 2026", file:CERT_SHOTS, page:1 },
+  { title:"Build an AI-Powered Document Retrieval System", issuer:"IBM Granite & Docling · Adobe Learning Manager", kind:"Lab", date:"11 Nov 2025", file:CERT_IBM, page:5 },
+  { title:"Build a RAG Pattern with LangChain", issuer:"IBM · Adobe Learning Manager", kind:"Lab", date:"11 Nov 2025", file:CERT_IBM, page:6 },
 ];
 
 const tickerItems = ["Curious by default","Built with intention","Always iterating","Code with purpose"];
@@ -56,7 +67,7 @@ const answers = {
   projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",
   contact:"Use the contact links below to connect."
 };
-const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]];
+const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Certificates","#certificates"],["Contact","#contact"]];
 
 /* ---------- motion engine ----------
    Every .scene is sticky and stacks over the previous one (the red-edged
@@ -325,10 +336,6 @@ function Skills() {
               <div className="chips">{items.map((s) => <span key={s}>{s}</span>)}</div>
             </div>
           ))}
-            <div className="skill-row" style={{ "--k": 0.2 + skills.length * 0.12 }}>
-              <small>Certifications</small>
-              <div className="chips">{certifications.map((c) => <span key={c}>{c}</span>)}</div>
-            </div>
         </div>
       </div>
     </Scene>
@@ -347,8 +354,8 @@ function Terminal_() {
   };
   const quick = (c) => { setCmd(c); setOutput(c === "clear" ? "" : answers[c]); };
   return (
-    <Scene id="terminal" theme="light" index={6}>
-      <Label n="05">A little interaction</Label>
+    <Scene id="terminal" theme="light" index={7}>
+      <Label n="06">A little interaction</Label>
       <h2 className="display h2 rv" style={{ "--k": 0.05 }}>Take the terminal <span className="red">for a spin.</span></h2>
       <div className="term rv" style={{ "--k": 0.2 }}>
         <div className="term-head"><span>● ● ●</span><small><Terminal size={13} /> senthil@portfolio — interactive shell</small><i>LOCAL SIMULATION</i></div>
@@ -373,11 +380,35 @@ function Terminal_() {
   );
 }
 
+/* ---------- certificates (light) ---------- */
+function Certificates() {
+  return (
+    <Scene id="certificates" theme="light" index={6}>
+      <Label n="05">Proof</Label>
+      <div className="rv" style={{ "--k": 0.05 }}>
+        <h2 className="display h1">Certified <span className="red">proof.</span></h2>
+        <p className="muted">Every card opens the original certificate.</p>
+      </div>
+      <div className="pgrid cert-grid">
+        {certificates.map((c) => (
+          <a key={c.title} className="pcard cert-card" href={`${c.file}#page=${c.page}`} target="_blank" rel="noreferrer">
+            <span className="pcard-top"><small>{c.date}</small><small>{c.kind}</small></span>
+            <span className="pcard-symbol" aria-hidden="true">✓</span>
+            <b className="pcard-title">{c.title}</b>
+            <small className="pcard-cat">{c.issuer}</small>
+            <span className="pcard-more">View certificate <ArrowUpRight size={14} /></span>
+          </a>
+        ))}
+      </div>
+    </Scene>
+  );
+}
+
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="dark" index={7}>
-      <Label n="06">Your turn</Label>
+    <Scene id="contact" theme="dark" index={8}>
+      <Label n="07">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
           <small className="status">OPEN TO INTERNSHIPS & COLLABORATIONS</small>
@@ -407,6 +438,19 @@ function Contact() {
   );
 }
 
+/* Where a scene really sits on the page. offsetTop and getBoundingClientRect both
+   report a pinned scene as "at the top", so add up the heights of the scenes above it. */
+function sceneDocTop(el) {
+  const main = el.parentElement;
+  let y = main.getBoundingClientRect().top + window.scrollY;
+  for (const s of main.querySelectorAll(":scope > .scene")) {
+    y += parseFloat(getComputedStyle(s).marginTop) || 0;
+    if (s === el) break;
+    y += s.offsetHeight;
+  }
+  return Math.max(0, Math.round(y));
+}
+
 /* ---------- app ---------- */
 function App() {
   useSceneMotion();
@@ -429,15 +473,50 @@ function App() {
     document.body.style.overflow = introOn ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [introOn]);
-  // highlight the nav link for the section currently in the middle of the screen
+  // highlight the nav link for the last section that has reached the middle of
+  // the screen. Read from the scroll position, not an IntersectionObserver: the
+  // pinned sections overlap the middle band, so the observer reports the wrong one.
   useEffect(() => {
-    const ids = ["about", "experience", "projects", "skills", "contact"];
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin: "-45% 0px -45% 0px" });
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const ids = ["home", "about", "experience", "projects", "skills", "certificates", "contact"];
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const probe = window.scrollY + window.innerHeight * 0.45;
+      let current = "home";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && sceneDocTop(el) <= probe) current = id;
+      }
+      setActive(current);
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  // In-page links. The scenes are pinned with position: sticky, so the browser's
+  // own anchor jump reads a pinned scene as "already here" and does nothing once
+  // you have scrolled past it. Work out each scene's real place from the heights
+  // above it, and scroll there ourselves.
+  useEffect(() => {
+    const onClick = (e) => {
+      const a = e.target.closest?.('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute("href").slice(1);
+      const el = document.getElementById(id);
+      if (!el || !el.classList.contains("scene")) return;
+      e.preventDefault();
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: sceneDocTop(el), behavior: reduce ? "auto" : "smooth" });
+      try { history.replaceState(null, "", `#${id}`); } catch { /* history blocked: scroll still works */ }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
   return (
     <>
@@ -462,6 +541,7 @@ function App() {
         <Projects onOpen={setOpenProject} />
         <Works onOpen={setOpenProject} />
         <Skills />
+        <Certificates />
         <Terminal_ />
         <Contact />
       </main>
