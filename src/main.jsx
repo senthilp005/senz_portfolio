@@ -328,7 +328,7 @@ function Skills() {
 /* ---------- certifications (light) ---------- */
 function Certificates() {
   return (
-    <Scene id="certificates" theme="light" index={5} className="certifications-scene">
+    <Scene id="certificates" theme="dark" index={5} className="certifications-scene">
       <Label n="05">Licenses &amp; certifications <span>01—10</span></Label>
       <div className="split-head certifications-heading rv" style={{ "--k": 0.04 }}>
         <h2 className="display h2">Proof of <span className="red">progress.</span></h2>
