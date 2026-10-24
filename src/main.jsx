@@ -40,6 +40,20 @@ const skills = [
   ["Data & Tools",["MySQL","Firebase","Git / GitHub","TensorFlow.js"]]
 ];
 
+
+const certifications = [
+  { n:"01", title:"SQL (Basic)", issuer:"HackerRank", kind:"Skills certificate", date:"23 SEP 2026", desc:"Simple queries, relationships and aggregators.", tags:["SQL","Database"], url:"https://www.hackerrank.com/certificates/9f298f14cff4", tone:"mint" },
+  { n:"02", title:"Problem Solving (Basic)", issuer:"HackerRank", kind:"Skills certificate", date:"19 JUL 2026", desc:"Foundational data structures and algorithms, including arrays, strings, sorting and searching.", tags:["Algorithms","Problem Solving"], url:"https://www.hackerrank.com/certificates/cf87ab2c4af9", tone:"orange" },
+  { n:"03", title:"Java (Basic)", issuer:"HackerRank", kind:"Skills certificate", date:"05 AUG 2026", desc:"Java fundamentals covering classes, data structures, inheritance and exception handling.", tags:["Java","Programming"], url:"https://www.hackerrank.com/certificates/c12d38403c23", tone:"blue" },
+  { n:"04", title:"Data Analytics Job Simulation", issuer:"Deloitte · Forage", kind:"Job simulation", date:"29 JUL 2026", desc:"Practical simulation activities in data analysis and forensic technology.", tags:["Data Analytics","Forage"], url:"", tone:"violet" },
+  { n:"05", title:"Operations Industrial Engineer Job Simulation", issuer:"Siemens · Forage", kind:"Job simulation", date:"29 JUL 2026", desc:"Simulation tasks covering time studies and proposing layout changes.", tags:["Operations","Industrial Engineering"], url:"", tone:"mint" },
+  { n:"06", title:"MongoDB Basics for Students", issuer:"MongoDB · Credly", kind:"Digital badge", date:"29 JUL 2026", desc:"Database fundamentals, document models, replication, scaling and Atlas cluster deployment.", tags:["MongoDB","Databases"], url:"https://credly.com/badges/0350199a-54f9-4024-b22a-747da471bfd1/public_url", tone:"green" },
+  { n:"07", title:"Data Analysis with Python", issuer:"IBM · CognitiveClass.ai", kind:"Course certificate", date:"29 JUL 2026", desc:"Course completion in data analysis with Python through the IBM Developer Skills Network.", tags:["Python","Data Analysis"], url:"https://courses.cognitiveclass.ai/certificates/e9a7ff5d385542c487257e93002feae7", tone:"blue" },
+  { n:"08", title:"Machine Learning for Natural Language Processing", issuer:"AWS Academy · Credly", kind:"Training badge", date:"29 JUL 2026", desc:"AWS Academy training badge for completing Machine Learning for Natural Language Processing.", tags:["Machine Learning","NLP","AWS Academy"], url:"https://credly.com/badges/77dd6304-30f8-4504-abac-0ddbc50efd23/public_url", tone:"orange" },
+  { n:"09", title:"Python (Basic)", issuer:"HackerRank", kind:"Skills certificate", date:"15 JUL 2026", desc:"Python basics spanning data types, operators, control flow, strings, collections, iteration and classes.", tags:["Python","Programming"], url:"https://www.hackerrank.com/certificates/eb3e89eb381d", tone:"mint" },
+  { n:"10", title:"AI Tools & Claude Workshop", issuer:"be10x · CertX", kind:"Workshop certificate", date:"26 OCT 2025", desc:"Workshop covering AI-assisted presentations, data analysis, coding and debugging.", tags:["AI Tools","Claude","Productivity"], url:"", tone:"violet" }
+];
+
 const tickerItems = ["Curious by default","Built with intention","Always iterating","Code with purpose"];
 const answers = {
   help:"Commands: about · skills · projects · contact · clear",
@@ -48,7 +62,7 @@ const answers = {
   projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",
   contact:"Use the contact links below to connect."
 };
-const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Contact","#contact"]];
+const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Certificates","#certificates"],["Contact","#contact"]];
 
 /* ---------- motion engine ----------
    Every .scene is sticky and stacks over the previous one (the red-edged
@@ -310,6 +324,53 @@ function Skills() {
   );
 }
 
+
+/* ---------- certifications (light) ---------- */
+function Certificates() {
+  return (
+    <Scene id="certificates" theme="light" index={5} className="certifications-scene">
+      <Label n="05">Licenses &amp; certifications <span>01—10</span></Label>
+      <div className="split-head certifications-heading rv" style={{ "--k": 0.04 }}>
+        <h2 className="display h2">Proof of <span className="red">progress.</span></h2>
+        <p>Skills certificates, industry job simulations, training badges and workshops - each one marking another thing learned and built.</p>
+      </div>
+      <div className="certification-grid">
+        {certifications.map((c, i) => (
+          <article className="certification-card rv" key={c.n} style={{ "--cert-tone": c.tone, "--k": 0.08 + (i % 3) * 0.05 }}>
+            <div className="certification-card-top">
+              <span className="certification-number">CREDENTIAL / {c.n}</span>
+              <span className="certification-seal" aria-hidden="true"><span>✳</span></span>
+            </div>
+            <div className="certification-body">
+              <small className="certification-kind">{c.kind}</small>
+              <h3>{c.title}</h3>
+              <p className="certification-issuer">{c.issuer}</p>
+              <p className="certification-desc">{c.desc}</p>
+              <div className="certification-tags">
+                {c.tags.map((tag) => <span key={tag}>{tag}</span>)}
+              </div>
+              <div className="certification-card-bottom">
+                <span className="certification-date">{c.date}</span>
+                {c.url ? (
+                  <a href={c.url} target="_blank" rel="noreferrer" aria-label={`View ${c.title} credential`}>
+                    Verify <ArrowUpRight size={15} />
+                  </a>
+                ) : (
+                  <span className="certification-archive-note">Screenshot in PDF archive</span>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="certification-footnote">
+        <span>10 DISTINCT CREDENTIALS</span><i /><span>11 SCREENSHOTS ARCHIVED</span>
+      </div>
+      <p className="certification-duplicate-note">The uploaded screenshot set includes the HackerRank Problem Solving (Basic) certificate twice, so it is listed once here.</p>
+    </Scene>
+  );
+}
+
 /* ---------- terminal (light) ---------- */
 function Terminal_() {
   const [cmd, setCmd] = useState("");
@@ -322,8 +383,8 @@ function Terminal_() {
   };
   const quick = (c) => { setCmd(c); setOutput(c === "clear" ? "" : answers[c]); };
   return (
-    <Scene id="terminal" theme="light" index={5}>
-      <Label n="05">A little interaction</Label>
+    <Scene id="terminal" theme="light" index={6}>
+      <Label n="06">A little interaction</Label>
       <h2 className="display h2 rv" style={{ "--k": 0.05 }}>Take the terminal <span className="red">for a spin.</span></h2>
       <div className="term rv" style={{ "--k": 0.2 }}>
         <div className="term-head"><span>● ● ●</span><small><Terminal size={13} /> senthil@portfolio — interactive shell</small><i>LOCAL SIMULATION</i></div>
@@ -351,8 +412,8 @@ function Terminal_() {
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="dark" index={6}>
-      <Label n="06">Your turn</Label>
+    <Scene id="contact" theme="dark" index={7}>
+      <Label n="07">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
           <small className="status">OPEN TO INTERNSHIPS & COLLABORATIONS</small>
@@ -371,7 +432,7 @@ function Contact() {
       </div>
       <div className="endcard-line rv" style={{ "--k": 0.32 }}>
         <div className="endcard-copy">
-          <small>EPILOGUE / 05</small>
+          <small>EPILOGUE / FINAL</small>
           <h3>TO BE <span className="red">CONTINUED.</span></h3>
         </div>
         <a className="back-to-start" href="#home" aria-label="Back to the beginning">
@@ -433,6 +494,7 @@ function App() {
         <Experience />
         <Projects />
         <Skills />
+        <Certificates />
         <Terminal_ />
         <Contact />
       </main>
