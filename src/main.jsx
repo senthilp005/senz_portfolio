@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Layers3, Mail, Menu, Send, Terminal, X } from "lucide-react";
 import CursorTrail from "./CursorTrail.jsx";
+import PortfolioVFX from "./PortfolioVFX.jsx";
 import "./styles.css";
 
 const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.7 1.4a12.8 12.8 0 0 0-6.8 0C5.7 1.1 4.5 1.5 4.5 1.5a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 3 8.7c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.7V22"/></svg>;
@@ -115,6 +116,28 @@ function Label({ n, children }) {
   return <div className="label"><b>{n}</b> / {children}</div>;
 }
 
+function CountUp({ to, pad = 0 }) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setValue(to);
+      return;
+    }
+    const start = performance.now() + 250;
+    const duration = 1200;
+    let raf = 0;
+    const tick = (now) => {
+      const progress = Math.min(1, Math.max(0, (now - start) / duration));
+      setValue(Math.round(to * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to]);
+  return String(value).padStart(pad, "0");
+}
+
+
 /* ---------- hero ---------- */
 function Hero() {
   return (
@@ -141,8 +164,8 @@ function Hero() {
             </div>
           </div>
           <div className="badges">
-            <div className="badge"><b>11</b><small>projects in the lab</small></div>
-            <div className="badge"><b>03</b><small>field notes</small></div>
+            <div className="badge"><b><CountUp to={11} pad={2} /></b><small>projects in the lab</small></div>
+            <div className="badge"><b><CountUp to={3} pad={2} /></b><small>field notes</small></div>
             <div className="badge"><b>∞</b><small>things to explore</small></div>
           </div>
         </div>
@@ -356,6 +379,8 @@ function App() {
   const [menu, setMenu] = useState(false);
   return (
     <>
+      <PortfolioVFX />
+      <div className="film-grain" aria-hidden="true" />
       <CursorTrail />
       <header className="nav">
         <a className="brand" href="#home">
