@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function CursorTrail(){
   useEffect(()=>{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches) return;
     const canvas=document.createElement("canvas");
     canvas.setAttribute("aria-hidden","true");
     canvas.className="portfolio-comet-cursor";

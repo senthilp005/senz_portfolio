@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
  * It uses the existing portrait and brand colours; no extra assets or libraries.
  */
 const TIMELINE = [
-  { at: 220, beat: 1 },
-  { at: 1050, beat: 2 },
-  { at: 1750, beat: 3 },
-  { at: 2500, beat: 4 },
-  { at: 3200, beat: 5 },
-  { at: 3950, beat: 6 }
+  { at: 150, beat: 1 },
+  { at: 650, beat: 2 },
+  { at: 1050, beat: 3 },
+  { at: 1450, beat: 4 },
+  { at: 1850, beat: 5 },
+  { at: 2250, beat: 6 }
 ];
 
 export default function OpeningSequence({ onDone }) {
@@ -99,7 +99,7 @@ export default function OpeningSequence({ onDone }) {
 
       <div className={"opening-portrait" + (beat >= 4 ? " is-visible" : "")} aria-hidden="true">
         <img
-          src="/senthil-profile.png"
+          src="/senthil-profile.webp"
           alt=""
           draggable="false"
           fetchPriority="high"

@@ -10,6 +10,7 @@ const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentCo
 const Linkedin = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>;
 
 const EMAIL = "senthilvelanprabakaran@gmail.com";
+const RESUME_URL = ""; // e.g. "/resume.pdf" — drop the file in /public, button appears automatically
 
 const projects = [
   { n:"01", title:"FEDIS-OT", category:"AI & Security", desc:"A privacy-preserving cybersecurity concept combining federated learning with digital-twin-based patch validation for safer collaborative threat detection.", tags:["Federated Learning","Digital Twin","GNN"], symbol:"◈", tone:"violet", status:"In development", url:"https://github.com/senthilvelanprabakaran-alt/CodeAlpha_data-redundancy" },
@@ -59,7 +60,7 @@ const answers = {
   help:"Commands: about · skills · projects · contact · clear",
   about:"P. Senthil Velan — AI & Data Science developer interested in applied AI and useful software.",
   skills:"Python · Java · ML · YOLOv8 · Generative AI · React · Flask · Django · MySQL",
-  projects:"FEDIS-OT · Signify · SmartCart · EON Chatbot · Skin Disease AI · VayuMitra",
+  projects: projects.map((p) => p.title).join(" · "),
   contact:"Use the contact links below to connect."
 };
 const links = [["About","#about"],["Experience","#experience"],["Projects","#projects"],["Skills","#skills"],["Certificates","#certificates"],["Contact","#contact"]];
@@ -174,7 +175,7 @@ function Hero() {
           <span className="ht-line" aria-hidden="true"><Letters text="VELAN" base={10} /></span>
         </h1>
         <div className="hero-portrait">
-          <img src="/senthil-profile.png" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
+          <img src="/senthil-profile.webp" alt="P. Senthil Velan wearing a yellow hoodie, viewed from behind" />
         </div>
         <div className="hero-bottom">
           <div className="hero-lead">
@@ -182,6 +183,7 @@ function Hero() {
             <div className="actions">
               <a className="btn primary" href="#projects">Explore my work <ArrowUpRight size={17} /></a>
               <a className="btn ghost" href="#contact">Get in touch</a>
+              {RESUME_URL && <a className="btn ghost" href={RESUME_URL} target="_blank" rel="noreferrer">Download CV</a>}
             </div>
           </div>
           <div className="badges">
@@ -355,18 +357,12 @@ function Certificates() {
                   <a href={c.url} target="_blank" rel="noreferrer" aria-label={`View ${c.title} credential`}>
                     Verify <ArrowUpRight size={15} />
                   </a>
-                ) : (
-                  <span className="certification-archive-note">Public verify link not captured</span>
-                )}
+                ) : null}
               </div>
             </div>
           </article>
         ))}
       </div>
-      <div className="certification-footnote">
-        <span>10 DISTINCT CREDENTIALS</span><i /><span>11 SCREENSHOTS RECEIVED</span>
-      </div>
-      <p className="certification-duplicate-note">The uploaded screenshot set includes the HackerRank Problem Solving (Basic) certificate twice, so it is listed once here.</p>
     </Scene>
   );
 }
@@ -422,13 +418,18 @@ function Contact() {
           <div className="actions">
             <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
           </div>
+          <div className="contact-links">
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>
+            <a href="https://www.linkedin.com/in/senthilvelan-prabakaran-486051382/" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={14} /></a>
+          </div>
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
           <div className="disc-red" />
           <div className="contact-vfx-orbit contact-vfx-orbit--outer" aria-hidden="true"><i /></div>
           <div className="contact-vfx-orbit contact-vfx-orbit--inner" aria-hidden="true"><i /></div>
           <div className="contact-vfx-orbit contact-vfx-orbit--energy" aria-hidden="true"><i /></div>
-          <img src="/senthil-profile.png" alt="" />
+          <img src="/senthil-profile.webp" alt="" />
         </div>
       </div>
       <div className="endcard-line rv" style={{ "--k": 0.32 }}>
@@ -475,6 +476,7 @@ function App() {
   };
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <PortfolioVFX />
       <div className="film-grain" aria-hidden="true" />
       <CursorTrail />
@@ -489,7 +491,7 @@ function App() {
           <a className="nav-cta" href="#contact" onClick={() => setMenu(false)}>Let's talk <ArrowUpRight size={15} /></a>
         </nav>
       </header>
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Experience />

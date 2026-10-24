@@ -698,7 +698,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .project-card-body h3 { font-size: 30px; }
   .project-card-body p { min-height: 0; }
   .project-card-tags { margin-top: 2px; }
-  .projects-endline { font-size: 8px; letter-spacing: .1em; }
+  .projects-endline { font-size: 12px; letter-spacing: .1em; }
 }
 @media (hover: none) {
   .project-card:active { scale: .992; border-color: #ff2638; }
@@ -769,7 +769,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 .term-head > span { color: #ff5f57; letter-spacing: 0.2em; }
 .term-head small { display: flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.term-head i { margin-left: auto; font-style: normal; font-size: 10px; letter-spacing: 0.14em; color: #6b6f7c; white-space: nowrap; }
+.term-head i { margin-left: auto; font-style: normal; font-size: 12px; letter-spacing: 0.14em; color: #6b6f7c; white-space: nowrap; }
 .term-body { padding: 20px 22px; font: 400 13px/1.8 var(--mono); display: grid; gap: 4px; }
 .term-body p { margin: 0; overflow-wrap: anywhere; }
 .term-body .comment { color: #6b6f7c; }
@@ -814,7 +814,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
    ============================================================ */
 @media (min-width: 900px) {
   .scene-inner { padding: 112px 32px 40px; }
-  .hero-top { top: 100px; left: 32px; right: 32px; font-size: 11px; }
+  .hero-top { top: 100px; left: 32px; right: 32px; font-size: 12px; }
   .hero-title { top: 15vh; font-size: min(14vw, 27vh); }
   .hero-disc { top: 44%; }
   .hero-portrait { height: min(72vh, 760px); }
@@ -896,7 +896,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     letter-spacing: 0.12em;
   }
   .mobile { display: none; }
-  .brand small { font-size: 9px; }
+  .brand small { font-size: 12px; }
 }
 
 /* ============================================================
@@ -1571,7 +1571,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   transition: border-color .2s ease, background .2s ease;
 }
 .opening-skip:hover { border-color: #ff5260; background: rgba(228,32,44,.15); }
-.opening-skip span { color: #ff6572; font-size: 8px; }
+.opening-skip span { color: #ff6572; font-size: 12px; }
 .opening-progress {
   position: absolute;
   z-index: 60;
@@ -1596,14 +1596,14 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .opening-energy { width: min(70vw, 50vh); top: 42%; }
   .opening-title { top: 24%; font-size: clamp(2.7rem, 13vw, 5.6rem); }
   .opening-title.is-lifted { top: 10%; transform: scale(.94); }
-  .opening-series { top: 52%; font-size: 8px; letter-spacing: .3em; gap: 8px; }
+  .opening-series { top: 52%; font-size: 12px; letter-spacing: .3em; gap: 8px; }
   .opening-series.is-lifted { top: 33%; }
   .opening-portrait { height: min(64vh, 600px); bottom: -5vh; }
   .opening-footer { bottom: 4.4vh; gap: 11px; }
-  .opening-footer p { font-size: 8px; letter-spacing: .12em; }
-  .opening-play { min-height: 45px; padding: 0 18px; gap: 11px; font-size: 9px; letter-spacing: .12em; }
-  .opening-studio { gap: 8px; font-size: 9px; letter-spacing: .16em; }
-  .opening-skip { top: max(14px, 6vh); right: 12px; padding: 9px 11px; font-size: 8px; }
+  .opening-footer p { font-size: 12px; letter-spacing: .12em; }
+  .opening-play { min-height: 45px; padding: 0 18px; gap: 11px; font-size: 12px; letter-spacing: .12em; }
+  .opening-studio { gap: 8px; font-size: 12px; letter-spacing: .16em; }
+  .opening-skip { top: max(14px, 6vh); right: 12px; padding: 9px 11px; font-size: 12px; }
   .opening-bar { height: 5vh; }
   .opening-grid { background-size: 40px 40px; }
 }
@@ -1846,7 +1846,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   align-items: center;
   gap: 5px;
   color: var(--red);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -1873,7 +1873,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 .certification-duplicate-note {
   color: #777983;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 @media (max-width: 1100px) {
@@ -1898,8 +1898,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 @media (max-width: 620px) {
   .certification-grid { grid-template-columns: 1fr; gap: 14px; }
   .certification-body h3 { font-size: 28px; }
-  .certification-footnote { font-size: 8px; letter-spacing: .07em; }
-  .certification-duplicate-note { font-size: 10px; }
+  .certification-footnote { font-size: 12px; letter-spacing: .07em; }
+  .certification-duplicate-note { font-size: 12px; }
 }
 @media (min-width: 1100px) and (min-height: 720px) {
   .certifications-scene {
@@ -2675,4 +2675,29 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 @media (prefers-reduced-motion: reduce) {
   .contact-vfx-orbit--energy { animation: none !important; }
+}
+
+
+/* ---------- accessibility additions ---------- */
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+[data-theme="dark"] :focus-visible { outline-color: #fff; }
+.term-body form:focus-within { outline: 2px solid #fff; outline-offset: 4px; }
+.skip-link { position: fixed; left: 12px; top: -64px; z-index: 2147483647; background: #fff; color: #080808; padding: 10px 16px; font-weight: 700; border-radius: 4px; transition: top .2s; }
+.skip-link:focus { top: 12px; }
+
+
+/* ---------- contact page fixes ---------- */
+/* Headline: lines no longer collide, and "REAL." no longer sits alone. */
+.contact-scene .contact-h {
+  line-height: .95;
+  font-size: clamp(54px, min(7.3vw, 12.5vh), 108px);
+  text-wrap: balance;
+}
+.contact-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 20px; font: 500 13px/1.4 var(--mono); letter-spacing: .04em; }
+.contact-links a { display: inline-flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.contact-links a:hover { color: var(--red); border-color: var(--red); }
+/* Last scene may grow past one screen instead of clipping (label under the nav, footer cut off). */
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene { position: relative; height: auto; min-height: 100svh; overflow: visible; }
+  .contact-scene .scene-inner { height: auto; min-height: 100svh; padding-top: 112px; padding-bottom: 28px; }
 }
