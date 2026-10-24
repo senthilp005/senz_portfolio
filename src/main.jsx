@@ -40,6 +40,14 @@ const skills = [
   ["Data & Tools",["MySQL","Firebase","Git / GitHub","TensorFlow.js"]]
 ];
 
+const certifications = [
+  "IBM SkillsBuild (AI, RAG)",
+  "HackerRank (Python, Java)",
+  "Coursera (YOLOv8)",
+  "Infosys Springboard (AI, Cyber Security)",
+  "Udemy (Machine Learning)"
+];
+
 const tickerItems = ["Curious by default","Built with intention","Always iterating","Code with purpose"];
 const answers = {
   help:"Commands: about · skills · projects · contact · clear",
@@ -317,6 +325,10 @@ function Skills() {
               <div className="chips">{items.map((s) => <span key={s}>{s}</span>)}</div>
             </div>
           ))}
+            <div className="skill-row" style={{ "--k": 0.2 + skills.length * 0.12 }}>
+              <small>Certifications</small>
+              <div className="chips">{certifications.map((c) => <span key={c}>{c}</span>)}</div>
+            </div>
         </div>
       </div>
     </Scene>
@@ -373,6 +385,8 @@ function Contact() {
           <p className="muted">Have a project, opportunity, or just want to talk tech? I'd love to hear from you.</p>
           <div className="actions">
             <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
+            <a className="btn" href="/Senthil_Velan_Resume.pdf" target="_blank" rel="noreferrer">View resume <ArrowUpRight size={16} /></a>
+            <a className="btn" href="/Senthil_Velan_Resume.pdf" download="Senthil_Velan_Resume.pdf">Download resume</a>
           </div>
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
