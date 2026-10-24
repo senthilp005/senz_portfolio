@@ -2745,3 +2745,36 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     animation: none !important;
   }
 }
+
+
+/* Contact page final correction after live visual review. */
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene .contact-grid {
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, .78fr);
+    gap: clamp(24px, 2.8vw, 48px);
+  }
+  .contact-scene .contact-h {
+    max-width: 800px;
+    font-size: clamp(86px, 9.1vw, 148px);
+    line-height: .79;
+    letter-spacing: -.035em;
+    text-wrap: initial;
+  }
+  .contact-scene .contact-disc {
+    width: min(55vh, 530px);
+    max-width: 530px;
+  }
+  .contact-scene .contact-links { display: flex; }
+}
+@media (min-width: 900px) and (max-width: 1099px) {
+  .contact-scene .contact-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  }
+  .contact-scene .contact-h { font-size: clamp(64px, 7.7vw, 92px); }
+}
+@media (max-width: 899px) {
+  .contact-scene .contact-h {
+    font-size: clamp(48px, 11.5vw, 82px);
+    line-height: .84;
+  }
+}
