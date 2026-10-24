@@ -2778,3 +2778,46 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     line-height: .84;
   }
 }
+
+
+/* Emergency visual fix: stop contact hero text colliding and clear the header. */
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene .scene-inner {
+    padding-top: 132px !important;
+    padding-bottom: 24px !important;
+    gap: clamp(14px, 1.8vh, 20px) !important;
+    justify-content: center;
+  }
+  .contact-scene .contact-grid {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr) !important;
+    gap: clamp(28px, 3vw, 48px) !important;
+    align-items: center;
+  }
+  .contact-scene .contact-grid > .rv:first-child { max-width: 760px; }
+  .contact-scene .contact-h {
+    max-width: 760px !important;
+    font-size: clamp(78px, min(7.1vw, 11.6vh), 116px) !important;
+    line-height: .9 !important;
+    letter-spacing: -.028em !important;
+    text-wrap: initial !important;
+    margin-bottom: 18px !important;
+  }
+  .contact-scene .contact-disc {
+    width: min(53vh, 500px) !important;
+    max-width: 500px !important;
+  }
+  .contact-scene .contact-links { display: flex !important; }
+}
+@media (max-width: 1099px) {
+  .contact-scene .contact-h {
+    font-size: clamp(50px, 8vw, 90px) !important;
+    line-height: .9 !important;
+  }
+}
+@media (max-width: 899px) {
+  .contact-scene .scene-inner { padding-top: 112px !important; }
+  .contact-scene .contact-h {
+    font-size: clamp(46px, 11vw, 76px) !important;
+    line-height: .9 !important;
+  }
+}
