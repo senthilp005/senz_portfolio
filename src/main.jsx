@@ -412,7 +412,7 @@ function Terminal_() {
 /* ---------- contact + footer (dark) ---------- */
 function Contact() {
   return (
-    <Scene id="contact" theme="light" index={7}>
+    <Scene id="contact" theme="light" index={7} className="contact-scene">
       <Label n="07">Your turn</Label>
       <div className="contact-grid">
         <div className="rv" style={{ "--k": 0.05 }}>
