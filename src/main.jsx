@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Layers3, Mail, Menu, Send, Terminal, X } from "lucide-react";
 import CursorTrail from "./CursorTrail.jsx";
 import PortfolioVFX from "./PortfolioVFX.jsx";
+import OpeningSequence from "./OpeningSequence.jsx";
 import "./styles.css";
 
 const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.7 1.4a12.8 12.8 0 0 0-6.8 0C5.7 1.1 4.5 1.5 4.5 1.5a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 3 8.7c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.7V22"/></svg>;
@@ -385,6 +386,21 @@ function Contact() {
 function App() {
   useSceneMotion();
   const [menu, setMenu] = useState(false);
+  const [introOpen, setIntroOpen] = useState(() => {
+    try {
+      return window.sessionStorage.getItem("senz-opening-seen") !== "1";
+    } catch {
+      return true;
+    }
+  });
+  const finishOpening = () => {
+    try {
+      window.sessionStorage.setItem("senz-opening-seen", "1");
+    } catch {
+      // The intro still works if storage is unavailable.
+    }
+    setIntroOpen(false);
+  };
   return (
     <>
       <PortfolioVFX />
@@ -410,6 +426,7 @@ function App() {
         <Terminal_ />
         <Contact />
       </main>
+      {introOpen && <OpeningSequence onDone={finishOpening} />}
     </>
   );
 }
