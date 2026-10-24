@@ -215,13 +215,18 @@ function About() {
         <div className="about-copy rv" style={{ "--k": 0.6 }}>
           <p>I'm a final-year B.Tech student specializing in <strong>Artificial Intelligence & Data Science</strong> at CARE College of Engineering, Trichy. I enjoy turning complex ideas into practical prototypes — from computer vision models to web apps and privacy-aware AI systems.</p>
           <p>I'm continually improving my skills across machine learning, full-stack development, and responsible AI. I believe in learning by building, testing, and iterating.</p>
+          <div className="edu">
+            <small>Education</small>
+            <p><strong>B.Tech, AI &amp; Data Science</strong> · CARE College of Engineering, Trichy · 2023–2027 · <span style={{ whiteSpace: "nowrap" }}>CGPA 7.74 / 10</span></p>
+            <p>Higher Secondary (12th) · St. James Matriculation HSS, Trichy · 2021–2023 · 68.67%</p>
+          </div>
           <a className="textlink" href="#contact">Let's connect <ArrowUpRight size={16} /></a>
         </div>
       </div>
       <div className="mini-stats rv" style={{ "--k": 0.75 }}>
-        <div><b>AI<span>+</span></b><small>Curiosity-led learning</small></div>
-        <div><b>01</b><small>Builder mindset</small></div>
-        <div><b>∞</b><small>Things left to explore</small></div>
+        <div><b>11</b><small>Projects built</small></div>
+        <div><b>10</b><small>Certificates earned</small></div>
+        <div><b>02</b><small>Internships</small></div>
       </div>
     </Scene>
   );
@@ -256,14 +261,16 @@ function Experience() {
 /* ---------- projects (light) ---------- */
 function Projects({ onOpen }) {
   const [active, setActive] = useState(0);
-  const n = projects.length;
-  const p = projects[active];
-  const prev = projects[(active - 1 + n) % n];
-  const next = projects[(active + 1) % n];
+  // the showcase features three projects; the full eleven live in the grid below
+  const featured = projects.slice(0, 3);
+  const n = featured.length;
+  const p = featured[active];
+  const prev = featured[(active - 1 + n) % n];
+  const next = featured[(active + 1) % n];
   const go = (d) => setActive((a) => (a + d + n) % n);
   return (
     <Scene id="projects" theme="light" index={3}>
-      <Label n="03">Selected work <span>01—11</span></Label>
+      <Label n="03">Featured work <span>01—03</span></Label>
       <div className="split-head rv" style={{ "--k": 0.05 }}>
         <h2 className="display h2">Things I've been <span className="red">working on.</span></h2>
         <p>A collection of experiments, prototypes, and ideas. Some are in progress — that's where the interesting stuff happens.</p>
@@ -289,7 +296,7 @@ function Projects({ onOpen }) {
       <div className="proj-nav rv" style={{ "--k": 0.4 }}>
         <button className="circle" onClick={() => go(-1)} aria-label="Previous project"><ChevronLeft size={18} /></button>
         <div className="proj-dots">
-          {projects.map((q, i) => (
+          {featured.map((q, i) => (
             <button key={q.n} className={i === active ? "on" : ""} onClick={() => setActive(i)} aria-label={q.title}>{q.n}</button>
           ))}
         </div>

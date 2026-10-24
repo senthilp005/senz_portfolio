@@ -74,9 +74,9 @@ export function ProjectGrid({ projects, toneColor, onOpen }) {
   return (
     <div className="pgrid">
       {projects.map((p) => (
-        <button key={p.n} className="pcard" style={{ "--tone": toneColor[p.tone] }} onClick={() => onOpen(p)}>
-          <span className="pcard-top"><small>{p.n}</small><small>{p.status}</small></span>
-          <span className="pcard-symbol" aria-hidden="true">{p.symbol}</span>
+        <button key={p.n} className="pcard" onClick={() => onOpen(p)}>
+          <span className="pcard-top"><small>{p.status}</small></span>
+          <span className="pcard-symbol" aria-hidden="true">{p.n}</span>
           <b className="pcard-title">{p.title}</b>
           <small className="pcard-cat">{p.category}</small>
           <span className="pcard-more">Details <ArrowUpRight size={14} /></span>
