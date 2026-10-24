@@ -2353,3 +2353,27 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .contact-scene .contact-vfx-orbit,
   .contact-scene .contact-vfx-orbit i { animation: none !important; }
 }
+
+
+/* SV Norse mark used in the header and footer */
+.brand-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(228,32,44,.12));
+  transition: filter .25s ease, transform .25s ease;
+}
+.brand:hover .brand-icon {
+  filter: drop-shadow(0 0 8px rgba(228,32,44,.28));
+  transform: translateY(-1px);
+}
+.footer .brand-icon { width: 40px; height: 40px; }
+@media (max-width: 620px) {
+  .brand-icon { width: 36px; height: 36px; }
+  .footer .brand-icon { width: 36px; height: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-icon { transition: none !important; }
+}
