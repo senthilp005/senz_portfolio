@@ -2235,3 +2235,121 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     animation: none !important;
   }
 }
+
+
+/* Contact VFX visibility fix: clear orbit contrast on the light page. */
+.contact-scene .contact-disc {
+  isolation: isolate;
+}
+.contact-scene .contact-disc::before {
+  content: "";
+  position: absolute;
+  inset: -24%;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(228,32,44,.16) 0%, rgba(228,32,44,.08) 43%, transparent 72%);
+  filter: blur(9px);
+  animation: contactVfxHalo 5s ease-in-out infinite;
+}
+.contact-scene .disc-red {
+  z-index: 0;
+  box-shadow: 0 0 24px 4px rgba(228,32,44,.22), 0 0 58px 8px rgba(228,32,44,.13), inset 0 0 34px rgba(95,0,8,.18);
+}
+.contact-scene .disc-red::before {
+  inset: -7%;
+  z-index: 1;
+  border: 1px dashed rgba(255,255,255,.66);
+  box-shadow: 0 0 8px rgba(255,255,255,.14);
+  animation: contactVfxOrbit 28s linear infinite;
+}
+.contact-scene .disc-red::after {
+  inset: -4%;
+  z-index: 1;
+  border: 1px solid rgba(228,32,44,.54);
+  animation: contactVfxRipple 4.2s ease-out infinite;
+}
+.contact-scene .contact-vfx-orbit {
+  z-index: 2;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: rotate;
+}
+.contact-scene .contact-vfx-orbit--outer {
+  inset: -19%;
+  border: 1.5px dashed rgba(228,32,44,.76);
+  border-top-color: rgba(11,11,12,.56);
+  border-bottom-color: rgba(228,32,44,.25);
+  transform: rotate(-24deg) scaleY(.72);
+  animation: contactVfxOrbit 24s linear infinite;
+}
+.contact-scene .contact-vfx-orbit--inner {
+  inset: -11%;
+  border: 1px solid rgba(11,11,12,.38);
+  border-left-color: transparent;
+  border-right: 1.5px solid rgba(228,32,44,.86);
+  transform: rotate(32deg) scaleY(.84);
+  animation: contactVfxOrbit 18s linear infinite reverse;
+}
+.contact-scene .contact-vfx-orbit--energy {
+  inset: -31%;
+  border: 1px solid rgba(228,32,44,.34);
+  border-top: 2px solid rgba(228,32,44,.88);
+  border-bottom-color: transparent;
+  transform: rotate(14deg) scaleY(.7);
+  animation: contactVfxOrbit 36s linear infinite;
+}
+.contact-scene .contact-vfx-orbit i {
+  position: absolute;
+  display: block;
+  top: -5px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid rgba(228,32,44,.78);
+  box-shadow: 0 0 6px #fff, 0 0 14px rgba(228,32,44,.72), 0 0 24px rgba(228,32,44,.4);
+}
+.contact-scene .contact-vfx-orbit--inner i {
+  top: auto;
+  left: auto;
+  right: 8%;
+  bottom: 15%;
+  width: 6px;
+  height: 6px;
+  background: #e4202c;
+  border-color: #fff;
+  box-shadow: 0 0 6px #e4202c, 0 0 13px rgba(228,32,44,.68);
+}
+.contact-scene .contact-vfx-orbit--energy i {
+  top: 16%;
+  left: auto;
+  right: 8%;
+  width: 5px;
+  height: 5px;
+  background: #111113;
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(228,32,44,.12), 0 0 12px rgba(228,32,44,.6);
+}
+.contact-scene .contact-disc img {
+  z-index: 3;
+  position: absolute;
+}
+@keyframes contactVfxOrbit { to { rotate: 360deg; } }
+@keyframes contactVfxHalo {
+  0%,100% { opacity: .72; transform: scale(.97); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+@keyframes contactVfxRipple {
+  0% { opacity: .7; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .contact-disc::before,
+  .contact-scene .disc-red::before,
+  .contact-scene .disc-red::after,
+  .contact-scene .contact-vfx-orbit,
+  .contact-scene .contact-vfx-orbit i { animation: none !important; }
+}
