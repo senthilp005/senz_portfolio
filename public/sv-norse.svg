@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <defs>
+    <linearGradient id="steel" x1="40" y1="24" x2="216" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".42" stop-color="#B9BDC5"/>
+      <stop offset=".68" stop-color="#F1F0EC"/>
+      <stop offset="1" stop-color="#777C86"/>
+    </linearGradient>
+    <linearGradient id="crimson" x1="90" y1="52" x2="194" y2="205" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF5664"/>
+      <stop offset=".45" stop-color="#E4202C"/>
+      <stop offset="1" stop-color="#970C1A"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="48" y1="30" x2="202" y2="223" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17191D"/>
+      <stop offset=".5" stop-color="#08090B"/>
+      <stop offset="1" stop-color="#121316"/>
+    </linearGradient>
+  </defs>
+  <path d="M128 8 220 41 212 145Q204 203 128 248 52 203 44 145L36 41 128 8Z" fill="url(#shield)" stroke="url(#steel)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M128 19 207 47 200 143Q192 193 128 231 64 193 56 143L49 47 128 19Z" stroke="#E4202C" stroke-opacity=".6" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M165 65H105C82 65 78 94 105 94H145C173 94 174 127 145 127H84" stroke="url(#steel)" stroke-width="18" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <path d="M91 88 128 191 185 58" stroke="#570711" stroke-width="27" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <path d="M91 88 128 191 185 58" stroke="url(#crimson)" stroke-width="19" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <path d="M66 60 76 56M180 199 190 193" stroke="#F4F2EE" stroke-opacity=".75" stroke-width="2" stroke-linecap="round"/>
+  <path d="M119 216 128 222 137 216" stroke="#E4202C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
