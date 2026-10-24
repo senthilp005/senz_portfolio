@@ -2710,3 +2710,38 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .contact-links a { display: inline-flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
 .contact-links a:hover { color: var(--red); border-color: var(--red); }
 
+
+
+/* Final contact-reference tuning: deliberate three-line headline and cleaner hero. */
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene .contact-grid {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+    gap: clamp(30px, 3.4vw, 58px);
+  }
+  .contact-scene .contact-h {
+    max-width: 690px;
+    font-size: clamp(68px, min(7.25vw, 12.2vh), 116px);
+    line-height: .84;
+    letter-spacing: -.035em;
+    text-wrap: initial;
+  }
+  .contact-scene .contact-disc {
+    width: min(58vh, 540px);
+    max-width: 540px;
+    transform: translateX(-1%);
+  }
+  .contact-scene .contact-links { display: none; }
+  .contact-scene .endcard-line { margin-top: 0; }
+}
+@media (max-width: 1099px) {
+  .contact-scene .contact-h { text-wrap: balance; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .contact-vfx-orbit,
+  .contact-scene .contact-vfx-orbit i,
+  .contact-scene .contact-disc::before,
+  .contact-scene .disc-red::before,
+  .contact-scene .disc-red::after {
+    animation: none !important;
+  }
+}
