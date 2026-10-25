@@ -432,24 +432,21 @@ function Contact() {
                 <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
               </filter>
             </defs>
-            <g>
-              <path className="orb-trace orb-trace--fine" d="M58 275 C75 109 224 35 368 72 C514 109 570 244 523 365 C479 478 333 542 198 488 C95 446 43 362 58 275Z" transform="rotate(-16 300 300)" />
-              <path className="orb-trace orb-trace--red" d="M26 331 C57 195 177 98 318 83 C460 68 564 183 554 308 C545 418 427 508 292 516 C151 524 47 442 26 331Z" transform="rotate(9 300 300)" />
-              <path className="orb-trace orb-trace--fine orb-trace--dashed" d="M82 200 C174 65 370 56 489 162 C572 236 549 367 444 438 C325 519 141 472 82 352" />
-              <path className="orb-trace orb-trace--white" filter="url(#orbEnergyGlow)" d="M20 360 C105 220 245 118 400 122 C496 125 557 172 562 222" />
-              <path className="orb-trace orb-trace--white orb-trace--moving" d="M31 430 C121 475 278 445 420 360 C506 309 563 250 563 207" />
-              <path className="orb-trace orb-trace--red orb-trace--moving" d="M62 188 C164 104 312 83 432 147 C502 185 537 242 525 303" />
-              <path className="orb-trace orb-trace--fine" d="M44 303 C91 160 229 91 367 117 C469 136 525 210 519 286" />
+            <g className="orb-orbit">
+              <circle className="orb-trace orb-trace--fine" cx="300" cy="300" r="200" />
+              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="218" />
+              <circle className="orb-trace orb-trace--fine orb-trace--dashed" cx="300" cy="300" r="232" />
+              <circle className="orb-trace orb-trace--white" filter="url(#orbEnergyGlow)" cx="300" cy="300" r="240" pathLength="100" style={{ strokeDasharray: "34 66" }} />
+              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="252" pathLength="100" style={{ strokeDasharray: "22 78" }} />
             </g>
             <g fill="#fff6f6" filter="url(#orbEnergyGlow)">
               <circle cx="52" cy="334" r="3" /><circle cx="548" cy="212" r="4" /><circle cx="488" cy="125" r="2.4" />
             </g>
           </svg>
           <svg className="orb-svg orb-svg--front" viewBox="0 0 600 600" aria-hidden="true">
-            <g>
-              <path className="orb-trace orb-trace--red" d="M54 398 C90 489 207 531 337 496 C455 464 527 390 545 314" />
-              <path className="orb-trace orb-trace--white orb-trace--moving" d="M33 408 C119 478 265 493 400 419 C479 376 536 323 546 278" />
-              <path className="orb-trace orb-trace--fine orb-trace--dashed" d="M95 94 C214 24 402 69 493 196 C532 250 534 311 507 359" />
+            <g className="orb-orbit orb-orbit--front">
+              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="228" pathLength="100" style={{ strokeDasharray: "40 60" }} />
+              <circle className="orb-trace orb-trace--white" filter="url(#orbEnergyGlow)" cx="300" cy="300" r="246" pathLength="100" style={{ strokeDasharray: "22 78" }} />
             </g>
           </svg>
           <i className="orb-particle orb-particle--1" />

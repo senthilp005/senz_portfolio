@@ -18,7 +18,7 @@
   position: absolute;
   top: 50%;
   right: -1.5%;
-  transform: translateY(-50%);
+  transform: translateY(calc(-50% - 80px));
   width: min(42vw, 560px);
   aspect-ratio: 1;
   overflow: visible;
@@ -70,7 +70,7 @@
   z-index: 2;
   border: 1px solid rgba(255, 69, 82, .76);
   box-shadow: 0 0 12px rgba(255, 39, 56, .22);
-  transform: rotate(-26deg) scaleY(.86);
+  transform: none;
   animation: orbRingTurn 32s linear infinite;
 }
 .contact-scene .orb-rim--inner {
@@ -79,7 +79,7 @@
   border: 1px solid rgba(255, 244, 244, .48);
   border-left-color: rgba(255, 80, 92, .2);
   border-bottom-color: rgba(255, 80, 92, .72);
-  transform: rotate(21deg) scaleY(.8);
+  transform: none;
   animation: orbRingTurnReverse 23s linear infinite;
 }
 .contact-scene .orb-svg {
@@ -230,3 +230,14 @@
 }
 /* the orb scales with screen height so it never runs into the end card */
 .contact-scene .contact-vfx-stage { width: min(42vw, 560px, 56vh) !important; }
+
+/* orbit arcs are true circles that turn around the orb */
+.contact-scene .orb-orbit {
+  transform-box: view-box;
+  transform-origin: 300px 300px;
+  animation: orbRingTurn 30s linear infinite;
+}
+.contact-scene .orb-orbit--front { animation-duration: 22s; animation-direction: reverse; }
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .orb-orbit { animation: none !important; }
+}
