@@ -21,12 +21,13 @@
 }
 @keyframes orbit-rotate { to { transform: rotate(360deg); } }
 
-/* person stands on the red round: bottom of the image sits near the bottom of the disc */
+/* portrait sits inside the red disc (disc spans ~9%–91% of the orbit);
+   image is 717x1080, so width 53% gives a height of ~80% of the orbit */
 .orbit-person {
   position: absolute;
   left: 50%;
-  bottom: 17%;
-  width: 58%;
+  bottom: 11%;
+  width: 48%;
   transform: translateX(-50%);
   user-select: none;
   pointer-events: none;
