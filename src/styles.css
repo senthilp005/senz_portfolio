@@ -3075,3 +3075,33 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 @media (max-width: 899px) {
   .contact-scene .contact-plasma-texture { opacity: .66; }
 }
+
+
+/* Contact visual guard: keep portal glow/orbits round and outside the disc,
+   constrain the persistent header mark, and keep contact links separated. */
+.nav .brand-icon {
+  display: block !important;
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
+  object-fit: contain !important;
+}
+.nav .brand { display: flex; align-items: center; gap: 12px; }
+.contact-scene .contact-disc { overflow: visible !important; }
+.contact-scene .disc-red,
+.contact-scene .contact-portal-rim,
+.contact-scene .contact-plasma-texture { border-radius: 50%; }
+.contact-scene .contact-links {
+  display: flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 8px;
+}
+@media (max-width: 899px) {
+  .contact-scene { overflow-x: clip !important; }
+  .contact-scene .contact-disc { overflow: visible !important; }
+  .contact-scene .contact-orbit { inset: -14%; width: 128%; height: 128%; }
+}
