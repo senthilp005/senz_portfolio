@@ -97,9 +97,9 @@ export default function ContactOrbit() {
         <Ring r={238} dash="2 8" dur={50} opacity={0.35} />
 
         {/* dark crimson rim, then the bright red core the portrait stands in */}
-        <circle cx={C} cy={C} r="200" fill="none" stroke="#6d0410" strokeWidth="16" strokeOpacity=".9" />
-        <circle cx={C} cy={C} r="194" fill="url(#orbCore)" />
-        <circle cx={C} cy={C} r="190" fill="none" stroke="rgba(255,200,205,.45)" strokeWidth="1" />
+        <circle cx={C} cy={C + 10} r="200" fill="none" stroke="#6d0410" strokeWidth="16" strokeOpacity=".9" />
+        <circle cx={C} cy={C + 10} r="194" fill="url(#orbCore)" />
+        <circle cx={C} cy={C + 10} r="190" fill="none" stroke="rgba(255,200,205,.45)" strokeWidth="1" />
 
         {/* sweeping white-red energy trails across the portal */}
         <g fill="none" strokeLinecap="round" filter="url(#orbGlow)">

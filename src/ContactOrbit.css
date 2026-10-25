@@ -26,7 +26,7 @@
 .orbit-person {
   position: absolute;
   left: 50%;
-  bottom: 13%;
+  bottom: 11%;
   width: 48%;
   transform: translateX(-50%);
   user-select: none;
