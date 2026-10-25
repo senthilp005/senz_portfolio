@@ -256,3 +256,12 @@
   -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
 }
+
+/* layers: rear trails sit behind the orbit and portrait; front trails and sparks sit above */
+.contact-scene .orb-svg--rear { z-index: 0; }
+.contact-scene .orb-svg--front { z-index: 8; }
+.contact-scene .orb-particle { z-index: 9; }
+/* a larger stage so the orbit reads at a good size on desktop */
+@media (min-width: 901px) {
+  .contact-scene .contact-vfx-stage { width: min(46vw, 620px, 64vh) !important; transform: translateY(calc(-50% - 60px)) !important; }
+}
