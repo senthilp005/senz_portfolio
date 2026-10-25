@@ -228,3 +228,5 @@
   .contact-scene .footer { padding-top: 12px; }
   .contact-scene .scene-inner { gap: 12px !important; }
 }
+/* the orb scales with screen height so it never runs into the end card */
+.contact-scene .contact-vfx-stage { width: min(42vw, 560px, 56vh) !important; }
