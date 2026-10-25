@@ -17,9 +17,9 @@
 .contact-scene .contact-vfx-stage {
   position: absolute;
   top: 50%;
-  right: 0;
+  right: -1.5%;
   transform: translateY(-50%);
-  width: min(38vw, 520px);
+  width: min(42vw, 560px);
   aspect-ratio: 1;
   overflow: visible;
   isolation: isolate;
@@ -125,8 +125,8 @@
   position: absolute;
   z-index: 7;
   left: 50%;
-  bottom: 14%;
-  height: 68%;
+  bottom: 0;
+  height: 88%;
   width: auto;
   max-width: none;
   max-height: none;
@@ -196,7 +196,7 @@
     margin: 0 auto;
     opacity: .96;
   }
-  .contact-scene .orb-portrait { height: 68%; bottom: 14%; }
+  .contact-scene .orb-portrait { height: 88%; bottom: 0; }
 }
 @media (max-width: 620px) {
   .contact-scene .contact-vfx-stage { width: min(82vw, 340px); }
