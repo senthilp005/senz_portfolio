@@ -2250,684 +2250,146 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 
 
-/* Contact VFX visibility fix: clear orbit contrast on the light page. */
-.contact-scene .contact-disc {
-  isolation: isolate;
-}
-.contact-scene .contact-disc::before {
-  content: "";
-  position: absolute;
-  inset: -24%;
-  z-index: -1;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(228,32,44,.16) 0%, rgba(228,32,44,.08) 43%, transparent 72%);
-  filter: blur(9px);
-  animation: contactVfxHalo 5s ease-in-out infinite;
-}
-.contact-scene .disc-red {
-  z-index: 0;
-  box-shadow: 0 0 24px 4px rgba(228,32,44,.22), 0 0 58px 8px rgba(228,32,44,.13), inset 0 0 34px rgba(95,0,8,.18);
-}
-.contact-scene .disc-red::before {
-  inset: -7%;
-  z-index: 1;
-  border: 1px dashed rgba(255,255,255,.66);
-  box-shadow: 0 0 8px rgba(255,255,255,.14);
-  animation: contactVfxOrbit 28s linear infinite;
-}
-.contact-scene .disc-red::after {
-  inset: -4%;
-  z-index: 1;
-  border: 1px solid rgba(228,32,44,.54);
-  animation: contactVfxRipple 4.2s ease-out infinite;
-}
-.contact-scene .contact-vfx-orbit {
-  z-index: 2;
-  display: block;
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: rotate;
-}
-.contact-scene .contact-vfx-orbit--outer {
-  inset: -19%;
-  border: 1.5px dashed rgba(228,32,44,.76);
-  border-top-color: rgba(11,11,12,.56);
-  border-bottom-color: rgba(228,32,44,.25);
-  transform: rotate(-24deg) scaleY(.72);
-  animation: contactVfxOrbit 24s linear infinite;
-}
-.contact-scene .contact-vfx-orbit--inner {
-  inset: -11%;
-  border: 1px solid rgba(11,11,12,.38);
-  border-left-color: transparent;
-  border-right: 1.5px solid rgba(228,32,44,.86);
-  transform: rotate(32deg) scaleY(.84);
-  animation: contactVfxOrbit 18s linear infinite reverse;
-}
-.contact-scene .contact-vfx-orbit--energy {
-  inset: -31%;
-  border: 1px solid rgba(228,32,44,.34);
-  border-top: 2px solid rgba(228,32,44,.88);
-  border-bottom-color: transparent;
-  transform: rotate(14deg) scaleY(.7);
-  animation: contactVfxOrbit 36s linear infinite;
-}
-.contact-scene .contact-vfx-orbit i {
-  position: absolute;
-  display: block;
-  top: -5px;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1px solid rgba(228,32,44,.78);
-  box-shadow: 0 0 6px #fff, 0 0 14px rgba(228,32,44,.72), 0 0 24px rgba(228,32,44,.4);
-}
-.contact-scene .contact-vfx-orbit--inner i {
-  top: auto;
-  left: auto;
-  right: 8%;
-  bottom: 15%;
-  width: 6px;
-  height: 6px;
-  background: #e4202c;
-  border-color: #fff;
-  box-shadow: 0 0 6px #e4202c, 0 0 13px rgba(228,32,44,.68);
-}
-.contact-scene .contact-vfx-orbit--energy i {
-  top: 16%;
-  left: auto;
-  right: 8%;
-  width: 5px;
-  height: 5px;
-  background: #111113;
-  border-color: #fff;
-  box-shadow: 0 0 0 3px rgba(228,32,44,.12), 0 0 12px rgba(228,32,44,.6);
-}
-.contact-scene .contact-disc img {
-  z-index: 3;
-  position: absolute;
-}
-@keyframes contactVfxOrbit { to { rotate: 360deg; } }
-@keyframes contactVfxHalo {
-  0%,100% { opacity: .72; transform: scale(.97); }
-  50% { opacity: 1; transform: scale(1.04); }
-}
-@keyframes contactVfxRipple {
-  0% { opacity: .7; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.18); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .contact-scene .contact-disc::before,
-  .contact-scene .disc-red::before,
-  .contact-scene .disc-red::after,
-  .contact-scene .contact-vfx-orbit,
-  .contact-scene .contact-vfx-orbit i { animation: none !important; }
-}
-
-
-/* SV Norse mark used in the header and footer */
-.brand-icon {
-  display: block;
-  flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 5px rgba(228,32,44,.12));
-  transition: filter .25s ease, transform .25s ease;
-}
-.brand:hover .brand-icon {
-  filter: drop-shadow(0 0 8px rgba(228,32,44,.28));
-  transform: translateY(-1px);
-}
-.footer .brand-icon { width: 40px; height: 40px; }
-@media (max-width: 620px) {
-  .brand-icon { width: 36px; height: 36px; }
-  .footer .brand-icon { width: 36px; height: 36px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .brand-icon { transition: none !important; }
-}
-
-/* ChatGPT Contact portrait repair: keep the figure fully composed inside the red portal. */
+/* Contact portal V2 — custom SVG orbits, dimensional rim, restrained plasma glow. */
 .contact-scene .contact-disc {
   position: relative;
-  overflow: visible;
+  width: min(38vw, 540px);
+  max-width: 540px;
+  aspect-ratio: 1;
+  justify-self: center;
   isolation: isolate;
+  overflow: hidden;
 }
-.contact-scene .contact-disc img {
-  left: 50%;
-  bottom: 0;
-  height: 100%;
-  max-height: 100%;
-  max-width: none;
-  width: auto;
-  object-fit: contain;
-  object-position: center bottom;
-  transform: translateX(-50%);
-  z-index: 3;
-  filter: drop-shadow(0 10px 18px rgba(15, 0, 2, .24));
-}
-@media (min-width: 900px) {
-  .contact-scene .contact-disc {
-    width: min(37vw, 390px);
-    max-width: 390px;
-  }
-}
-@media (min-width: 1100px) and (min-height: 720px) and (max-height: 899px) {
-  .contact-scene .contact-disc {
-    width: min(35vh, 320px);
-  }
-}
-@media (max-width: 899px) {
-  .contact-scene .contact-disc {
-    width: min(70vw, 340px);
-  }
-  .contact-scene .contact-disc img {
-    height: 100%;
-  }
-}
-
-/* Contact scene composition matched to the supplied red-orbit reference */
-.contact-scene .scene-inner {
-  max-width: 1600px;
-  gap: clamp(18px, 2.4vh, 26px);
-}
-.contact-scene .contact-grid {
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
-  gap: clamp(30px, 4vw, 70px);
-}
-.contact-scene .contact-h {
-  max-width: 760px;
-  font-size: clamp(64px, 8.2vw, 124px);
-  line-height: .84;
-  letter-spacing: -.035em;
-  text-transform: uppercase;
-}
-.contact-scene .contact-grid .muted {
-  max-width: 510px;
-  font-size: clamp(16px, 1.3vw, 21px);
-  line-height: 1.45;
-}
-.contact-scene .contact-disc {
-  width: min(62vh, 560px);
-  max-width: 560px;
-  justify-self: center;
-}
-.contact-scene .contact-vfx-orbit--outer { inset: -20%; }
-.contact-scene .contact-vfx-orbit--inner { inset: -12%; }
-.contact-scene .contact-vfx-orbit--energy { inset: -29%; }
-.contact-scene .endcard-line {
-  min-height: 118px;
-  margin-top: 0;
-  padding: 22px 30px;
-}
-.contact-scene .endcard-copy h3 {
-  font-size: clamp(36px, 4.2vw, 54px);
-}
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .scene-inner {
-    padding-top: 100px;
-    padding-bottom: 22px;
-    gap: clamp(16px, 2vh, 24px);
-  }
-  .contact-scene .contact-disc { width: min(62vh, 560px); }
-}
-@media (max-width: 1099px) {
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr);
-    gap: 24px;
-  }
-  .contact-scene .contact-disc { width: min(48vw, 420px); }
-  .contact-scene .contact-h { font-size: clamp(54px, 7vw, 86px); }
-}
-@media (max-width: 899px) {
-  .contact-scene .contact-grid { grid-template-columns: 1fr; }
-  .contact-scene .contact-disc { width: min(72vw, 380px); }
-  .contact-scene .contact-h { font-size: clamp(48px, 12vw, 76px); }
-  .contact-scene .endcard-line { padding: 20px 18px 18px 22px; }
-}
-
-/* Contact reference correction: restore spacing, scale and energy sweep */
-/* The reference uses generous page gutters and a smaller, layered portal. */
-.contact-scene .scene-inner {
-  max-width: 1440px;
-  gap: clamp(18px, 2.4vh, 26px);
-}
-.contact-scene .contact-grid {
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
-  gap: clamp(34px, 4vw, 64px);
-}
-.contact-scene .contact-h {
-  max-width: 700px;
-  font-size: clamp(64px, 7.6vw, 118px);
-  line-height: .84;
-  letter-spacing: -.035em;
-}
-.contact-scene .contact-disc {
-  width: min(52vh, 470px);
-  max-width: 470px;
-  justify-self: center;
-}
-.contact-scene .contact-vfx-orbit--outer { inset: -20%; }
-.contact-scene .contact-vfx-orbit--inner { inset: -12%; }
-.contact-scene .contact-vfx-orbit--energy {
-  inset: -24%;
-  border: 0;
-  border-top: 2px solid rgba(255,255,255,.95);
-  border-bottom: 1px solid rgba(255,255,255,.72);
+.contact-scene .contact-atmosphere {
+  position: absolute;
+  inset: -25%;
+  z-index: 0;
   border-radius: 50%;
-  transform: rotate(-24deg) scaleY(.43);
-  box-shadow: 0 -2px 12px rgba(255,255,255,.8), 0 0 18px rgba(255,255,255,.34);
-  animation: contactVfxOrbit 12s linear infinite;
-}
-.contact-scene .contact-vfx-orbit--energy i {
-  top: 50%;
-  right: 14%;
-  width: 7px;
-  height: 7px;
-  background: #fff;
-  border: 0;
-  box-shadow: 0 0 8px #fff, 0 0 20px rgba(255,255,255,.8);
-}
-.contact-scene .endcard-line {
-  min-height: 118px;
-  margin-top: 0;
-  padding: 22px 30px;
-}
-.contact-scene .endcard-copy h3 {
-  font-size: clamp(36px, 3.8vw, 50px);
-}
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .scene-inner {
-    padding-top: 140px;
-    padding-bottom: 22px;
-    gap: clamp(16px, 2vh, 24px);
-  }
-  .contact-scene .contact-disc { width: min(52vh, 470px); }
-}
-@media (max-width: 1099px) {
-  .contact-scene .scene-inner { max-width: 100%; }
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr);
-    gap: 24px;
-  }
-  .contact-scene .contact-disc { width: min(48vw, 420px); }
-  .contact-scene .contact-h { font-size: clamp(54px, 7vw, 86px); }
-}
-@media (max-width: 899px) {
-  .contact-scene .scene-inner { padding-top: 104px !important; }
-  .contact-scene .contact-grid { grid-template-columns: 1fr; }
-  .contact-scene .contact-disc { width: min(72vw, 380px); }
-  .contact-scene .contact-h { font-size: clamp(48px, 12vw, 76px); }
-  .contact-scene .endcard-line { padding: 20px 18px 18px 22px; }
-}
-
-
-
-/* ============================================================
-   CONTACT REFERENCE MATCH — stronger portal, true energy sweep,
-   and the roomier editorial composition from the design reference.
-   ============================================================ */
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .scene-inner {
-    max-width: 1648px;
-    padding: 132px clamp(42px, 6.3vw, 104px) 30px !important;
-    gap: 24px;
-  }
-
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1.18fr) minmax(0, .82fr);
-    gap: clamp(42px, 4.5vw, 76px);
-    align-items: center;
-  }
-
-  .contact-scene .contact-h {
-    font-size: clamp(62px, min(9vw, 15.5vh), 150px);
-    line-height: .86;
-    letter-spacing: -.018em;
-    margin-bottom: 22px;
-  }
-
-  .contact-scene .contact-disc {
-    width: min(54vh, 500px);
-    max-width: 500px;
-    justify-self: center;
-    transform: translateX(-2%);
-  }
-
-  .contact-scene .endcard-line {
-    min-height: 120px;
-    margin-top: 2px;
-    padding: 20px 30px;
-  }
-}
-
-/* Bright diagonal energy loop crossing the portrait, not another faint circle. */
-.contact-vfx-orbit--energy {
-  z-index: 4;
-  inset: 10% -18%;
-  border: 2px solid rgba(255, 255, 255, .78);
-  border-left-color: rgba(255, 255, 255, .16);
-  border-right-color: rgba(255, 255, 255, .98);
-  border-top-color: rgba(255, 255, 255, .98);
-  border-bottom-color: rgba(255, 42, 60, .88);
-  transform: rotate(-28deg) scaleY(.34);
-  opacity: .96;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 3px rgba(255,255,255,.95))
-          drop-shadow(0 0 9px rgba(255,38,56,.95))
-          drop-shadow(0 0 19px rgba(255,38,56,.65));
-  animation: contactEnergySweep 5.2s ease-in-out infinite;
-}
-.contact-vfx-orbit--energy i {
-  top: 50%;
-  left: 76%;
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  box-shadow: 0 0 8px #fff, 0 0 18px #ff2638, 0 0 34px rgba(255,38,56,.95);
-}
-@keyframes contactEnergySweep {
-  0%, 100% { opacity: .72; filter: drop-shadow(0 0 3px rgba(255,255,255,.8)) drop-shadow(0 0 8px rgba(255,38,56,.8)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px rgba(255,38,56,1)) drop-shadow(0 0 24px rgba(255,38,56,.8)); }
-}
-
-/* Richer red core and atmospheric particles like the reference artwork. */
-.contact-scene {
-  background:
-    radial-gradient(ellipse 42% 54% at 72% 46%, rgba(255, 44, 61, .075), transparent 72%),
-    radial-gradient(circle at 85% 22%, rgba(255, 38, 56, .055) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 57% 70%, rgba(255, 38, 56, .08) 0 1.5px, transparent 2.5px),
-    var(--paper);
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 48%, rgba(255, 35, 54, .24) 0%, rgba(248, 44, 58, .13) 32%, rgba(255, 211, 211, .12) 53%, transparent 72%);
+  filter: blur(16px);
 }
 .contact-scene .disc-red {
-  background:
-    radial-gradient(circle at 50% 50%, transparent 57%, rgba(255, 255, 255, .08) 58%, transparent 61%),
-    radial-gradient(circle at 35% 26%, #ff5a64 0%, #f52b39 36%, #e4202c 66%, #a90e19 100%);
-  box-shadow:
-    0 0 42px 10px rgba(228, 32, 44, .34),
-    0 0 105px 18px rgba(228, 32, 44, .29),
-    inset 0 0 42px rgba(100, 0, 10, .24);
-}
-.contact-scene .contact-vfx-orbit--outer {
-  inset: -18%;
-  border-color: rgba(255, 38, 56, .48);
-  border-top-color: rgba(255, 38, 56, .86);
-  transform: rotate(-24deg) scaleY(.76);
-}
-.contact-scene .contact-vfx-orbit--inner {
-  inset: -7%;
-  border-width: 1.5px;
-  border-color: rgba(255, 255, 255, .42);
-  border-top-color: rgba(255, 38, 56, .88);
-  border-bottom-color: transparent;
-  transform: rotate(28deg) scaleY(.76);
-}
-.contact-scene .brand-icon,
-.nav .brand-icon {
-  filter: hue-rotate(180deg) saturate(1.5) contrast(1.08);
-}
-
-@media (max-width: 1099px) {
-  .contact-vfx-orbit--energy {
-    inset: 10% -14%;
-    transform: rotate(-28deg) scaleY(.38);
-  }
-  .contact-disc { justify-self: center; }
-}
-@media (max-width: 620px) {
-  .contact-vfx-orbit--energy {
-    inset: 14% -16%;
-    border-width: 1.5px;
-    transform: rotate(-28deg) scaleY(.36);
-  }
-  .contact-scene .contact-h { font-size: clamp(48px, 13vw, 76px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .contact-vfx-orbit--energy { animation: none !important; }
-}
-
-
-/* ---------- accessibility additions ---------- */
-:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
-[data-theme="dark"] :focus-visible { outline-color: #fff; }
-.term-body form:focus-within { outline: 2px solid #fff; outline-offset: 4px; }
-.skip-link { position: fixed; left: 12px; top: -64px; z-index: 2147483647; background: #fff; color: #080808; padding: 10px 16px; font-weight: 700; border-radius: 4px; transition: top .2s; }
-.skip-link:focus { top: 12px; }
-
-
-/* ---------- contact page fixes ---------- */
-/* Headline: lines no longer collide, and "REAL." no longer sits alone. */
-.contact-scene .contact-h {
-  line-height: .95;
-  font-size: clamp(54px, min(7.3vw, 12.5vh), 108px);
-  text-wrap: balance;
-}
-.contact-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 20px; font: 500 13px/1.4 var(--mono); letter-spacing: .04em; }
-.contact-links a { display: inline-flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
-.contact-links a:hover { color: var(--red); border-color: var(--red); }
-
-
-
-/* Final contact-reference tuning: deliberate three-line headline and cleaner hero. */
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
-    gap: clamp(30px, 3.4vw, 58px);
-  }
-  .contact-scene .contact-h {
-    max-width: 690px;
-    font-size: clamp(68px, min(7.25vw, 12.2vh), 116px);
-    line-height: .84;
-    letter-spacing: -.035em;
-    text-wrap: initial;
-  }
-  .contact-scene .contact-disc {
-    width: min(58vh, 540px);
-    max-width: 540px;
-    transform: translateX(-1%);
-  }
-  .contact-scene .contact-links { display: none; }
-  .contact-scene .endcard-line { margin-top: 0; }
-}
-@media (max-width: 1099px) {
-  .contact-scene .contact-h { text-wrap: balance; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .contact-scene .contact-vfx-orbit,
-  .contact-scene .contact-vfx-orbit i,
-  .contact-scene .contact-disc::before,
-  .contact-scene .disc-red::before,
-  .contact-scene .disc-red::after {
-    animation: none !important;
-  }
-}
-
-
-/* Contact page final correction after live visual review. */
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1.22fr) minmax(0, .78fr);
-    gap: clamp(24px, 2.8vw, 48px);
-  }
-  .contact-scene .contact-h {
-    max-width: 800px;
-    font-size: clamp(86px, 9.1vw, 148px);
-    line-height: .79;
-    letter-spacing: -.035em;
-    text-wrap: initial;
-  }
-  .contact-scene .contact-disc {
-    width: min(55vh, 530px);
-    max-width: 530px;
-  }
-  .contact-scene .contact-links { display: flex; }
-}
-@media (min-width: 900px) and (max-width: 1099px) {
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-  }
-  .contact-scene .contact-h { font-size: clamp(64px, 7.7vw, 92px); }
-}
-@media (max-width: 899px) {
-  .contact-scene .contact-h {
-    font-size: clamp(48px, 11.5vw, 82px);
-    line-height: .84;
-  }
-}
-
-
-/* Emergency visual fix: stop contact hero text colliding and clear the header. */
-@media (min-width: 1100px) and (min-height: 720px) {
-  .contact-scene .scene-inner {
-    padding-top: 132px !important;
-    padding-bottom: 24px !important;
-    gap: clamp(14px, 1.8vh, 20px) !important;
-    justify-content: center;
-  }
-  .contact-scene .contact-grid {
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr) !important;
-    gap: clamp(28px, 3vw, 48px) !important;
-    align-items: center;
-  }
-  .contact-scene .contact-grid > .rv:first-child { max-width: 760px; }
-  .contact-scene .contact-h {
-    max-width: 760px !important;
-    font-size: clamp(78px, min(7.1vw, 11.6vh), 116px) !important;
-    line-height: .9 !important;
-    letter-spacing: -.028em !important;
-    text-wrap: initial !important;
-    margin-bottom: 18px !important;
-  }
-  .contact-scene .contact-disc {
-    width: min(53vh, 500px) !important;
-    max-width: 500px !important;
-  }
-  .contact-scene .contact-links { display: flex !important; }
-}
-@media (max-width: 1099px) {
-  .contact-scene .contact-h {
-    font-size: clamp(50px, 8vw, 90px) !important;
-    line-height: .9 !important;
-  }
-}
-@media (max-width: 899px) {
-  .contact-scene .scene-inner { padding-top: 112px !important; }
-  .contact-scene .contact-h {
-    font-size: clamp(46px, 11vw, 76px) !important;
-    line-height: .9 !important;
-  }
-}
-
-
-/* Reference-match VFX: visible foreground energy passes across the portrait. */
-.contact-scene .contact-disc {
-  isolation: isolate;
-  overflow: visible !important;
-}
-.contact-scene .contact-disc img {
-  z-index: 3 !important;
-  object-fit: contain;
-  object-position: center bottom;
-  filter: drop-shadow(0 12px 18px rgba(35,0,4,.28));
-}
-.contact-scene .contact-vfx-orbit {
-  z-index: 2 !important;
-}
-.contact-scene .contact-vfx-orbit--outer {
-  inset: -23% !important;
-  border-color: rgba(242,13,25,.7) !important;
-  border-top-color: rgba(255,255,255,.9) !important;
-  transform: rotate(-25deg) scaleY(.72) !important;
-}
-.contact-scene .contact-vfx-orbit--inner {
-  inset: -13% !important;
-  border-color: rgba(255,255,255,.68) !important;
-  border-left-color: transparent !important;
-  border-right-color: rgba(242,13,25,.9) !important;
-  transform: rotate(31deg) scaleY(.82) !important;
-}
-.contact-scene .contact-vfx-orbit--energy {
-  inset: -32% !important;
-  border-color: rgba(242,13,25,.45) !important;
-  border-top: 2px solid rgba(242,13,25,.92) !important;
-  border-bottom-color: rgba(255,255,255,.72) !important;
-  transform: rotate(14deg) scaleY(.72) !important;
-}
-.contact-scene .contact-vfx-foreground {
-  position: absolute;
-  z-index: 5;
-  pointer-events: none;
-  left: -12%;
-  right: -10%;
-  top: 43%;
-  height: 24%;
-  border: 2px solid transparent;
-  border-top-color: rgba(255,255,255,.98);
-  border-bottom-color: rgba(255,255,255,.9);
+  z-index: 1;
+  overflow: visible;
   border-radius: 50%;
-  transform: rotate(-23deg) scaleY(.48);
-  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px rgba(255,30,45,.95));
+  background: radial-gradient(ellipse at 47% 39%, rgba(255, 69, 83, .97) 0%, rgba(244, 31, 49, .97) 30%, rgba(220, 13, 34, .98) 58%, #960b1b 84%, #35060d 100%);
+  box-shadow: 0 0 25px 3px rgba(244, 22, 42, .32), 0 0 78px 15px rgba(238, 17, 39, .23), 0 0 150px 24px rgba(246, 63, 74, .13), inset 0 0 42px rgba(31, 0, 4, .56);
+  animation: contactPortalBreath 6.5s ease-in-out infinite;
 }
-.contact-scene .contact-vfx-foreground::before {
+.contact-scene .disc-red::before {
   content: "";
   position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 48%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.98) 12%, #fff 50%, rgba(255,255,255,.98) 88%, transparent);
-  box-shadow: 0 0 8px rgba(255,255,255,.95), 0 0 18px rgba(242,13,25,.9);
-}
-.contact-scene .contact-vfx-foreground i {
-  position: absolute;
-  right: 13%;
-  top: 14%;
-  width: 8px;
-  height: 8px;
+  inset: -2.5%;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px 3px rgba(255,255,255,.8), 0 0 18px 7px rgba(242,13,25,.72);
+  border: 1px solid rgba(255, 100, 110, .68);
+  box-shadow: 0 0 18px rgba(246, 23, 43, .28);
+  animation: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .contact-scene .contact-vfx-foreground { animation: none !important; }
+.contact-scene .disc-red::after {
+  content: "";
+  position: absolute;
+  inset: 1.5%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 205, 207, .34);
+  background: radial-gradient(ellipse at 32% 32%, rgba(255, 170, 174, .18), transparent 31%), radial-gradient(ellipse at 79% 66%, rgba(42, 0, 7, .2), transparent 34%), radial-gradient(ellipse at 47% 85%, rgba(255, 78, 87, .12), transparent 24%);
+  box-shadow: inset 0 0 28px rgba(44, 0, 6, .22);
+  animation: none;
 }
-
-
-/* Contact VFX refinement: full elliptical orbit, not twin straight-looking stripes. */
-.contact-scene .contact-vfx-foreground {
-  left: -24% !important;
-  right: -24% !important;
-  top: 12% !important;
-  height: 76% !important;
-  border: 1.5px solid rgba(255, 255, 255, .76) !important;
-  border-top: 2px solid rgba(255, 255, 255, .98) !important;
-  border-bottom: 1.5px solid rgba(255, 255, 255, .88) !important;
-  border-radius: 50% !important;
-  transform: rotate(-28deg) scaleY(.58) !important;
-  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 8px rgba(255,30,45,.95)) !important;
+.contact-scene .contact-portal-rim {
+  position: absolute;
+  inset: -2.2%;
+  z-index: 2;
+  border: clamp(10px, 1.1vw, 15px) solid transparent;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(20, 0, 5, .82), rgba(47, 0, 8, .22) 27%, rgba(7, 0, 3, .78) 48%, rgba(255, 64, 78, .48) 68%, rgba(27, 0, 6, .88) 84%) padding-box, conic-gradient(from 18deg, #ff9aa0, #630512 12%, #220308 28%, #ed1b31 44%, #40030a 59%, #a00b1b 76%, #ff747e 89%, #4d0610) border-box;
+  box-shadow: 0 0 14px rgba(255, 22, 42, .34), 0 0 36px rgba(248, 23, 43, .19), inset 0 0 19px rgba(0, 0, 0, .66);
 }
-.contact-scene .contact-vfx-foreground::before {
-  left: 4% !important;
-  right: 4% !important;
-  top: 50% !important;
-  height: 1.5px !important;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.96) 12%, #fff 50%, rgba(255,255,255,.96) 88%, transparent) !important;
-  box-shadow: 0 0 7px rgba(255,255,255,.92), 0 0 16px rgba(242,13,25,.85) !important;
+.contact-scene .contact-orbit {
+  position: absolute;
+  inset: -21%;
+  z-index: 3;
+  width: 142%;
+  height: 142%;
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
 }
-.contact-scene .contact-vfx-foreground i {
-  right: 12% !important;
-  top: 17% !important;
+.contact-scene .contact-orbit--rear { opacity: .96; animation: contactOrbitDrift 32s ease-in-out infinite alternate; }
+.contact-scene .contact-orbit--front { z-index: 5; opacity: .98; animation: contactOrbitDrift 25s ease-in-out infinite alternate-reverse; }
+.contact-scene .orbit-trace { vector-effect: non-scaling-stroke; }
+.contact-scene .orbit-trace--fine { stroke: rgba(255, 72, 86, .48); stroke-width: .85; }
+.contact-scene .orbit-trace--red { stroke: url(#contactOrbitRed); stroke-width: 1.25; }
+.contact-scene .orbit-trace--dashed { stroke-dasharray: 2 6; stroke-width: .8; opacity: .84; }
+.contact-scene .orbit-trace--thin-white { stroke: rgba(255, 255, 255, .68); stroke-width: 1.1; }
+.contact-scene .orbit-trace--glow { stroke: rgba(255, 47, 63, .7); stroke-width: 7; filter: blur(4px); opacity: .72; }
+.contact-scene .orbit-trace--hot { stroke: url(#contactOrbitHot); stroke-width: 1.65; filter: drop-shadow(0 0 2px rgba(255,255,255,.96)) drop-shadow(0 0 7px rgba(255,40,54,.96)); }
+.contact-scene .orbit-trace--moving { stroke-dasharray: 44 18 160 900; animation: contactEnergyFlow 9s linear infinite; }
+.contact-scene .orbit-trace--white-secondary { stroke: rgba(255, 245, 245, .72); stroke-width: .75; stroke-dasharray: 2 5; }
+.contact-scene .contact-orbit-points { fill: #f3263b; filter: drop-shadow(0 0 5px rgba(238, 20, 39, .84)); }
+.contact-scene .contact-orbit-points--hot { fill: #fff; filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 11px rgba(255, 31, 49, .96)); }
+.contact-scene .contact-disc img {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: -6%;
+  height: 116%;
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 15px 20px rgba(39, 0, 6, .25)) drop-shadow(0 0 7px rgba(255, 81, 94, .17));
+}
+@keyframes contactPortalBreath {
+  0%, 100% { filter: saturate(1); transform: scale(1); }
+  50% { filter: saturate(1.08); transform: scale(1.008); }
+}
+@keyframes contactOrbitDrift {
+  from { transform: rotate(-2deg) scale(.995); }
+  to { transform: rotate(2deg) scale(1.008); }
+}
+@keyframes contactEnergyFlow { to { stroke-dashoffset: -450; } }
+@media (min-width: 1100px) and (min-height: 720px) {
+  .contact-scene .contact-disc { width: min(60vh, 540px); }
 }
 @media (max-width: 899px) {
-  .contact-scene .contact-vfx-foreground {
-    left: -18% !important;
-    right: -18% !important;
-    top: 18% !important;
-    height: 66% !important;
-    transform: rotate(-28deg) scaleY(.58) !important;
-  }
+  .contact-scene .contact-disc { width: min(82vw, 440px); max-width: 440px; overflow: clip; }
+  .contact-scene .contact-orbit { inset: -19%; width: 138%; height: 138%; }
+  .contact-scene .contact-disc img { height: 111%; bottom: -4%; }
+  .contact-scene .contact-orbit--rear, .contact-scene .contact-orbit--front { animation-duration: 42s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .disc-red, .contact-scene .contact-orbit, .contact-scene .orbit-trace--moving { animation: none !important; }
+}
+
+/* Contact V3 polish: add visible plasma structure and more varied orbital paths. */
+.contact-scene .contact-plasma-texture {
+  position: absolute;
+  inset: 3.5%;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 25% 22%, rgba(255, 194, 196, .38) 0, rgba(255, 91, 103, .18) 8%, transparent 29%),
+    radial-gradient(ellipse at 75% 29%, rgba(255, 44, 61, .65) 0, transparent 27%),
+    radial-gradient(ellipse at 69% 70%, rgba(48, 0, 7, .58) 0, transparent 35%),
+    radial-gradient(ellipse at 34% 74%, rgba(255, 84, 94, .34) 0, transparent 31%),
+    repeating-radial-gradient(ellipse at 48% 47%, rgba(255, 168, 174, .08) 0 1px, transparent 2px 12px);
+  mix-blend-mode: screen;
+  opacity: .82;
+  filter: blur(1.5px);
+}
+.contact-scene .contact-portal-rim::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 246, 246, .48);
+  clip-path: polygon(0 9%, 31% 0, 54% 0, 100% 21%, 100% 67%, 79% 100%, 36% 100%, 0 75%);
+  filter: drop-shadow(0 0 5px rgba(255, 58, 72, .8));
+}
+.contact-scene .contact-orbit--rear { filter: drop-shadow(0 0 3px rgba(230, 18, 38, .42)); }
+.contact-scene .contact-orbit--front { filter: drop-shadow(0 0 2px rgba(255, 245, 245, .28)); }
+@media (max-width: 899px) {
+  .contact-scene .contact-plasma-texture { opacity: .66; }
 }
