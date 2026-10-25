@@ -3105,3 +3105,16 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .contact-scene .contact-disc { overflow: visible !important; }
   .contact-scene .contact-orbit { inset: -14%; width: 128%; height: 128%; }
 }
+
+
+/* Contact portrait lower-edge fix: keep the legs inside the portal disc. */
+.contact-scene .contact-disc img {
+  height: 104% !important;
+  bottom: 0 !important;
+  max-height: none !important;
+  max-width: none !important;
+  width: auto !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: translateX(-50%) !important;
+}
