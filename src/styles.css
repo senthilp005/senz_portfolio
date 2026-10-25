@@ -3118,3 +3118,33 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   object-position: center bottom !important;
   transform: translateX(-50%) !important;
 }
+
+
+/* Contact VFX correction: keep the red core clean, subject unobstructed, and legs inside. */
+/* The rim must be transparent in the middle; only the border gets the metallic gradient. */
+.contact-scene .contact-portal-rim {
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    conic-gradient(from 18deg, #ff9aa0, #630512 12%, #220308 28%, #ed1b31 44%, #40030a 59%, #a00b1b 76%, #ff747e 89%, #4d0610) border-box !important;
+}
+/* Keep the subject above every orbit path so light trails never slice across the body. */
+.contact-scene .contact-orbit--rear { z-index: 3 !important; }
+.contact-scene .contact-disc img {
+  z-index: 6 !important;
+  height: 90% !important;
+  bottom: 3% !important;
+  max-height: none !important;
+  max-width: none !important;
+  width: auto !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: translateX(-50%) !important;
+}
+/* Keep the front-loop geometry behind the portrait; its bright edges still frame the figure. */
+.contact-scene .contact-orbit--front {
+  z-index: 5 !important;
+  opacity: .82 !important;
+}
+.contact-scene .contact-plasma-texture {
+  opacity: .38 !important;
+}
