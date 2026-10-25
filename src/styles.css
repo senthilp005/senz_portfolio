@@ -2361,3 +2361,35 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 @media (prefers-reduced-motion: reduce) {
   .contact-scene .disc-red, .contact-scene .contact-orbit, .contact-scene .orbit-trace--moving { animation: none !important; }
 }
+
+/* Contact V3 polish: add visible plasma structure and more varied orbital paths. */
+.contact-scene .contact-plasma-texture {
+  position: absolute;
+  inset: 3.5%;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 25% 22%, rgba(255, 194, 196, .38) 0, rgba(255, 91, 103, .18) 8%, transparent 29%),
+    radial-gradient(ellipse at 75% 29%, rgba(255, 44, 61, .65) 0, transparent 27%),
+    radial-gradient(ellipse at 69% 70%, rgba(48, 0, 7, .58) 0, transparent 35%),
+    radial-gradient(ellipse at 34% 74%, rgba(255, 84, 94, .34) 0, transparent 31%),
+    repeating-radial-gradient(ellipse at 48% 47%, rgba(255, 168, 174, .08) 0 1px, transparent 2px 12px);
+  mix-blend-mode: screen;
+  opacity: .82;
+  filter: blur(1.5px);
+}
+.contact-scene .contact-portal-rim::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 246, 246, .48);
+  clip-path: polygon(0 9%, 31% 0, 54% 0, 100% 21%, 100% 67%, 79% 100%, 36% 100%, 0 75%);
+  filter: drop-shadow(0 0 5px rgba(255, 58, 72, .8));
+}
+.contact-scene .contact-orbit--rear { filter: drop-shadow(0 0 3px rgba(230, 18, 38, .42)); }
+.contact-scene .contact-orbit--front { filter: drop-shadow(0 0 2px rgba(255, 245, 245, .28)); }
+@media (max-width: 899px) {
+  .contact-scene .contact-plasma-texture { opacity: .66; }
+}
