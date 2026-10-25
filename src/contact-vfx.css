@@ -229,7 +229,9 @@
   .contact-scene .scene-inner { gap: 12px !important; }
 }
 /* the orb scales with screen height so it never runs into the end card */
-.contact-scene .contact-vfx-stage { width: min(42vw, 560px, 56vh) !important; }
+@media (min-width: 901px) {
+  .contact-scene .contact-vfx-stage { width: min(42vw, 560px, 56vh) !important; }
+}
 
 /* orbit arcs are true circles that turn around the orb */
 .contact-scene .orb-orbit {
@@ -246,3 +248,11 @@
 .contact-scene .orb-core { display: none; }
 /* and the soft red haze behind the rings */
 .contact-scene .orb-atmosphere { display: none; }
+
+/* ContactOrbit fills the right column stage */
+.contact-scene .contact-vfx-stage .orbit { width: 100%; margin: 0; }
+/* the cut-out's bottom edge fades into the page instead of ending in a hard line */
+.contact-scene .orbit-person {
+  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+}

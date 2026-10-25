@@ -6,6 +6,7 @@ import PortfolioVFX from "./PortfolioVFX.jsx";
 import OpeningSequence from "./OpeningSequence.jsx";
 import "./styles.css";
 import "./contact-vfx.css";
+import ContactOrbit from "./ContactOrbit.jsx";
 
 const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.2-.4-3.7 1.4a12.8 12.8 0 0 0-6.8 0C5.7 1.1 4.5 1.5 4.5 1.5a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 3 8.7c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.7V22"/></svg>;
 const Linkedin = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>;
@@ -421,43 +422,7 @@ function Contact() {
           </div>
         </div>
         <div className="contact-vfx-stage rv" style={{ "--k": 0.2 }} aria-hidden="true">
-          <div className="orb-atmosphere" />
-          <div className="orb-core" />
-          <div className="orb-rim orb-rim--outer" />
-          <div className="orb-rim orb-rim--inner" />
-          <svg className="orb-svg orb-svg--rear" viewBox="0 0 600 600" aria-hidden="true">
-            <defs>
-              <filter id="orbEnergyGlow" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="2.6" result="glow" />
-                <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
-              </filter>
-            </defs>
-            <g className="orb-orbit">
-              <circle className="orb-trace orb-trace--fine" cx="300" cy="300" r="200" />
-              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="218" />
-              <circle className="orb-trace orb-trace--fine orb-trace--dashed" cx="300" cy="300" r="232" />
-              <circle className="orb-trace orb-trace--white" filter="url(#orbEnergyGlow)" cx="300" cy="300" r="240" pathLength="100" style={{ strokeDasharray: "34 66" }} />
-              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="252" pathLength="100" style={{ strokeDasharray: "22 78" }} />
-            </g>
-            <g fill="#fff6f6" filter="url(#orbEnergyGlow)">
-              <circle cx="52" cy="334" r="3" /><circle cx="548" cy="212" r="4" /><circle cx="488" cy="125" r="2.4" />
-            </g>
-          </svg>
-          <svg className="orb-svg orb-svg--front" viewBox="0 0 600 600" aria-hidden="true">
-            <g className="orb-orbit orb-orbit--front">
-              <circle className="orb-trace orb-trace--red" cx="300" cy="300" r="228" pathLength="100" style={{ strokeDasharray: "40 60" }} />
-              <circle className="orb-trace orb-trace--white" filter="url(#orbEnergyGlow)" cx="300" cy="300" r="246" pathLength="100" style={{ strokeDasharray: "22 78" }} />
-            </g>
-          </svg>
-          <i className="orb-particle orb-particle--1" />
-          <i className="orb-particle orb-particle--2" />
-          <i className="orb-particle orb-particle--3" />
-          <i className="orb-particle orb-particle--4" />
-          <i className="orb-particle orb-particle--5" />
-          <i className="orb-particle orb-particle--6" />
-          <i className="orb-particle orb-particle--7" />
-          <i className="orb-particle orb-particle--8" />
-          <img src="/senthil-profile.webp" alt="" className="orb-portrait" />
+          <ContactOrbit />
         </div>
       </div>
       <div className="endcard-line rv" style={{ "--k": 0.32 }}>
