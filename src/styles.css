@@ -3148,3 +3148,85 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .contact-scene .contact-plasma-texture {
   opacity: .38 !important;
 }
+
+
+/* Contact hero: use the supplied full-scene artwork as one blended image.
+   No circular clipping or hand-drawn loops are layered over the portrait. */
+.contact-scene .contact-grid {
+  position: relative;
+  min-height: clamp(500px, 58vh, 680px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  overflow: visible;
+}
+.contact-scene .contact-copy {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 560px);
+  max-width: 560px;
+}
+.contact-scene .orb-wrap {
+  position: absolute;
+  top: 50%;
+  right: -4vw;
+  width: min(62vw, 1100px);
+  aspect-ratio: 3 / 2;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+.contact-scene .orb-img {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse 75% 80% at 66% 55%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 80% at 66% 55%, #000 55%, transparent 100%);
+  animation: contactOrbFloat 8s ease-in-out infinite;
+}
+.contact-scene .orb-wrap::before {
+  content: "";
+  position: absolute;
+  left: 66%;
+  top: 55%;
+  width: 55%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,40,60,.35), transparent 65%);
+  filter: blur(40px);
+  animation: contactOrbPulse 5s ease-in-out infinite;
+}
+@keyframes contactOrbFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes contactOrbPulse {
+  0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+}
+@media (max-width: 900px) {
+  .contact-scene { overflow-x: clip !important; }
+  .contact-scene .contact-grid {
+    min-height: 900px;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+  .contact-scene .contact-copy {
+    width: 100%;
+    max-width: 560px;
+  }
+  .contact-scene .orb-wrap {
+    width: 130vw;
+    right: -35vw;
+    top: 62%;
+    opacity: .55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .orb-img,
+  .contact-scene .orb-wrap::before { animation: none !important; }
+}
