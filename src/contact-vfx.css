@@ -19,7 +19,7 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  width: min(44vw, 620px);
+  width: min(38vw, 520px);
   aspect-ratio: 1;
   overflow: visible;
   isolation: isolate;
@@ -125,8 +125,8 @@
   position: absolute;
   z-index: 7;
   left: 50%;
-  bottom: 12%;
-  height: 78%;
+  bottom: 14%;
+  height: 68%;
   width: auto;
   max-width: none;
   max-height: none;
@@ -170,7 +170,7 @@
   50% { opacity: 1; transform: scale(1.35); }
 }
 @media (max-width: 1099px) and (min-width: 901px) {
-  .contact-scene .contact-vfx-stage { width: min(43vw, 520px); right: -1vw; }
+  .contact-scene .contact-vfx-stage { width: min(39vw, 500px); right: -1vw; }
   .contact-scene .contact-copy { max-width: 510px !important; }
 }
 @media (max-width: 900px) {
@@ -190,16 +190,16 @@
     top: auto;
     right: auto;
     transform: none;
-    width: min(92vw, 440px);
+    width: min(82vw, 380px);
     max-width: 100%;
     justify-self: center;
     margin: 0 auto;
     opacity: .96;
   }
-  .contact-scene .orb-portrait { height: 78%; bottom: 12%; }
+  .contact-scene .orb-portrait { height: 68%; bottom: 14%; }
 }
 @media (max-width: 620px) {
-  .contact-scene .contact-vfx-stage { width: min(94vw, 390px); }
+  .contact-scene .contact-vfx-stage { width: min(82vw, 340px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .contact-scene .orb-atmosphere,
