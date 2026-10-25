@@ -26,8 +26,8 @@
 .orbit-person {
   position: absolute;
   left: 50%;
-  bottom: 11%;
-  width: 48%;
+  bottom: 6%;
+  width: 57%;
   transform: translateX(-50%);
   user-select: none;
   pointer-events: none;
