@@ -3259,3 +3259,49 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     right: calc(-35vw - (100vw - 100%) / 2);
   }
 }
+
+
+/* Thera's Bane-inspired animated crimson fire aura for the SV brand mark */
+.brand-mark {
+  position: relative;
+  isolation: isolate;
+  border-color: rgba(255, 105, 72, .8);
+  animation: svBaneGlow 2.1s ease-in-out infinite;
+}
+.brand-mark::before,
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -5px;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.brand-mark::before {
+  background:
+    radial-gradient(ellipse at 20% 100%, rgba(255, 55, 20, .72), transparent 52%),
+    radial-gradient(ellipse at 80% 0%, rgba(255, 130, 35, .58), transparent 48%);
+  filter: blur(7px);
+  animation: svBaneFlare 1.45s ease-in-out infinite alternate;
+}
+.brand-mark::after {
+  inset: -3px;
+  border: 1px solid rgba(255, 96, 45, .7);
+  box-shadow: 0 0 7px rgba(255, 52, 28, .72), inset 0 0 8px rgba(255, 83, 28, .35);
+  animation: svBanePulse 1.8s ease-in-out infinite;
+}
+@keyframes svBaneGlow {
+  0%, 100% { color: #fff3ec; text-shadow: 0 0 5px rgba(255, 77, 35, .45); }
+  50% { color: #fff; text-shadow: 0 0 7px #ff4a26, 0 0 14px rgba(255, 69, 28, .8); }
+}
+@keyframes svBaneFlare {
+  from { opacity: .55; transform: scale(.96); }
+  to { opacity: 1; transform: scale(1.08); }
+}
+@keyframes svBanePulse {
+  0%, 100% { opacity: .58; box-shadow: 0 0 5px rgba(255, 52, 28, .5), inset 0 0 5px rgba(255, 83, 28, .25); }
+  50% { opacity: 1; box-shadow: 0 0 12px rgba(255, 72, 26, .9), inset 0 0 10px rgba(255, 83, 28, .42); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark, .brand-mark::before, .brand-mark::after { animation: none !important; }
+}
