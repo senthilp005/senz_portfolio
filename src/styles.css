@@ -3107,11 +3107,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 
 
-/* Contact portrait lower-edge fix: keep the legs inside the portal disc. */
+/* Portrait fit: the cutout fills the portal without spilling past its lower edge. */
 .contact-scene .contact-disc img {
-  height: 104% !important;
+  height: 100% !important;
   bottom: 0 !important;
-  max-height: none !important;
+  max-height: 100% !important;
   max-width: none !important;
   width: auto !important;
   object-fit: contain !important;
