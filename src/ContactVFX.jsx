@@ -36,7 +36,6 @@ export function ContactVFXFront() {
             </g>
           </svg>
       <i className="orb-particle orb-particle--1" />
-      <i className="orb-particle orb-particle--2" />
       <i className="orb-particle orb-particle--3" />
       <i className="orb-particle orb-particle--4" />
       <i className="orb-particle orb-particle--5" />
