@@ -33,6 +33,11 @@
   pointer-events: none;
 }
 
+/* energy trails travel along their paths (pathLength = 100) */
+.orb-sweep { animation: orbSweep 9s linear infinite; }
+.orb-sweep--2 { animation-duration: 13s; animation-direction: reverse; }
+@keyframes orbSweep { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -100; } }
+
 @media (prefers-reduced-motion: reduce) {
-  .orbit-spin { animation: none; }
+  .orbit-spin, .orb-sweep { animation: none; }
 }
