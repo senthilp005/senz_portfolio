@@ -500,7 +500,7 @@ function Contact() {
         </a>
       </div>
       <footer className="footer">
-        <span className="brand"><img className="brand-icon" src="/sv-norse.svg" alt="" aria-hidden="true" /><span>P. Senthil Velan<small>/ Developer</small></span></span>
+        <span className="brand"><img className="brand-icon" src="/sv-norse.svg" alt="" aria-hidden="true" style={{ width: 42, height: 42, maxWidth: 42, maxHeight: 42, flex: "0 0 42px", objectFit: "contain" }} /><span>P. Senthil Velan<small>/ Developer</small></span></span>
         <small>Designed to keep evolving · © {new Date().getFullYear()}</small>
         <div className="social">
           <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
