@@ -241,3 +241,8 @@
 @media (prefers-reduced-motion: reduce) {
   .contact-scene .orb-orbit { animation: none !important; }
 }
+
+/* the large red sphere is removed; rings, arcs and sparks stay */
+.contact-scene .orb-core { display: none; }
+/* and the soft red haze behind the rings */
+.contact-scene .orb-atmosphere { display: none; }
