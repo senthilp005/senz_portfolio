@@ -37,7 +37,7 @@ export default function ContactOrbit() {
         <Ring r={206} dash="0"   dur={36} reverse opacity={0.4} />
 
         {/* the red round behind you */}
-        <circle cx="250" cy="250" r="172" fill="url(#redRound)" />
+        <circle cx="250" cy="250" r="206" fill="url(#redRound)" />
       </svg>
 
       <img className="orbit-person" src="/senthil-profile.webp"
