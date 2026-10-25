@@ -418,11 +418,6 @@ function Contact() {
           <div className="actions">
             <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
           </div>
-          <div className="contact-links">
-            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-            <a href="https://github.com/senthilvelanprabakaran-alt" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>
-            <a href="https://www.linkedin.com/in/senthilvelan-prabakaran-486051382/" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={14} /></a>
-          </div>
         </div>
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
           <div className="contact-atmosphere" />
