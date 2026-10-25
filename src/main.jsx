@@ -451,6 +451,20 @@ function Contact() {
   );
 }
 
+/* Where a scene really sits on the page. offsetTop and getBoundingClientRect both
+   report a pinned (sticky) scene as "at the top", so add up the heights of the
+   scenes above it. */
+function sceneDocTop(el) {
+  const main = el.parentElement;
+  let y = main.getBoundingClientRect().top + window.scrollY;
+  for (const s of main.querySelectorAll(":scope > .scene")) {
+    y += parseFloat(getComputedStyle(s).marginTop) || 0;
+    if (s === el) break;
+    y += s.offsetHeight;
+  }
+  return Math.max(0, Math.round(y));
+}
+
 /* ---------- app ---------- */
 function App() {
   useSceneMotion();
@@ -470,6 +484,25 @@ function App() {
     }
     setIntroOpen(false);
   };
+  // In-page links. The scenes are pinned with position: sticky, so the browser's
+  // own anchor jump reads a pinned scene as "already here" and does nothing once
+  // you have scrolled past it. Work out each scene's real place from the heights
+  // above it, and scroll there ourselves.
+  useEffect(() => {
+    const onClick = (e) => {
+      const a = e.target.closest?.('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute("href").slice(1);
+      const el = document.getElementById(id);
+      if (!el || !el.classList.contains("scene")) return;
+      e.preventDefault();
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: sceneDocTop(el), behavior: reduce ? "auto" : "smooth" });
+      try { history.replaceState(null, "", `#${id}`); } catch { /* history blocked: scroll still works */ }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
