@@ -427,6 +427,7 @@ function Contact() {
         <div className="contact-disc rv" style={{ "--k": 0.2 }} aria-hidden="true">
           <div className="contact-atmosphere" />
           <div className="disc-red" />
+          <div className="contact-plasma-texture" />
           <div className="contact-portal-rim" />
           <svg className="contact-orbit contact-orbit--rear" viewBox="0 0 600 600" focusable="false">
             <defs>
@@ -449,6 +450,9 @@ function Contact() {
               <path className="orbit-trace orbit-trace--thin-white" filter="url(#contactGlowRear)" d="M58 388 C93 269 223 159 372 154 C483 151 550 228 514 307" />
               <path className="orbit-trace orbit-trace--thin-white" d="M130 99 C242 43 405 90 496 204 C547 267 524 335 467 382" />
               <path className="orbit-trace orbit-trace--fine" d="M46 300 C130 190 295 146 450 218 C510 246 525 298 489 341" />
+              <path className="orbit-trace orbit-trace--red" d="M105 468 C11 371 69 205 212 126 C330 60 473 105 522 226 C564 329 474 439 361 468" />
+              <path className="orbit-trace orbit-trace--thin-white" d="M24 280 C62 173 180 95 290 103 C388 110 466 176 488 252" />
+              <path className="orbit-trace orbit-trace--fine orbit-trace--dashed" d="M145 45 C258 17 397 63 477 155 C539 227 542 319 490 386" />
             </g>
             <g className="contact-orbit-points">
               <circle cx="94" cy="139" r="3.2" /><circle cx="486" cy="164" r="4.1" />
@@ -476,6 +480,8 @@ function Contact() {
               <path className="orbit-trace orbit-trace--hot orbit-trace--moving" d="M72 450 C158 514 323 492 456 405 C511 369 548 332 540 306" />
               <path className="orbit-trace orbit-trace--white-secondary" d="M76 283 C158 210 272 166 380 144 C455 128 503 146 516 169" />
               <path className="orbit-trace orbit-trace--red orbit-trace--dashed" d="M53 360 C153 282 302 210 437 190 C499 181 527 205 498 233" />
+              <path className="orbit-trace orbit-trace--hot" d="M28 325 C96 255 177 209 255 177 C330 146 400 133 447 149" />
+              <path className="orbit-trace orbit-trace--white-secondary" d="M109 491 C220 536 373 477 464 398 C505 363 524 329 519 292" />
             </g>
             <g className="contact-orbit-points contact-orbit-points--hot">
               <circle cx="519" cy="183" r="5" /><circle cx="72" cy="450" r="4" /><circle cx="540" cy="306" r="3.4" />
