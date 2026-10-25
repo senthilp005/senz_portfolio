@@ -1,0 +1,211 @@
+/* CONTACT VFX — live orbital effects around the original transparent portrait */
+.contact-scene .contact-grid {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 0 !important;
+  min-height: clamp(500px, 58vh, 620px);
+  overflow: visible !important;
+}
+.contact-scene .contact-copy {
+  position: relative !important;
+  z-index: 6 !important;
+  width: min(100%, 560px) !important;
+  max-width: 560px !important;
+}
+.contact-scene .contact-vfx-stage {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: min(44vw, 620px);
+  aspect-ratio: 1;
+  overflow: visible;
+  isolation: isolate;
+  pointer-events: none;
+  z-index: 1;
+}
+.contact-scene .orb-atmosphere {
+  position: absolute;
+  inset: -13%;
+  border-radius: 50%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 48% 47%, rgba(255, 31, 49, .28) 0%, rgba(245, 21, 42, .15) 36%, transparent 70%);
+  filter: blur(26px);
+  animation: orbBloom 5.2s ease-in-out infinite;
+}
+.contact-scene .orb-core {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 36% 25%, rgba(255, 124, 128, .68) 0%, transparent 37%),
+    radial-gradient(circle at 48% 46%, #ff3544 0%, #f52234 45%, #d7172a 69%, #9e0b1b 88%, #4a0610 100%);
+  box-shadow:
+    0 0 22px 3px rgba(239, 25, 44, .34),
+    0 0 55px 12px rgba(237, 24, 43, .26),
+    0 0 105px 22px rgba(228, 32, 44, .16),
+    inset 0 0 30px rgba(94, 0, 9, .3),
+    inset 0 0 3px 1px rgba(255, 212, 213, .78);
+  animation: orbCoreBreath 5.6s ease-in-out infinite;
+}
+.contact-scene .orb-core::before {
+  content: "";
+  position: absolute;
+  inset: 4.5%;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 213, 215, .58);
+  box-shadow: inset 0 0 22px rgba(255, 100, 110, .22), 0 0 12px rgba(255, 63, 79, .32);
+}
+.contact-scene .orb-rim {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.contact-scene .orb-rim--outer {
+  inset: 5%;
+  z-index: 2;
+  border: 1px solid rgba(255, 69, 82, .76);
+  box-shadow: 0 0 12px rgba(255, 39, 56, .22);
+  transform: rotate(-26deg) scaleY(.86);
+  animation: orbRingTurn 32s linear infinite;
+}
+.contact-scene .orb-rim--inner {
+  inset: 9%;
+  z-index: 2;
+  border: 1px solid rgba(255, 244, 244, .48);
+  border-left-color: rgba(255, 80, 92, .2);
+  border-bottom-color: rgba(255, 80, 92, .72);
+  transform: rotate(21deg) scaleY(.8);
+  animation: orbRingTurnReverse 23s linear infinite;
+}
+.contact-scene .orb-svg {
+  position: absolute;
+  inset: -17%;
+  width: 134%;
+  height: 134%;
+  overflow: visible;
+  fill: none;
+  pointer-events: none;
+}
+.contact-scene .orb-svg--rear { z-index: 3; }
+.contact-scene .orb-svg--front { z-index: 4; }
+.contact-scene .orb-svg .orb-trace {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.contact-scene .orb-svg .orb-trace--red {
+  stroke: rgba(255, 38, 56, .78);
+  stroke-width: 1.45;
+  filter: drop-shadow(0 0 4px rgba(245, 24, 43, .6));
+}
+.contact-scene .orb-svg .orb-trace--fine {
+  stroke: rgba(255, 99, 111, .54);
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+}
+.contact-scene .orb-svg .orb-trace--white {
+  stroke: rgba(255, 247, 247, .88);
+  stroke-width: 1.15;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,.9)) drop-shadow(0 0 9px rgba(255,51,67,.85));
+}
+.contact-scene .orb-svg .orb-trace--moving {
+  stroke-dasharray: 5 14 90 22;
+  animation: orbDashTravel 8s linear infinite;
+}
+.contact-scene .orb-svg .orb-trace--dashed {
+  stroke-dasharray: 3 8;
+  animation: orbDashTravel 17s linear infinite;
+}
+.contact-scene .orb-portrait {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  bottom: 12%;
+  height: 78%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 13px 12px rgba(55, 0, 5, .2));
+}
+.contact-scene .orb-particle {
+  position: absolute;
+  z-index: 5;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ff3347;
+  box-shadow: 0 0 5px 2px rgba(255, 33, 52, .38), 0 0 15px rgba(255, 33, 52, .62);
+  animation: orbParticlePulse 2.8s ease-in-out infinite;
+}
+.contact-scene .orb-particle--1 { left: 15%; top: 27%; }
+.contact-scene .orb-particle--2 { left: 80%; top: 19%; width: 7px; height: 7px; animation-delay: -.9s; }
+.contact-scene .orb-particle--3 { left: 91%; top: 51%; width: 4px; height: 4px; animation-delay: -1.7s; }
+.contact-scene .orb-particle--4 { left: 18%; top: 80%; width: 6px; height: 6px; animation-delay: -.5s; }
+.contact-scene .orb-particle--5 { left: 71%; top: 88%; width: 3px; height: 3px; animation-delay: -2.1s; }
+.contact-scene .orb-particle--6 { left: 6%; top: 59%; width: 3px; height: 3px; animation-delay: -1.2s; }
+.contact-scene .orb-particle--7 { left: 56%; top: 4%; width: 4px; height: 4px; animation-delay: -.3s; }
+.contact-scene .orb-particle--8 { left: 94%; top: 70%; width: 5px; height: 5px; animation-delay: -2.3s; }
+@keyframes orbBloom {
+  0%, 100% { opacity: .58; transform: scale(.98); }
+  50% { opacity: .95; transform: scale(1.05); }
+}
+@keyframes orbCoreBreath {
+  0%, 100% { filter: saturate(1); }
+  50% { filter: saturate(1.1) brightness(1.025); }
+}
+@keyframes orbRingTurn { to { rotate: 360deg; } }
+@keyframes orbRingTurnReverse { to { rotate: -360deg; } }
+@keyframes orbDashTravel { to { stroke-dashoffset: -460; } }
+@keyframes orbParticlePulse {
+  0%, 100% { opacity: .45; transform: scale(.82); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+@media (max-width: 1099px) and (min-width: 901px) {
+  .contact-scene .contact-vfx-stage { width: min(43vw, 520px); right: -1vw; }
+  .contact-scene .contact-copy { max-width: 510px !important; }
+}
+@media (max-width: 900px) {
+  .contact-scene { overflow-x: clip !important; }
+  .contact-scene .contact-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 0;
+    gap: 20px !important;
+  }
+  .contact-scene .contact-copy {
+    max-width: 560px !important;
+    width: 100% !important;
+  }
+  .contact-scene .contact-vfx-stage {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: min(92vw, 440px);
+    max-width: 100%;
+    justify-self: center;
+    margin: 0 auto;
+    opacity: .96;
+  }
+  .contact-scene .orb-portrait { height: 78%; bottom: 12%; }
+}
+@media (max-width: 620px) {
+  .contact-scene .contact-vfx-stage { width: min(94vw, 390px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .orb-atmosphere,
+  .contact-scene .orb-core,
+  .contact-scene .orb-rim,
+  .contact-scene .orb-svg,
+  .contact-scene .orb-trace,
+  .contact-scene .orb-particle { animation: none !important; }
+}
