@@ -1,9 +1,12 @@
+/* Contact portal animation tuning: keep the existing artwork, improve frame pacing. */
 .orbit {
   position: relative;
-  width: clamp(280px, 30vw, 440px);   /* ← overall size */
+  width: clamp(280px, 30vw, 440px);
   aspect-ratio: 1;
   margin-left: auto;
   flex-shrink: 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .orbit-svg {
@@ -15,29 +18,45 @@
   pointer-events: none;
 }
 
+/* SVG transforms rotate around the actual viewBox center, not a computed bbox. */
 .orbit-spin {
+  transform-box: view-box;
   transform-origin: 250px 250px;
   animation: orbit-rotate linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
 }
-@keyframes orbit-rotate { to { transform: rotate(360deg); } }
 
-/* portrait sits inside the red disc (disc spans ~9%–91% of the orbit);
-   image is 717x1080, so width 53% gives a height of ~80% of the orbit */
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .orbit-person {
   position: absolute;
   left: 50%;
   bottom: 6%;
   width: 57%;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
   user-select: none;
   pointer-events: none;
+  backface-visibility: hidden;
 }
 
-/* energy trails travel along their paths (pathLength = 100) */
-.orb-sweep { animation: orbSweep 9s linear infinite; }
-.orb-sweep--2 { animation-duration: 13s; animation-direction: reverse; }
-@keyframes orbSweep { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -100; } }
+/* Keep energy trails moving linearly; avoid filter-heavy repaint on every frame. */
+.orb-sweep {
+  animation: orbSweep 12s linear infinite;
+  will-change: stroke-dashoffset;
+}
+.orb-sweep--2 {
+  animation-duration: 17s;
+  animation-direction: reverse;
+}
+@keyframes orbSweep {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .orbit-spin, .orb-sweep { animation: none; }
+  .orbit-spin, .orb-sweep { animation: none !important; will-change: auto; }
 }
