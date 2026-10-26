@@ -42,6 +42,14 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
    ============================================================ */
 
 /* ---------- nav ---------- */
+/* below 1200px the bar turns light while a light section is under it (set in main.jsx) */
+@media (max-width: 1199px) {
+  html[data-nav-theme="light"] .nav {
+    color: var(--ink);
+    background: rgba(250, 249, 246, 0.94);
+    border-bottom: 1px solid rgba(11, 11, 12, 0.08);
+  }
+}
 .nav {
   position: fixed;
   inset: 0 0 auto 0;

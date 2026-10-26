@@ -504,6 +504,29 @@ function App() {
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
+  // The header bar is dark by default. Over a light section it switches to a light
+  // bar, so the text stays readable and the bar doesn't turn into a grey block.
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const probe = window.scrollY + 40;
+      let theme = "dark";
+      for (const el of document.querySelectorAll("main > .scene")) {
+        if (sceneDocTop(el) <= probe) theme = el.dataset.theme || "dark";
+      }
+      document.documentElement.dataset.navTheme = theme;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
