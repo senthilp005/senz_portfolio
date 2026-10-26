@@ -39,6 +39,14 @@ export default function CursorTrail(){
       if(e.pointerType==="mouse" || activeTouchPointers.has(e.pointerId)) push(e.clientX,e.clientY);
     };
     const up=e=>activeTouchPointers.delete(e.pointerId);
+    // Use native touch events on phones; some mobile browsers do not reliably
+    // deliver pointermove during scrolling or gesture handling.
+    const touchStart=e=>{
+      for(const touch of e.changedTouches) push(touch.clientX,touch.clientY);
+    };
+    const touchMove=e=>{
+      for(const touch of e.changedTouches) push(touch.clientX,touch.clientY);
+    };
     const draw=now=>{
       raf=0;ctx.clearRect(0,0,width,height);
       while(points.length && now-points[0].t>maxAge) points.shift();
@@ -74,6 +82,10 @@ export default function CursorTrail(){
     window.addEventListener("pointermove",move,{passive:true,capture:true});
     window.addEventListener("pointerup",up,{passive:true,capture:true});
     window.addEventListener("pointercancel",up,{passive:true,capture:true});
+    if(isCoarse){
+      window.addEventListener("touchstart",touchStart,{passive:true,capture:true});
+      window.addEventListener("touchmove",touchMove,{passive:true,capture:true});
+    }
     window.addEventListener("blur",clear);
     return ()=>{
       window.removeEventListener("resize",resize);
@@ -81,6 +93,10 @@ export default function CursorTrail(){
       window.removeEventListener("pointermove",move,true);
       window.removeEventListener("pointerup",up,true);
       window.removeEventListener("pointercancel",up,true);
+      if(isCoarse){
+        window.removeEventListener("touchstart",touchStart,true);
+        window.removeEventListener("touchmove",touchMove,true);
+      }
       window.removeEventListener("blur",clear);
       if(raf)cancelAnimationFrame(raf);
       canvas.remove();
