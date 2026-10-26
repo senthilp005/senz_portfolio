@@ -2,7 +2,9 @@ import { useEffect } from "react";
 
 export default function CursorTrail(){
   useEffect(()=>{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches) return;
+    // Keep the decorative trail on touch devices too; touch handlers below
+    // track finger movement without blocking taps, scrolling, or navigation.
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const canvas=document.createElement("canvas");
     canvas.setAttribute("aria-hidden","true");
     canvas.className="portfolio-comet-cursor";
@@ -16,7 +18,7 @@ export default function CursorTrail(){
     let width=0,height=0,raf=0;
     const points=[];
     const activeTouchPointers=new Set();
-    const maxAge=360;
+    const maxAge=260;
     const resize=()=>{
       const dpr=Math.min(window.devicePixelRatio||1,2);
       width=window.innerWidth;height=window.innerHeight;
@@ -25,7 +27,7 @@ export default function CursorTrail(){
     };
     const push=(x,y)=>{
       points.push({x,y,t:performance.now()});
-      if(points.length>28) points.splice(0,points.length-28);
+      if(points.length>24) points.splice(0,points.length-24);
       if(!raf) raf=requestAnimationFrame(draw);
     };
     const down=e=>{
@@ -33,7 +35,6 @@ export default function CursorTrail(){
       if(e.pointerType==="mouse" || e.pointerType==="touch" || e.pointerType==="pen") push(e.clientX,e.clientY);
     };
     const move=e=>{
-      // Mouse trails follow normal cursor movement; touch/pen trails follow active gestures.
       if(e.pointerType==="mouse" || activeTouchPointers.has(e.pointerId)) push(e.clientX,e.clientY);
     };
     const up=e=>activeTouchPointers.delete(e.pointerId);
@@ -46,16 +47,16 @@ export default function CursorTrail(){
         if(alpha<=0) continue;
         ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
         ctx.lineCap="round";ctx.lineJoin="round";
-        ctx.strokeStyle="rgba(255,38,56,"+(alpha*.9)+")";
-        ctx.lineWidth=Math.max(.8,4.8*(i/points.length)*alpha);
-        ctx.shadowColor="#ff2638";ctx.shadowBlur=9*alpha;ctx.stroke();
+        ctx.strokeStyle="rgba(255,38,56,"+(alpha*.82)+")";
+        ctx.lineWidth=Math.max(.7,3.8*(i/points.length)*alpha);
+        ctx.shadowColor="#ff2638";ctx.shadowBlur=7*alpha;ctx.stroke();
       }
       if(points.length){
         const p=points[points.length-1],alpha=Math.max(0,1-(now-p.t)/maxAge);
         if(alpha>0){
-          ctx.beginPath();ctx.arc(p.x,p.y,2.8,0,Math.PI*2);
+          ctx.beginPath();ctx.arc(p.x,p.y,2.3,0,Math.PI*2);
           ctx.fillStyle="rgba(255,255,255,"+alpha+")";
-          ctx.shadowColor="#ff2638";ctx.shadowBlur=12;ctx.fill();
+          ctx.shadowColor="#ff2638";ctx.shadowBlur=9;ctx.fill();
         }
       }
       ctx.shadowBlur=0;
