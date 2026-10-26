@@ -265,3 +265,46 @@
 @media (min-width: 901px) {
   .contact-scene .contact-vfx-stage { width: min(46vw, 620px, 64vh) !important; transform: translateY(calc(-50% - 60px)) !important; }
 }
+
+
+/* Smooth-motion pass: preserve the portal design while reducing SVG repaint cost. */
+.contact-scene .orb-orbit {
+  transform-box: view-box;
+  transform-origin: 300px 300px;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.contact-scene .orb-orbit--front {
+  animation-duration: 34s !important;
+}
+.contact-scene .orb-svg .orb-trace--red {
+  filter: none;
+}
+.contact-scene .orb-svg .orb-trace--white {
+  filter: none;
+  stroke-width: 1.35;
+}
+.contact-scene .orb-svg--rear,
+.contact-scene .orb-svg--front {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.contact-scene .orb-particle {
+  will-change: transform, opacity;
+  animation-duration: 3.8s;
+}
+.contact-scene .orb-atmosphere,
+.contact-scene .orb-core {
+  animation-duration: 7s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-scene .orb-orbit,
+  .contact-scene .orb-particle,
+  .contact-scene .orb-atmosphere,
+  .contact-scene .orb-core,
+  .contact-scene .orb-sweep,
+  .contact-scene .orbit-spin {
+    animation: none !important;
+    will-change: auto;
+  }
+}
