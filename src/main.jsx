@@ -13,7 +13,7 @@ const Github = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentCo
 const Linkedin = (props) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>;
 
 const EMAIL = "senthilvelanprabakaran@gmail.com";
-const RESUME_URL = ""; // e.g. "/resume.pdf" — drop the file in /public, button appears automatically
+const RESUME_URL = "/Senthil_Velan_Resume.pdf"; // file lives in /public; the Download CV button uses it
 
 const projects = [
   { n:"01", title:"FEDIS-OT", category:"AI & Security", desc:"A privacy-preserving cybersecurity concept combining federated learning with digital-twin-based patch validation for safer collaborative threat detection.", tags:["Federated Learning","Digital Twin","GNN"], symbol:"◈", tone:"violet", status:"In development", url:"https://github.com/senthilvelanprabakaran-alt/CodeAlpha_data-redundancy" },
