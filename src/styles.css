@@ -179,6 +179,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .btn:hover { transform: translateY(-2px); }
 .btn.primary { background: var(--red); border-color: var(--red); color: #fff; }
 .btn.ghost { border-color: rgba(244, 242, 238, 0.35); color: var(--paper); }
+/* ghost buttons on light sections need dark text */
+.scene[data-theme="light"] .btn.ghost { border-color: rgba(11, 11, 12, 0.35); color: var(--ink); }
 .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ---------- 01 · HERO (dark) ---------- */

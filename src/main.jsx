@@ -420,6 +420,7 @@ function Contact() {
           <p className="muted">Have a project, opportunity, or just want to talk tech? I'd love to hear from you.</p>
           <div className="actions">
             <a className="btn primary" href={`mailto:${EMAIL}?subject=Let's%20connect`}>Say hello <Mail size={16} /></a>
+            {RESUME_URL && <a className="btn ghost" href={RESUME_URL} target="_blank" rel="noreferrer">Download CV <ArrowUpRight size={16} /></a>}
           </div>
         </div>
         <div className="contact-vfx-stage rv" style={{ "--k": 0.2 }} aria-hidden="true">
