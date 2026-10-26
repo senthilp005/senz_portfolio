@@ -78,6 +78,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   gap: 18px;
   padding: 22px;
   background: var(--ink);
+  color: var(--paper); /* the menu is always dark, even when the header bar is light */
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
   font: 500 13px var(--mono);
