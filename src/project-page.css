@@ -1,0 +1,83 @@
+/* Project detail page: a full page that opens over the portfolio at #project/<slug> */
+.project-page {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  color: var(--ink);
+  padding: clamp(96px, 14vh, 128px) clamp(16px, 5vw, 64px) 72px;
+}
+.pp-inner { max-width: 880px; margin: 0 auto; display: grid; gap: 22px; justify-items: start; }
+.pp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(11, 11, 12, 0.16);
+  background: none;
+  color: inherit;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.pp-back:hover, .pp-back:focus-visible { border-color: var(--red); color: var(--red); outline: none; }
+.pp-kicker { font: 500 11px var(--mono); letter-spacing: 0.14em; color: var(--red); }
+.pp-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(52px, 11vw, 124px);
+  line-height: 0.88;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.project-page .pp-status { margin: 0; }
+.pp-overview {
+  margin: 0;
+  max-width: 680px;
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.6;
+  color: #5d5f68;
+}
+.pp-h {
+  width: 100%;
+  margin: 12px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(11, 11, 12, 0.16);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pp-list { margin: 0; padding-left: 20px; display: grid; gap: 10px; line-height: 1.6; }
+.pp-soon { margin: 0; color: #5d5f68; }
+.project-page .pp-tags { margin-top: 4px; }
+.pp-repo { margin-top: 8px; }
+@media (max-width: 600px) {
+  .pp-back { width: 100%; justify-content: center; }
+}
+
+/* status and tags get their own styles here; the card versions assume a dark card */
+.project-page .pp-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.project-page .pp-status span { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.project-page .pp-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-page .pp-tags span {
+  border: 1px solid rgba(11, 11, 12, 0.18);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 500 12px var(--mono);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: transparent;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Layers3, Mail, Menu, Send, Terminal, X } from "lucide-react";
+import "./project-page.css";
 import CursorTrail from "./CursorTrail.jsx";
 import PortfolioVFX from "./PortfolioVFX.jsx";
 import OpeningSequence from "./OpeningSequence.jsx";
@@ -28,6 +29,60 @@ const projects = [
   { n:"10", title:"Uzhavan Market", category:"Full Stack", desc:"A market-focused web project designed around connecting users with a simple product and marketplace experience.", tags:["HTML","Web UI","Marketplace"], symbol:"▦", tone:"yellow", status:"Project", url:"https://github.com/senthilvelanprabakaran-alt/Uzhavan-Market-" },
   { n:"11", title:"Flappy Bird", category:"Game Development", desc:"A browser game project inspired by the classic tap-to-fly arcade mechanic, built as a compact interactive experiment.", tags:["HTML","CSS","JavaScript"], symbol:"➤", tone:"pink", status:"Experiment", url:"https://github.com/senthilvelanprabakaran-alt/flappybird" }
 ];
+
+const slugOf = (p) => p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+/* Detail pages. Entries without a write-up show the short description and a "coming soon" note. */
+const projectDetails = {
+  "01": {
+    overview: "A privacy-preserving cybersecurity research platform that combines federated learning, graph neural networks, digital-twin simulation and SBOM-based vulnerability analysis to detect threats across collaborating operational-technology sites, and to check patches before they reach the live system.",
+    approach: [
+      "Federated learning lets each participating node learn from its own data, so sensitive operational data never leaves the site.",
+      "Graph neural networks analyse the relationships between nodes to spot unusual activity across the network.",
+      "A digital-twin simulation tests a patch on a virtual copy of the system before it touches the live environment.",
+      "SBOM and vulnerability analysis track which software components each node depends on and which are exposed.",
+    ],
+  },
+  "02": {
+    overview: "A real-time Indian Sign Language recognition system built with YOLOv8, OpenCV and deep learning, aimed at making sign recognition more accessible and improving human-computer interaction.",
+    approach: [
+      "A custom YOLOv8 model, trained and fine-tuned on sign gesture data.",
+      "An OpenCV pipeline that reads live camera frames and detects gestures with low latency.",
+      "A Flask web interface that presents the recognition results.",
+    ],
+  },
+  "03": {
+    overview: "A compact e-commerce application with product browsing, a cart flow and a mock checkout, built on Flask and MySQL.",
+    approach: [
+      "Products are browsed and added to a cart.",
+      "The cart flows into a mock checkout.",
+      "Flask serves the pages and MySQL stores the product and cart data.",
+    ],
+  },
+  "04": {
+    overview: "A Django chatbot project focused on a practical conversational interface and a database-backed application flow.",
+    approach: [
+      "Django handles the chat requests and the application logic.",
+      "MySQL stores the data the chatbot works with.",
+    ],
+  },
+  "05": {
+    overview: "An image-classification project exploring AI-assisted recognition of skin conditions, trained on a curated dataset.",
+    approach: [
+      "A deep-learning model classifies skin-condition images.",
+      "Computer-vision techniques prepare the images for training and prediction.",
+    ],
+  },
+  "06": {
+    overview: "An AI-powered life cycle assessment platform for metal production, tracking emissions and compliance across production scenarios.",
+    approach: [
+      "Machine-learning models predict emissions for a given production setup.",
+      "SHAP explainability shows which factors drive each prediction.",
+      "Scenario modelling compares production options side by side.",
+      "Compliance tracking follows the ISO 14040 and 14044 life cycle assessment standards.",
+    ],
+  },
+};
 
 const toneColor = { violet:"#7c5cff", mint:"#1fbf8f", orange:"#ff7a2a", blue:"#3b82f6", pink:"#ec4899", yellow:"#d9a400" };
 
@@ -260,6 +315,38 @@ function Experience() {
 }
 
 /* ---------- projects (light) ---------- */
+function ProjectPage({ project, onClose }) {
+  const d = projectDetails[project.n] || {};
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <section className="project-page" role="dialog" aria-modal="true" aria-labelledby="pp-title">
+      <div className="pp-inner">
+        <button className="pp-back" type="button" onClick={onClose}><ChevronLeft size={16} /> All projects</button>
+        <small className="pp-kicker">PROJECT / {project.n} · {project.category.toUpperCase()}</small>
+        <h1 id="pp-title" className="pp-title">{project.title}</h1>
+        <div className="project-card-status pp-status"><span />{project.status}</div>
+        <p className="pp-overview">{d.overview || project.desc}</p>
+        {d.approach ? (
+          <>
+            <h2 className="pp-h">How it works</h2>
+            <ul className="pp-list">{d.approach.map((item) => <li key={item}>{item}</li>)}</ul>
+          </>
+        ) : (
+          <p className="pp-soon">A full write-up for this project is coming soon.</p>
+        )}
+        <div className="project-card-tags pp-tags">{project.tags.map((t) => <span key={t}>{t}</span>)}</div>
+        {project.url && (
+          <a className="btn primary pp-repo" href={project.url} target="_blank" rel="noreferrer">View repository <ArrowUpRight size={16} /></a>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function Projects() {
   return (
     <Scene id="projects" theme="light" index={3} className="projects-scene">
@@ -288,8 +375,8 @@ function Projects() {
               <div className="project-card-tags">
                 {p.tags.map((tag) => <span key={tag}>{tag}</span>)}
               </div>
-              <a className="project-card-link" href={p.url} target="_blank" rel="noreferrer">
-                Explore project repositories <ArrowUpRight size={16} />
+              <a className="project-card-link" href={`#project/${slugOf(p)}`}>
+                View details <ArrowUpRight size={16} />
               </a>
             </div>
           </article>
@@ -504,12 +591,34 @@ function App() {
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
+  // Project detail pages: #project/<slug> opens a full page over the portfolio.
+  const projectFromHash = () => {
+    const m = window.location.hash.match(/^#project\/([\w-]+)$/);
+    return m ? projects.find((p) => slugOf(p) === m[1]) || null : null;
+  };
+  const [openProjectN, setOpenProjectN] = useState(() => projectFromHash()?.n ?? null);
+  useEffect(() => {
+    const sync = () => setOpenProjectN(projectFromHash()?.n ?? null);
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+  const openProject = projects.find((p) => p.n === openProjectN) || null;
+  const closeProject = () => {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+    setOpenProjectN(null);
+  };
+  useEffect(() => {
+    document.body.style.overflow = openProject ? "hidden" : "";
+    if (openProject) document.documentElement.dataset.navTheme = "light";
+    return () => { document.body.style.overflow = ""; };
+  }, [openProject]);
   // The header bar is dark by default. Over a light section it switches to a light
   // bar, so the text stays readable and the bar doesn't turn into a grey block.
   useEffect(() => {
     let raf = 0;
     const update = () => {
       raf = 0;
+      if (/^#project\//.test(window.location.hash)) { document.documentElement.dataset.navTheme = "light"; return; }
       const probe = window.scrollY + 40;
       let theme = "dark";
       for (const el of document.querySelectorAll("main > .scene")) {
@@ -555,6 +664,7 @@ function App() {
         <Contact />
       </main>
       {introOpen && <OpeningSequence onDone={finishOpening} />}
+      {openProject && <ProjectPage project={openProject} onClose={closeProject} />}
     </>
   );
 }
